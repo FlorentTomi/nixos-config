@@ -92,12 +92,14 @@
       "Mod+B".action.spawn = "floorp";
       "Mod+Z".action.spawn = "zeditor";
       "Mod+L".action.spawn = "hyprlock";
+
       "Mod+E".action.spawn = [
         "ghostty"
         "--confirm-close-surface=false"
         "-e"
         "yazi"
       ];
+
       "Mod+P".action.spawn = [
         "ghostty"
         "--confirm-close-surface=false"
@@ -162,21 +164,34 @@
 
       "Mod+Shift+W".action.toggle-column-tabbed-display = { };
 
+      "Mod+O" = {
+        action.toggle-overview = {  };
+        repeat=false;
+      };
+
+      "Mod+Q" = {
+        action.close-window = {};
+        repeat=false;
+      };
+
       "XF86AudioRaiseVolume".action.spawn = [
         "swayosd-client"
         "--output-volume"
         "raise"
       ];
+
       "XF86AudioLowerVolume".action.spawn = [
         "swayosd-client"
         "--output-volume"
         "lower"
       ];
+
       "XF86AudioMute".action.spawn = [
         "swayosd-client"
         "--output-volume"
         "mute-toggle"
       ];
+
       "XF86AudioMicMute".action.spawn = [
         "swayosd-client"
         "--input-volume"
@@ -188,16 +203,19 @@
         "--playerctl"
         "play-pause"
       ];
+
       "XF86AudioStop".action.spawn = [
         "swayosd-client"
         "--playerctl"
         "stop"
       ];
+
       "XF86AudioPrev".action.spawn = [
         "swayosd-client"
         "--playerctl"
         "prev"
       ];
+
       "XF86AudioNext".action.spawn = [
         "swayosd-client"
         "--playerctl"

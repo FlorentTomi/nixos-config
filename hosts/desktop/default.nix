@@ -61,7 +61,6 @@
 
   services.displayManager.ly.enable = true;
   services.tailscale.enable = true;
-  # programs.niri.enable = true;
   programs.fish.enable = true;
   programs.git.enable = true;
 
