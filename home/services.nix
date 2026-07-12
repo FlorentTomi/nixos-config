@@ -7,10 +7,11 @@
     swayidle.enable = true;
     mako.enable = true;
     swayosd.enable = true;
+    awww.enable = true;
+    tailscale-systray.enable = true;
     wl-clip-persist = {
       enable = true;
       clipboardType = "both";
     };
-    tailscale-systray.enable = true;
   };
 }

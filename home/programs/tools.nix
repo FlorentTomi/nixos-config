@@ -2,13 +2,17 @@
 
 {
   programs.fuzzel.enable = true;
-  programs.ghostty.enable = true;
   programs.btop.enable = true;
   programs.bat.enable = true;
   programs.zed-editor.enable = true;
   programs.neovim.enable = true;
   programs.git.enable = true;
   programs.gh.enable = true;
+
+  programs.ghostty = {
+    enable = true;
+    settings.background-opacity = 0.9;
+  };
 
   programs.wleave = {
     enable = true;
@@ -115,7 +119,6 @@
   };
 
   home.packages = [
-    pkgs.hyprpaper
     pkgs.tailscale
     pkgs.waypaper
     pkgs.floorp-bin
