@@ -5,9 +5,10 @@ window#waybar {
 
 #window {
     background-color: @base02;
-    border-radius: 0.5rem 0.5rem 0px 0px;
-    margin-top: 5px;
-    padding: 0 0.5rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.5rem;
+    margin: 5px 0;
+    border: 2px solid @base0D;
 }
 
 window#waybar.empty #window {
@@ -23,6 +24,7 @@ window#waybar.empty #window {
     border-radius: 0.5rem;
     padding: 0.5rem 0.5rem;
     margin: 5px 0;
+    border: 2px solid @base03;
 }
 
 #custom-power,
@@ -36,6 +38,7 @@ window#waybar.empty #window {
 }
 
 #custom-power {
+    font-size: 20;
     color: #FFFFFF;
     background-color: #CD5C5C;
     border-radius: 0.5rem 0px 0px 0.5rem;
@@ -43,19 +46,19 @@ window#waybar.empty #window {
 }
 
 #cpu {
-    color: @base0E;
+    color: #bb9af7;
 }
 
 #temperature {
-    color: @base09;
+    color: #ff9e64;
 }
 
 #memory {
-    color: @base0A;
+    color: #e0af68;
 }
 
 #disk {
-    color: @base0B;
+    color: #9ece6a;
     border-radius: 0px 0.5rem 0.5rem 0px;
     margin-right: 0.5rem;
 }
@@ -66,6 +69,7 @@ window#waybar.empty #window {
     margin: 5px;
     margin-right: 0.5rem;
     padding: 0 0.5rem;
+    border: 2px solid @base03;
 }
 
 #pulseaudio,
@@ -77,14 +81,12 @@ window#waybar.empty #window {
 }
 
 #pulseaudio {
-    color: @base0D;
     border-radius: 0.5rem;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
 }
 
 #clock {
-    color: @base0D;
     border-radius: 0.5rem;
     margin-right: 0.5rem;
 }

@@ -11,7 +11,7 @@
     settings.mainBar = {
       layer = "bottom";
       position = "top";
-      height = 32;
+      # height = 32;
       exclusive = true;
 
       modules-left = [

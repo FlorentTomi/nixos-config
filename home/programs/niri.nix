@@ -68,7 +68,7 @@
         { proportion = 1.; }
       ];
 
-      border.enable = false;
+      border.width = 1.;
     };
 
     hotkey-overlay = {
@@ -151,9 +151,8 @@
       "Mod+Ctrl+Shift+R".action.switch-preset-window-height = { };
       "Mod+Ctrl+R".action.reset-window-height = { };
 
-      "Mod+F".action.maximize-column = { };
-      "Mod+Shift+F".action.fullscreen-window = { };
-      # "Mod+M".action.maximize-window-to-edges = { };
+      "Mod+M".action.maximize-column = { };
+      "Mod+F".action.fullscreen-window = { };
       "Mod+Ctrl+F".action.expand-column-to-available-width = { };
       "Mod+C".action.center-column = { };
       "Mod+Ctrl+C".action.center-visible-columns = { };
