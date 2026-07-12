@@ -54,10 +54,12 @@
       "video"
       "input"
     ];
+    shell = pkgs.fish;
   };
 
   system.stateVersion = "26.05";
 
+  programs.fish.enable = true;
   services.greetd = {
     enable = true;
     settings.default_session = {
