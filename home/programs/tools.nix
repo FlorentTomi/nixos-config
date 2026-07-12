@@ -115,6 +115,7 @@
   };
 
   home.packages = [
+    pkgs.hyprpaper
     pkgs.tailscale
     pkgs.waypaper
     pkgs.floorp-bin
