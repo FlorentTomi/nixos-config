@@ -116,6 +116,7 @@
 
   home.packages = [
     pkgs.tailscale
+    pkgs.waypaper
     pkgs.floorp-bin
     pkgs.nil
     pkgs.nixd
