@@ -54,15 +54,17 @@
       "video"
       "input"
     ];
-    shell = pkgs.fish;
   };
 
   system.stateVersion = "26.05";
 
-  services.displayManager.ly.enable = true;
-  services.tailscale.enable = true;
-  programs.fish.enable = true;
-  programs.git.enable = true;
+  services.greetd = {
+    enable = true;
+    settings.default_session = {
+      command = "${pkgs.cage}/bin/cage -s -- ${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --asterisks --cmd niri-session";
+      user = "greeter";
+    };
+  };
 
   xdg.portal = {
     enable = true;

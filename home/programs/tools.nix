@@ -7,6 +7,7 @@
   programs.bat.enable = true;
   programs.zed-editor.enable = true;
   programs.neovim.enable = true;
+  programs.git.enable = true;
   programs.gh.enable = true;
 
   programs.wleave = {
@@ -114,6 +115,7 @@
   };
 
   home.packages = [
+    pkgs.tailscale
     pkgs.floorp-bin
     pkgs.nil
     pkgs.nixd
