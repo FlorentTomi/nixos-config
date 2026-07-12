@@ -1,0 +1,16 @@
+{ ... }:
+
+{
+  services = {
+    polkit-gnome.enable = true;
+    network-manager-applet.enable = true;
+    swayidle.enable = true;
+    mako.enable = true;
+    swayosd.enable = true;
+    wl-clip-persist = {
+      enable = true;
+      clipboardType = "both";
+    };
+    tailscale-systray.enable = true;
+  };
+}

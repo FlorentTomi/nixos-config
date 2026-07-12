@@ -1,0 +1,78 @@
+window#waybar {
+    background-color: shade(@base00, 0.9);
+    color: @base05;
+    border-bottom: 1px solid @base02;
+}
+#window {
+    background-color: @base02;
+    border-radius: 0.5rem 0.5rem 0px 0px;
+    margin-top: 5px;
+    padding: 0 0.5rem;
+}
+#tray {
+    background-color: @base01;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.5rem;
+    margin: 5px 0;
+}
+#custom-power,
+#cpu,
+#temperature,
+#memory,
+#disk {
+    background-color: @base01;
+    padding: 0.5rem 0.5rem;
+    margin: 5px 0;
+}
+#custom-power {
+    color: @base08;
+    background-color: @base02;
+    border-radius: 0.5rem 0px 0px 0.5rem;
+    margin-left: 0.5rem;
+}
+#cpu {
+    color: @base0E;
+}
+#temperature {
+    color: @base09;
+}
+#memory {
+    color: @base0A;
+}
+#disk {
+    color: @base0B;
+    border-radius: 0px 0.5rem 0.5rem 0px;
+    margin-right: 0.5rem;
+}
+#mpris {
+    background-color: @base02;
+    border-radius: 0.5rem;
+    margin: 5px;
+    margin-right: 0.5rem;
+    padding: 0 0.5rem;
+}
+#pulseaudio,
+#pulseaudio-slider,
+#clock {
+    background-color: @base01;
+    padding: 0.5rem 0.5rem;
+    margin: 5px 0;
+}
+#pulseaudio {
+    color: @base0D;
+    border-radius: 0.5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+#clock {
+    color: @base0D;
+    border-radius: 0.5rem;
+    margin-right: 0.5rem;
+}
+tooltip {
+    background: @base00;
+    border: 1px solid @base03;
+    border-radius: 8px;
+    color: @base05;
+    padding: 8px;
+}

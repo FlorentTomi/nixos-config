@@ -8,6 +8,8 @@
   imports = [
     ./hardware-configuration.nix
     ./nvidia.nix
+    ./stylix.nix
+    ./gaming.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -52,18 +54,29 @@
       "video"
       "input"
     ];
+    shell = pkgs.fish;
   };
 
   system.stateVersion = "26.05";
 
   services.displayManager.ly.enable = true;
-  programs.niri.enable = true;
-
+  services.tailscale.enable = true;
+  # programs.niri.enable = true;
+  programs.fish.enable = true;
   programs.git.enable = true;
 
   xdg.portal = {
     enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
     config.common.default = "gnome";
+  };
+
+  fileSystems."/mnt/data" = {
+    device = "/dev/disk/by-uuid/d525a6bb-a97f-4e5f-a0ec-a0eb6b4845f1";
+    fsType = "xfs";
+    options = [
+      "defaults"
+      "nofail"
+    ];
   };
 }
