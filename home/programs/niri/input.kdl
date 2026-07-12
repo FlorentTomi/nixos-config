@@ -1,0 +1,8 @@
+input {
+    keyboard {
+        numlock
+    }
+    touchpad
+
+    mouse
+}

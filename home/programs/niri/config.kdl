@@ -1,0 +1,7 @@
+include "input.kdl"
+include "key-bindings.kdl"
+include "layout.kdl"
+include "autostart.kdl"
+include "misc.kdl"
+include "window-rules.kdl"
+include "workspaces.kdl"
