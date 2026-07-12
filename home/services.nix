@@ -9,6 +9,7 @@
     swayosd.enable = true;
     awww.enable = true;
     tailscale-systray.enable = true;
+    playerctld.enable = true;
     wl-clip-persist = {
       enable = true;
       clipboardType = "both";

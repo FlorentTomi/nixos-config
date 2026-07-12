@@ -3,6 +3,7 @@
 {
   programs.waybar = {
     enable = true;
+    systemd.enable = true;
     style = lib.mkAfter ''
       ${builtins.readFile ./waybar/style.css}
     '';
@@ -21,25 +22,25 @@
         "disk"
       ];
       "custom/power" = {
-        format = "⏻";
+        format = "󰐥";
         tooltip = false;
         on-click = "wleave";
         min-length = 4;
       };
       cpu = {
         interval = 5;
-        format = "  {usage}%";
+        format = " {usage}%";
       };
       temperature = {
         interval = 5;
         critical-threshold = 100;
         hwmon-path-abs = "/sys/devices/platform/coretemp.0/hwmon";
         input-filename = "temp1_input";
-        format = " {temperatureC}°C";
+        format = " {temperatureC}°C";
       };
       memory = {
         interval = 5;
-        format = "  {percentage}%";
+        format = "  {percentage}%";
       };
       disk = {
         interval = 30;
@@ -77,16 +78,16 @@
       };
       pulseaudio = {
         format = "{icon} {volume}%";
-        format-muted = "";
+        format-muted = "";
         format-icons = {
-          default = " ";
+          default = " ";
         };
         on-click = "pamixer -t";
         on-click-right = "pavucontrol";
       };
       clock = {
         interval = 60;
-        format = " {:%Y/%m/%d  %H:%M}";
+        format = " {:%Y/%m/%d  %H:%M}";
         tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         max-length = 25;
         calendar = {

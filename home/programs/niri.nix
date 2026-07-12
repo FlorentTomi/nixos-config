@@ -40,7 +40,6 @@
     };
 
     spawn-at-startup = [
-      { argv = [ "waybar" ]; }
       {
         argv = [
           "waypaper"

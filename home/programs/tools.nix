@@ -8,6 +8,7 @@
   programs.neovim.enable = true;
   programs.git.enable = true;
   programs.gh.enable = true;
+  programs.discord.enable = true;
 
   programs.ghostty = {
     enable = true;
@@ -120,6 +121,8 @@
 
   home.packages = [
     pkgs.tailscale
+    pkgs.scrcpy
+    pkgs.android-tools
     pkgs.waypaper
     pkgs.floorp-bin
     pkgs.nil
@@ -127,5 +130,6 @@
     pkgs.pamixer
     pkgs.pavucontrol
     pkgs.xwayland-satellite
+    pkgs.playerctl
   ];
 }

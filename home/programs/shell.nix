@@ -12,7 +12,7 @@
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
-    presets = [ "gruvbox-rainbow" ];
+    presets = [ "tokyo-night" ];
   };
 
   programs.fastfetch.enable = true;
