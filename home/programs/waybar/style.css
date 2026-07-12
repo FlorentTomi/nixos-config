@@ -6,7 +6,6 @@ window#waybar {
 #window {
     background-color: @base02;
     border-radius: 0.5rem;
-    padding: 0.5rem 0.5rem;
     margin: 5px 0;
     border: 2px solid @base0D;
 }
@@ -22,9 +21,10 @@ window#waybar.empty #window {
 #tray {
     background-color: @base02;
     border-radius: 0.5rem;
-    padding: 0.5rem 0.5rem;
     margin: 5px 0;
     border: 2px solid @base03;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 #custom-power,
@@ -33,7 +33,6 @@ window#waybar.empty #window {
 #memory,
 #disk {
     background-color: @base02;
-    padding: 0.5rem 0.5rem;
     margin: 5px 0;
     border-top: 2px solid @base03;
     border-bottom: 2px solid @base03;
@@ -80,7 +79,6 @@ window#waybar.empty #window {
 #pulseaudio-slider,
 #clock {
     background-color: @base02;
-    padding: 0.5rem 0.5rem;
     margin: 5px 0;
 }
 
