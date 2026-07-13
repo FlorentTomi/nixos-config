@@ -1,7 +1,13 @@
 { pkgs, ... }:
 
 {
-  programs.git.enable = true;
+  programs.git = {
+    enable = true;
+    settings.user = {
+      name = "Florent TOMI";
+      email = "florent.tomi@outlook.com";
+    };
+  };
   programs.gh.enable = true;
   programs.zed-editor.enable = true;
   programs.claude-code = {

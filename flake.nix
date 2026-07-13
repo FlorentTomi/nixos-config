@@ -46,7 +46,6 @@
             home-manager.backupFileExtension = "bak";
             home-manager.extraSpecialArgs = {
               inherit inputs;
-              hostConfig = import ./hosts/desktop/home-config.nix;
             };
             home-manager.users.ftomi = import ./home;
           }

@@ -1,10 +1,10 @@
 { ... }:
 {
   imports = [
-    ./programs/tools.nix
-    ./programs/gaming.nix
-    ./programs/development.nix
-    ./programs/desktop-environment.nix
+    ./tools.nix
+    ./gaming.nix
+    ./development.nix
+    ./desktop-environment.nix
   ];
 
   home = {
