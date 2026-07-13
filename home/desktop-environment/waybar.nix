@@ -17,6 +17,7 @@
         "custom/power"
         "cpu"
         "temperature"
+        "custom/gpu"
         "memory"
         "disk"
       ];
@@ -29,21 +30,28 @@
       cpu = {
         interval = 5;
         format = " {usage}%";
+        on-click = "ghostty --confirm-close-surface=false -e btop";
       };
       temperature = {
         interval = 5;
         critical-threshold = 100;
-        hwmon-path-abs = "/sys/devices/platform/coretemp.0/hwmon";
-        input-filename = "temp1_input";
         format = " {temperatureC}°C";
+      };
+      "custom/gpu" = {
+        interval = 5;
+        format = "󱓞 {}";
+        tooltip = false;
+        exec = "nvtop -s | jq -r '.[].gpu_util'";
       };
       memory = {
         interval = 5;
         format = "  {percentage}%";
+        on-click = "ghostty --confirm-close-surface=false -e btop";
       };
       disk = {
         interval = 30;
         format = "󰋊 {percentage_used}% (Free: {free})";
+        on-click = "ghostty --confirm-close-surface=false -e gdu";
       };
 
       modules-center = [ "niri/window" ];
@@ -55,7 +63,7 @@
       modules-right = [
         "mpris"
         "tray"
-        "pulseaudio"
+        "group/volume"
         "clock"
       ];
       mpris = {
@@ -63,7 +71,10 @@
         title-len = 10;
         format = "{player_icon} {dynamic}";
         format-paused = "{status_icon} <i>{dynamic}</i>";
-        dynamic-order = [ "artist" "title" ];
+        dynamic-order = [
+          "artist"
+          "title"
+        ];
         player-icons = {
           default = "▶";
           mpv = "🎵";
@@ -75,14 +86,33 @@
       tray = {
         spacing = 4;
       };
+      "group/volume" = {
+        orientation = "inherit";
+        drawer= {
+            transition-duration= 500;
+            children-class = "volume";
+            transition-left-to-right = false;
+        };
+        modules = [
+          "pulseaudio"
+          "pulseaudio/slider#out"
+        ];
+      };
       pulseaudio = {
         format = "{icon} {volume}%";
         format-muted = "";
         format-icons = {
           default = " ";
         };
-        on-click = "pamixer -t";
+        on-click = "swayosd-client --output-volume mute-toggle";
         on-click-right = "pavucontrol";
+      };
+      "pulseaudio/slider#out" = {
+        min = 0;
+        max = 100;
+        orientation = "horizontal";
+        zero-on-mute = true;
+        unmute-on-volume-change = true;
       };
       clock = {
         interval = 60;

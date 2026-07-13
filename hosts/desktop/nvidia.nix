@@ -16,4 +16,8 @@
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
+  environment.systemPackages = [
+     pkgs.nvtopPackages.nvidia
+   ];
 }

@@ -1,0 +1,18 @@
+spawn-sh-at-startup "regreet; niri msg action quit --skip-confirmation"
+
+input {
+    keyboard {
+        xkb {
+            layout "fr"
+        }
+    }
+}
+
+window-rule {
+    match app-id=r#"^apps\.regreet$"#
+    open-maximized true
+}
+
+hotkey-overlay {
+    skip-at-startup
+}

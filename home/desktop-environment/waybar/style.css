@@ -30,6 +30,7 @@ window#waybar.empty #window {
 #custom-power,
 #cpu,
 #temperature,
+#custom-gpu,
 #memory,
 #disk {
     background-color: @base02;
@@ -41,26 +42,33 @@ window#waybar.empty #window {
 #custom-power {
     font-size: 20;
     color: @base00;
-    background-color: @base0F;
+    background-color: #f7768e;
     border-radius: 0.5rem 0px 0px 0.5rem;
     margin-left: 0.5rem;
-    border: 2px solid @base0F;
+    border: 2px solid #f7768e;
 }
 
 #cpu {
-    color: @base0E;
+    color: #ff8c00;
+    padding-left: 0.5rem;
 }
 
 #temperature {
-    color: @base0D;
+    color: #ffd700;
+    padding-right: 0.5rem;
+}
+
+#custom-gpu {
+    color: #32cd32;
+    padding-right: 0.5rem;
 }
 
 #memory {
-    color: @base0A;
+    color: #20b2aa;
 }
 
 #disk {
-    color: @base0B;
+    color: #1e90ff;
     border-radius: 0px 0.5rem 0.5rem 0px;
     margin-right: 0.5rem;
     border-right: 2px solid @base03;
@@ -75,18 +83,47 @@ window#waybar.empty #window {
     border: 2px solid @base03;
 }
 
-#pulseaudio,
-#pulseaudio-slider,
+#volume,
 #clock {
     background-color: @base02;
     margin: 5px 0;
 }
 
-#pulseaudio {
+#volume {
     border-radius: 0.5rem;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     border: 2px solid @base03;
+}
+
+#pulseaudio {
+    min-width: 3rem;
+}
+
+#pulseaudio-slider slider {
+    min-height: 0px;
+    min-width: 0px;
+    opacity: 0;
+    background-image: none;
+    border: none;
+    box-shadow: none;
+}
+
+#pulseaudio-slider trough {
+    min-height: 10px;
+    min-width: 80px;
+    border-radius: 5px;
+    background: @base00;
+}
+
+#pulseaudio-slider highlight {
+    min-width: 10px;
+    border-radius: 5px;
+    background: @base01;
+}
+
+#pulseaudio-slider.muted highlight {
+    background-color: @base09;
 }
 
 #clock {

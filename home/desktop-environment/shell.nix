@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   programs.btop.enable = true;
@@ -25,4 +25,8 @@
   };
 
   programs.fastfetch.enable = true;
+
+  home.packages = [
+    pkgs.gdu
+  ];
 }
