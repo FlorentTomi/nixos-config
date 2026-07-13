@@ -1,6 +1,15 @@
 { ... }:
 
 {
+  programs.btop.enable = true;
+  programs.bat.enable = true;
+  programs.neovim.enable = true;
+
+  programs.ghostty = {
+    enable = true;
+    settings.background-opacity = 0.9;
+  };
+
   programs.fish = {
     enable = true;
     interactiveShellInit = ''

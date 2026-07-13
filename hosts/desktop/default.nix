@@ -64,7 +64,7 @@
   services.greetd = {
     enable = true;
     settings.default_session = {
-      command = "${pkgs.cage}/bin/cage -s -- ${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --asterisks --cmd niri-session";
+      command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --asterisks --cmd niri-session";
       user = "greeter";
     };
   };
