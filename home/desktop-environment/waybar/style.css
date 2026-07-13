@@ -40,27 +40,27 @@ window#waybar.empty #window {
 
 #custom-power {
     font-size: 20;
-    color: #FFFFFF;
-    background-color: #CD5C5C;
+    color: @base00;
+    background-color: @base0F;
     border-radius: 0.5rem 0px 0px 0.5rem;
     margin-left: 0.5rem;
-    border: 2px solid #CD5C5C;
+    border: 2px solid @base0F;
 }
 
 #cpu {
-    color: #bb9af7;
+    color: @base0E;
 }
 
 #temperature {
-    color: #ff9e64;
+    color: @base0D;
 }
 
 #memory {
-    color: #e0af68;
+    color: @base0A;
 }
 
 #disk {
-    color: #9ece6a;
+    color: @base0B;
     border-radius: 0px 0.5rem 0.5rem 0px;
     margin-right: 0.5rem;
     border-right: 2px solid @base03;
