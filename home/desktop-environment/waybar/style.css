@@ -42,29 +42,30 @@ window#waybar.empty #window {
 #custom-power {
     font-size: 20;
     color: @base00;
-    background-color: #f7768e;
+    background-color: #B22222;
     border-radius: 0.5rem 0px 0px 0.5rem;
     margin-left: 0.5rem;
-    border: 2px solid #f7768e;
+    border: 2px solid red;
 }
 
 #cpu {
     color: #ff8c00;
-    padding-left: 0.5rem;
+    min-width: 4rem;
 }
 
 #temperature {
     color: #ffd700;
-    padding-right: 0.5rem;
+    min-width: 4rem;
 }
 
 #custom-gpu {
     color: #32cd32;
-    padding-right: 0.5rem;
+    min-width: 4rem;
 }
 
 #memory {
     color: #20b2aa;
+    min-width: 4rem;
 }
 
 #disk {
@@ -97,7 +98,7 @@ window#waybar.empty #window {
 }
 
 #pulseaudio {
-    min-width: 3rem;
+    min-width: 4rem;
 }
 
 #pulseaudio-slider slider {

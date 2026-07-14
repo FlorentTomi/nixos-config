@@ -1,5 +1,14 @@
 spawn-sh-at-startup "regreet; niri msg action quit --skip-confirmation"
 
+output "DP-1" {
+    position x=0 y=0
+    focus-at-startup = true;
+}
+
+output "HDMI-A-1" {
+    position x=3840 y=0
+}
+
 input {
     keyboard {
         xkb {
@@ -11,6 +20,7 @@ input {
 window-rule {
     match app-id=r#"^apps\.regreet$"#
     open-maximized true
+    open-on-output "DP-1"
 }
 
 hotkey-overlay {

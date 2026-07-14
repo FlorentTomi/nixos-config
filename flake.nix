@@ -15,6 +15,9 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+    };
   };
 
   outputs =
@@ -24,6 +27,7 @@
       home-manager,
       stylix,
       niri,
+      nix-cachyos-kernel,
       ...
     }@inputs:
     {
@@ -34,11 +38,6 @@
           ./hosts/desktop
           stylix.nixosModules.stylix
           niri.nixosModules.niri
-          {
-            programs.niri.enable = true;
-            nixpkgs.overlays = [ niri.overlays.niri ];
-            niri-flake.cache.enable = false;
-          }
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -48,6 +47,14 @@
               inherit inputs;
             };
             home-manager.users.ftomi = import ./home;
+
+            programs.niri.enable = true;
+            niri-flake.cache.enable = false;
+
+            nixpkgs.overlays = [
+              niri.overlays.niri
+              nix-cachyos-kernel.overlays.pinned
+            ];
           }
         ];
       };
