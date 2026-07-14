@@ -1,11 +1,10 @@
 { ... }:
 {
   services.btrbk.instances.local = {
-    onCalendar = "hourly";
+    onCalendar = "daily";
     snapshotOnly = true;
     settings = {
       snapshot_preserve_min = "2d";
-      snapshot_preserve = "14d";
       volume."/" = {
         subvolume."." = {
           snapshot_create = "always";
