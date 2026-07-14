@@ -5,6 +5,7 @@
     ./gaming.nix
     ./development.nix
     ./desktop-environment.nix
+    ./ollama.nix
   ];
 
   home = {

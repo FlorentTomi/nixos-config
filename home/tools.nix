@@ -7,6 +7,7 @@
     pkgs.scrcpy
     pkgs.android-tools
     pkgs.floorp-bin
+    pkgs.ungoogled-chromium
   ];
 
   xdg.mimeApps = {

@@ -12,4 +12,8 @@
       frame_timing = true;
     };
   };
+
+  home.packages = [
+    pkgs.heroic
+  ];
 }

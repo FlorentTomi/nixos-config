@@ -41,6 +41,7 @@ window#waybar.empty #window {
 
 #custom-power {
     font-size: 20;
+    font-weight: bolder;
     color: @base00;
     background-color: #B22222;
     border-radius: 0.5rem 0px 0px 0.5rem;

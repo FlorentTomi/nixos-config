@@ -6,6 +6,7 @@
       "wheel"
       "networkmanager"
       "video"
+      "render"
       "input"
     ];
     shell = pkgs.fish;
