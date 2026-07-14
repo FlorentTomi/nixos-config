@@ -2,7 +2,7 @@ spawn-sh-at-startup "regreet; niri msg action quit --skip-confirmation"
 
 output "DP-1" {
     position x=0 y=0
-    focus-at-startup = true;
+    focus-at-startup true
 }
 
 output "HDMI-A-1" {

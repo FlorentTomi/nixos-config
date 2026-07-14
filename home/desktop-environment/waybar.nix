@@ -52,6 +52,7 @@
         interval = 10;
         format = "󰋊 {percentage_used}% (Free: {free})";
         on-click = "ghostty --confirm-close-surface=false -e gdu";
+        on-click-right = "ghostty --confirm-close-surface=false -e gdu /";
       };
 
       modules-center = [ "niri/window" ];
