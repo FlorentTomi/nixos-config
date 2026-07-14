@@ -10,7 +10,7 @@
     ./locale.nix
     ./nix.nix
     ./users.nix
-    ./greetd.nix
+    ./display-manager.nix
     ./portals.nix
     ./storage.nix
     ./audio.nix

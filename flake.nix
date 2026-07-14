@@ -18,6 +18,10 @@
     nix-cachyos-kernel = {
       url = "github:xddxdd/nix-cachyos-kernel/release";
     };
+    qylock = {
+      url = "github:Darkkal44/qylock";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -28,6 +32,7 @@
       stylix,
       niri,
       nix-cachyos-kernel,
+      qylock,
       ...
     }@inputs:
     {
@@ -39,6 +44,7 @@
           stylix.nixosModules.stylix
           niri.nixosModules.niri
           home-manager.nixosModules.home-manager
+          qylock.nixosModules.default
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
