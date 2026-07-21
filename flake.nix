@@ -35,35 +35,53 @@
       qylock,
       ...
     }@inputs:
+    let
+      # One host = one hardware/identity dir under ./hosts, plus which
+      # Home Manager feature-profile that user should get on that host.
+      # Everything else (stylix, niri, HM wiring, overlays) is shared.
+      mkHost =
+        {
+          hostname,
+          system ? "x86_64-linux",
+          homeProfile ? ./home/profiles/desktop.nix,
+        }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/${hostname}
+            stylix.nixosModules.stylix
+            niri.nixosModules.niri
+            home-manager.nixosModules.home-manager
+            qylock.nixosModules.default
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "bak";
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+              };
+              home-manager.users.ftomi = import ./home { profile = homeProfile; };
+
+              programs.niri.enable = true;
+              niri-flake.cache.enable = false;
+
+              nixpkgs.overlays = [
+                niri.overlays.niri
+                nix-cachyos-kernel.overlays.pinned
+              ];
+            }
+          ];
+        };
+    in
     {
-      nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/desktop
-          stylix.nixosModules.stylix
-          niri.nixosModules.niri
-          home-manager.nixosModules.home-manager
-          qylock.nixosModules.default
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "bak";
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-            };
-            home-manager.users.ftomi = import ./home;
+      nixosConfigurations.desktop = mkHost { hostname = "desktop"; };
 
-            programs.niri.enable = true;
-            niri-flake.cache.enable = false;
-
-            nixpkgs.overlays = [
-              niri.overlays.niri
-              nix-cachyos-kernel.overlays.pinned
-            ];
-          }
-        ];
-      };
+      # Adding a second host is then just:
+      # nixosConfigurations.laptop = mkHost {
+      #   hostname = "laptop";
+      #   homeProfile = ./home/profiles/laptop.nix;
+      # };
     };
 
 }

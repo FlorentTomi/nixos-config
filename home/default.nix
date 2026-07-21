@@ -1,11 +1,10 @@
-{ ... }:
+{ profile ? ./profiles/desktop.nix, ... }:
 {
   imports = [
-    ./tools.nix
-    ./gaming.nix
-    ./development.nix
-    ./desktop-environment.nix
-    ./ollama.nix
+    ./common/tools.nix
+    ./common/development.nix
+    ./common/desktop-environment.nix
+    profile
   ];
 
   home = {

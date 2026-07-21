@@ -8,6 +8,7 @@
     pkgs.android-tools
     pkgs.floorp-bin
     pkgs.ungoogled-chromium
+    pkgs.orca-slicer
   ];
 
   xdg.mimeApps = {

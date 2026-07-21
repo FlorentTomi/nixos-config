@@ -9,6 +9,7 @@
     };
   };
   programs.gh.enable = true;
+  programs.lazygit.enable = true;
   programs.zed-editor.enable = true;
   programs.claude-code = {
     enable = true;
