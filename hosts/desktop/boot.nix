@@ -1,10 +1,5 @@
 { pkgs, ... }:
 {
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.limine.enable = true;
-  boot.loader.limine.maxGenerations = 10;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.kernelParams = [ "amd_pstate=active" ];
 
