@@ -75,13 +75,7 @@
         };
     in
     {
-      nixosConfigurations.desktop = mkHost { hostname = "desktop"; };
-
-      # Adding a second host is then just:
-      # nixosConfigurations.laptop = mkHost {
-      #   hostname = "laptop";
-      #   homeProfile = ./home/profiles/laptop.nix;
-      # };
+      nixosConfigurations.ftomi-nixos = mkHost { hostname = "ftomi-nixos"; };
     };
 
 }
