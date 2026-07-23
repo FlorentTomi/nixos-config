@@ -15,9 +15,6 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-cachyos-kernel = {
-      url = "github:xddxdd/nix-cachyos-kernel/release";
-    };
     qylock = {
       url = "github:Darkkal44/qylock";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -31,7 +28,6 @@
       home-manager,
       stylix,
       niri,
-      nix-cachyos-kernel,
       qylock,
       ...
     }@inputs:
@@ -68,7 +64,6 @@
 
               nixpkgs.overlays = [
                 niri.overlays.niri
-                nix-cachyos-kernel.overlays.pinned
               ];
             }
           ];

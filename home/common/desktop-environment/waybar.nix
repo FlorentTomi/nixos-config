@@ -36,7 +36,7 @@
         interval = 5;
         critical-threshold = 100;
         format = " {temperatureC}°C";
-        hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
+        hwmon-path = "/sys/class/hwmon/hwmon1/temp1_input";
       };
       "custom/gpu" = {
         interval = 5;

@@ -11,10 +11,4 @@
   };
 
   powerManagement.cpuFreqGovernor = "powersave";
-
-  zramSwap = {
-    enable = true;
-    memoryPercent = 50;
-    algorithm = "zstd";
-  };
 }

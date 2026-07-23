@@ -2,8 +2,6 @@
 {
   networking.networkmanager.enable = true;
 
-  security.rtkit.enable = true;
-
   services.tailscale.enable = true;
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
@@ -11,6 +9,6 @@
     enable = true;
     autoStart = true;
     capSysAdmin = true;
-    openFirewall = true;
+    openFirewall = false;
   };
 }
