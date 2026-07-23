@@ -10,6 +10,8 @@
     ../../common/networking.nix
     ../../common/display-manager.nix
     ../../common/gaming.nix
+    ../../common/sops.nix
+    ../../common/nix-ld.nix
 
     # personal preferences, same across any host you'd use
     ../../profiles/ftomi/locale.nix
@@ -29,6 +31,7 @@
   ];
 
   modules.nvidia.enable = true;
+  sops.defaultSopsFile = ./secrets.yaml;
 
   system.stateVersion = "26.05";
 }

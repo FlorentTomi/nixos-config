@@ -9,6 +9,9 @@
     pkgs.floorp-bin
     pkgs.ungoogled-chromium
     pkgs.orca-slicer
+    pkgs.sops
+    pkgs.age
+    pkgs.dashlane-cli
   ];
 
   xdg.mimeApps = {

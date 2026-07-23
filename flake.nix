@@ -19,6 +19,10 @@
       url = "github:Darkkal44/qylock";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -29,6 +33,7 @@
       stylix,
       niri,
       qylock,
+      sops-nix,
       ...
     }@inputs:
     let
@@ -50,6 +55,7 @@
             niri.nixosModules.niri
             home-manager.nixosModules.home-manager
             qylock.nixosModules.default
+            sops-nix.nixosModules.sops
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
@@ -64,6 +70,9 @@
 
               nixpkgs.overlays = [
                 niri.overlays.niri
+                (final: prev: {
+                  dashlane-cli = final.callPackage ./pkgs/dashlane-cli.nix { };
+                })
               ];
             }
           ];
