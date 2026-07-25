@@ -54,10 +54,15 @@
           user,
           homeProfile,
           system ? "x86_64-linux",
+          # Physical disk to install/boot from, as a stable /dev/disk/by-id path.
+          # Override per-call (or via `--arg diskDevice ...` / disko-install's
+          # own `--disk main <device>` flag) when installing onto different
+          # hardware — you should never need to hand-edit disko-config.nix.
+          diskDevice,
         }:
         nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs diskDevice; };
           modules = [
             ./hosts/${hostname}
             inputs.disko.nixosModules.disko
@@ -88,6 +93,7 @@
         hostname = "ftomi-nixos";
         user = "ftomi";
         homeProfile = "ftomi-desktop";
+        diskDevice = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_M.2_250GB_S33CNX0H801497R";
       };
     };
 

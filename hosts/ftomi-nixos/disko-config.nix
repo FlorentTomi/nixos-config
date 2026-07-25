@@ -1,8 +1,9 @@
-{ ... }:
+{ diskDevice, ... }:
 {
   disko.devices = {
     disk.main = {
-      device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_M.2_250GB_S33CNX0H801497R"; # stable across reboots/hw changes, unlike /dev/sda
+      device = diskDevice; # set per-host in flake.nix (mkHost's diskDevice arg),
+      # or overridden ad hoc at install time via `disko-install --disk main <device>`
       type = "disk";
       content = {
         type = "gpt";
