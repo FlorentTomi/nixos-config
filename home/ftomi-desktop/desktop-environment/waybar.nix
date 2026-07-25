@@ -36,7 +36,10 @@
         interval = 5;
         critical-threshold = 100;
         format = " {temperatureC}°C";
-        hwmon-path = "/sys/class/hwmon/hwmon1/temp1_input";
+        # k10temp's PCI device path is fixed to this board; hwmon1's number
+        # isn't (probe order can shift it on kernel/driver updates).
+        hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
+        input-filename = "temp1_input";
       };
       "custom/gpu" = {
         interval = 5;

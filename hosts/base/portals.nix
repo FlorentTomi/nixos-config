@@ -20,15 +20,6 @@
       ];
 
       common."org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
-
-      niri = {
-        default = [
-          "gnome"
-          "wlr"
-        ];
-        "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
-      };
     };
-
   };
 }

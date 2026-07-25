@@ -17,6 +17,8 @@
     '';
   };
 
+  programs.nix-index.enableFishIntegration = true;
+
   stylix.targets.starship.colors.enable = false;
   programs.starship = {
     enable = true;

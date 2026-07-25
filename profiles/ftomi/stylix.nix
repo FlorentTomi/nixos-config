@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 let
   font = {
@@ -7,6 +7,8 @@ let
   };
 in
 {
+  imports = [ inputs.stylix.nixosModules.stylix ];
+
   stylix = {
     enable = true;
     polarity = "dark";

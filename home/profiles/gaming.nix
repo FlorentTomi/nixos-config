@@ -16,5 +16,6 @@
   home.packages = [
     pkgs.heroic
     pkgs.protonup-qt
+    pkgs.moonlight-qt
   ];
 }
