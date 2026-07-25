@@ -1,44 +1,68 @@
-{ config, lib, modulesPath, ... }:
+{
+  config,
+  lib,
+  modulesPath,
+  ...
+}:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "ahci"
+    "usb_storage"
+    "usbhid"
+    "sd_mod"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
-      fsType = "btrfs";
-      options = [ "subvol=@" ];
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
+    fsType = "btrfs";
+    options = [ "subvol=@" ];
+  };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
-      fsType = "btrfs";
-      options = [ "subvol=@home" ];
-    };
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
+    fsType = "btrfs";
+    options = [ "subvol=@home" ];
+  };
 
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
-      fsType = "btrfs";
-      options = [ "subvol=@nix" ];
-    };
+  fileSystems."/games" = {
+    device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
+    fsType = "btrfs";
+    options = [
+      "subvol=@games"
+      "compress=zstd"
+      "noatime"
+    ];
+  };
 
-  fileSystems."/var/log" =
-    { device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
-      fsType = "btrfs";
-      options = [ "subvol=@log" ];
-    };
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
+    fsType = "btrfs";
+    options = [ "subvol=@nix" ];
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/6239-BD0E";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
+  fileSystems."/var/log" = {
+    device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
+    fsType = "btrfs";
+    options = [ "subvol=@log" ];
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/6239-BD0E";
+    fsType = "vfat";
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
+  };
 
   swapDevices = [ ];
 

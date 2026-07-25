@@ -5,6 +5,7 @@
     snapshotOnly = true;
     settings = {
       snapshot_preserve_min = "2d";
+      snapshot_preserve = "14d 8w 6m";
       volume."/" = {
         subvolume."." = {
           snapshot_create = "always";
