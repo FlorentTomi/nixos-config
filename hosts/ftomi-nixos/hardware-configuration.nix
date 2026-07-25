@@ -21,48 +21,10 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
-    fsType = "btrfs";
-    options = [ "subvol=@" ];
-  };
-
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
-    fsType = "btrfs";
-    options = [ "subvol=@home" ];
-  };
-
-  fileSystems."/games" = {
-    device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
-    fsType = "btrfs";
-    options = [
-      "subvol=@games"
-      "compress=zstd"
-      "noatime"
-    ];
-  };
-
-  fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
-    fsType = "btrfs";
-    options = [ "subvol=@nix" ];
-  };
-
-  fileSystems."/var/log" = {
-    device = "/dev/disk/by-uuid/a1198a2e-af88-4763-9134-994738f0f6b7";
-    fsType = "btrfs";
-    options = [ "subvol=@log" ];
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/6239-BD0E";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
-  };
+  # NOTE: /, /home, /nix, /var/log, /games, and /boot are now declared
+  # in ./disko-config.nix, which is the source of truth for disk layout.
+  # Do not re-add fileSystems entries for those here, or NixOS will
+  # complain about duplicate mount definitions.
 
   swapDevices = [ ];
 

@@ -22,6 +22,7 @@
 
     # this exact machine
     ./hardware-configuration.nix
+    ./disko-config.nix
     ./users.nix
     ./boot.nix
     ./networking.nix

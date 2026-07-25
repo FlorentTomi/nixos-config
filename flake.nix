@@ -27,6 +27,10 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -56,6 +60,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/${hostname}
+            inputs.disko.nixosModules.disko
             home-manager.nixosModules.home-manager
             qylock.nixosModules.default
             sops-nix.nixosModules.sops
