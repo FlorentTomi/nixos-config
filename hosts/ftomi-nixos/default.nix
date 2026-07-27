@@ -19,6 +19,7 @@
     # optional, hardware-dependent modules (toggled below)
     ../../modules/nvidia.nix
     ../../modules/niri.nix
+    ../../modules/openvpn.nix
 
     # this exact machine
     ./hardware-configuration.nix
@@ -34,6 +35,16 @@
 
   modules.nvidia.enable = true;
   modules.niri.enable = true;
+  modules.openvpn = {
+    enable = true;
+    configs = [
+      {
+        name = "pytheas_prod";
+        hasAuth = true;
+      }
+    ];
+  };
+
   sops.defaultSopsFile = ./secrets.yaml;
 
   system.stateVersion = "26.05";

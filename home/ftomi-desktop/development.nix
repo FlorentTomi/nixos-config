@@ -3,6 +3,7 @@
 {
   programs.git = {
     enable = true;
+    lfs.enable = true;
     settings.user = {
       name = "Florent TOMI";
       email = "florent.tomi@outlook.com";
@@ -21,6 +22,10 @@
         hash = "sha256-VqRHx3/4SSCnEh3cUJ/he5saIfwNhS0hOzoH/wwtU2o=";
       })
     ];
+  };
+
+  programs.vscode = {
+    enable = true;
   };
 
   home.packages = [

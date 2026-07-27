@@ -31,6 +31,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    update-systemd-resolved = {
+      url = "github:jonathanio/update-systemd-resolved";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -77,7 +81,7 @@
               home-manager.extraSpecialArgs = {
                 inherit inputs;
               };
-              home-manager.users.${user} = import ./home/${homeProfile} {};
+              home-manager.users.${user} = import ./home/${homeProfile} { };
 
               nixpkgs.overlays = [
                 (final: prev: {
