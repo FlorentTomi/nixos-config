@@ -42,6 +42,10 @@
         name = "pytheas_prod";
         hasAuth = true;
       }
+      {
+        name = "pytheas_infra";
+        hasAuth = true;
+      }
     ];
   };
 

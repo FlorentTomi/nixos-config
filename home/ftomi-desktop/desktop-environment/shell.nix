@@ -15,6 +15,22 @@
     interactiveShellInit = ''
       fastfetch
     '';
+
+    functions.vpn = ''
+      set -l name $argv[1]
+      set -l action $argv[2]
+
+      switch $action
+        case on start
+          systemctl start openvpn-$name
+        case off stop
+          systemctl stop openvpn-$name
+        case status
+          systemctl status openvpn-$name --no-pager
+        case '*'
+          echo "usage: vpn <name> <on|off|status>"
+      end
+    '';
   };
 
   programs.nix-index.enableFishIntegration = true;

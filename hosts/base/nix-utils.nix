@@ -4,4 +4,6 @@
   programs.nix-ld.libraries = with pkgs; [
     stdenv.cc.cc.lib
   ];
+
+  services.envfs.enable = true;
 }

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, osConfig, ... }:
 
 {
   programs.git = {
@@ -28,9 +28,23 @@
     enable = true;
   };
 
+  programs.direnv = {
+    enable = true;
+    enableFishIntegration = true;
+    nix-direnv.enable = true;
+  };
+
   home.packages = [
     pkgs.nodejs_22
     pkgs.nil
     pkgs.nixd
   ];
+
+  programs.ssh = {
+    enable = true;
+    matchBlocks."git.pytheasnavigation.com" = {
+      identityFile = osConfig.sops.secrets."ssh-key-pytheas_gitlab".path;
+      identitiesOnly = true;
+    };
+  };
 }

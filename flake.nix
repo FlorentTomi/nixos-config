@@ -48,6 +48,9 @@
       ...
     }@inputs:
     let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs { inherit system; };
+
       # One host = one hardware/identity dir under ./hosts, plus which
       # Home Manager feature-profile that user should get on that host.
       # Desktop environment (niri, stylix, ...) is each host's own choice,
@@ -99,6 +102,26 @@
         homeProfile = "ftomi-desktop";
         diskDevice = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_M.2_250GB_S33CNX0H801497R";
       };
-    };
 
+      devShells.${system}.pytheas = pkgs.mkShellNoCC {
+        packages = [
+          pkgs.git
+          pkgs.openssh
+          pkgs.pciutils
+          pkgs.dnsutils
+          pkgs.wget
+        ];
+
+        GIT_AUTHOR_NAME = "Florent TOMI";
+        GIT_AUTHOR_EMAIL = "florent.tomi@pytheasnavigation.com";
+        GIT_COMMITTER_NAME = "Florent TOMI";
+        GIT_COMMITTER_EMAIL = "florent.tomi@pytheasnavigation.com";
+
+        GIT_SSH_COMMAND = "ssh -i /run/secrets/ssh-key-pytheas_gitlab -o IdentitiesOnly=yes";
+
+        shellHook = ''
+          echo "→ work git identity + GitLab SSH key active"
+        '';
+      };
+    };
 }

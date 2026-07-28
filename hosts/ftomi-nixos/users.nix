@@ -8,9 +8,15 @@
       "video"
       "render"
       "input"
+      "docker"
     ];
     shell = pkgs.fish;
   };
 
   programs.fish.enable = true;
+
+  sops.secrets."ssh-key-pytheas_gitlab" = {
+    owner = "ftomi";
+    mode = "0400";
+  };
 }
