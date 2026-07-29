@@ -5,6 +5,17 @@
   programs.bat.enable = true;
   programs.neovim.enable = true;
 
+  programs.eza = {
+    enable = true;
+    enableFishIntegration = true;
+    git = true;
+  };
+
+  programs.television = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
   programs.ghostty = {
     enable = true;
     settings.background-opacity = 0.9;
