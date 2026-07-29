@@ -11,11 +11,4 @@
   };
 
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
-
-  services.sunshine = {
-    enable = true;
-    autoStart = true;
-    capSysAdmin = true;
-    openFirewall = false;
-  };
 }

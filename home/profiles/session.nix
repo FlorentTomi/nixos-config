@@ -1,3 +1,5 @@
+# Assumes profiles/lock.nix's hyprlock is present (idle timeouts/sleep
+# events invoke it directly). Import both together.
 { pkgs, ... }:
 {
   home.packages = [

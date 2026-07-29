@@ -18,4 +18,13 @@
     pkgs.protonup-qt
     pkgs.moonlight-qt
   ];
+
+  programs.niri.settings.window-rules = [
+    {
+      matches = [
+        { app-id = "^steam_app_.*$"; }
+      ];
+      open-maximized = true;
+    }
+  ];
 }

@@ -10,6 +10,7 @@
     ../base/display-manager.nix
     ../base/sops.nix
     ../base/nix-utils.nix
+    ../base/snapshots.nix
 
     # personal preferences, same across any host you'd use
     ../../profiles/ftomi/locale.nix
@@ -28,7 +29,6 @@
     ./boot.nix
     ./networking.nix
     ./storage.nix
-    ./snapshots.nix
     ./system.nix
     ./gaming.nix
   ];

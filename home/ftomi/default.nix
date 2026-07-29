@@ -1,10 +1,13 @@
 { ... }:
 {
   imports = [
-    ./tools.nix
-    ./development.nix
-    ./desktop-environment.nix
-    ../profiles/desktop.nix
+    ./vcs.nix
+    ./editors.nix
+    ./ai-tools.nix
+    ./dev-languages.nix
+    ./browser.nix
+    ./security.nix
+    ./niri-core.nix
   ];
 
   home = {

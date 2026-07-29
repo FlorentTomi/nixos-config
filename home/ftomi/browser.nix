@@ -1,17 +1,9 @@
 { pkgs, ... }:
 
 {
-  programs.discord.enable = true;
-
   home.packages = [
-    pkgs.scrcpy
-    pkgs.android-tools
     pkgs.floorp-bin
     pkgs.ungoogled-chromium
-    pkgs.orca-slicer
-    pkgs.sops
-    pkgs.age
-    pkgs.dashlane-cli
   ];
 
   xdg.mimeApps = {
@@ -26,7 +18,16 @@
     };
   };
 
-  services = {
-    tailscale-systray.enable = true;
-  };
+  # Floorp's picture-in-picture window shouldn't get tiled like a normal window.
+  programs.niri.settings.window-rules = [
+    {
+      matches = [
+        {
+          app-id = "floorp$";
+          title = "^Picture-in-Picture$";
+        }
+      ];
+      open-floating = true;
+    }
+  ];
 }

@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+# Genuinely core niri: window/workspace management, layout, hardware-level
+# media/screenshot keys. No app-launch binds here — those live with the
+# capability that provides the app (see e.g. profiles/launcher.nix,
+# profiles/lock.nix, profiles/shell.nix) so a host that imports only
+# niri-core gets a working (if sparse) WM with no dangling spawn targets.
+{ pkgs, osConfig, lib, ... }:
 
 {
   programs.niri = {
@@ -8,35 +13,6 @@
         keyboard = {
           numlock = true;
           xkb.layout = "fr";
-        };
-      };
-
-      outputs = {
-        "DP-1" = {
-          mode = {
-            width = 3840;
-            height = 2160;
-            refresh = 59.997;
-          };
-          scale = 1.0;
-          position = {
-            x = 0;
-            y = 0;
-          };
-          focus-at-startup = true;
-        };
-        "HDMI-A-1" = {
-          mode = {
-            width = 1920;
-            height = 1080;
-            refresh = 144.001;
-          };
-          scale = 1.0;
-          position = {
-            x = 3840;
-            y = 0;
-          };
-          focus-at-startup = false;
         };
       };
 
@@ -76,7 +52,10 @@
         skip-at-startup = true;
       };
 
-      environment = {
+      # NVIDIA-specific Wayland/DRM env vars — only relevant if this host
+      # actually has the nvidia module enabled, so a laptop with a
+      # different/no discrete GPU doesn't inherit them.
+      environment = lib.mkIf osConfig.modules.nvidia.enable {
         LIBVA_DRIVER_NAME = "nvidia";
         XDG_SESSION_TYPE = "wayland";
         GBM_BACKEND = "nvidia-drm";
@@ -87,25 +66,6 @@
 
       binds = {
         "Mod+F1".action.show-hotkey-overlay = { };
-        "Mod+Return".action.spawn = "ghostty";
-        "Mod+Space".action.spawn = "fuzzel";
-        "Mod+B".action.spawn = "floorp";
-        "Mod+Z".action.spawn = "zeditor";
-        "Mod+L".action.spawn = "hyprlock";
-
-        "Mod+E".action.spawn = [
-          "ghostty"
-          "--confirm-close-surface=false"
-          "-e"
-          "yazi"
-        ];
-
-        "Mod+P".action.spawn = [
-          "ghostty"
-          "--confirm-close-surface=false"
-          "-e"
-          "btop"
-        ];
 
         "Mod+WheelScrollDown".action.focus-workspace-down = { };
         "Mod+WheelScrollUp".action.focus-workspace-up = { };
@@ -173,6 +133,8 @@
           repeat = false;
         };
 
+        # Media keys via swayosd-client — assumes profiles/session.nix's
+        # swayosd service is enabled; harmless no-op spawn failure if not.
         "XF86AudioRaiseVolume".action.spawn = [
           "swayosd-client"
           "--output-volume"
@@ -227,24 +189,6 @@
 
         "Ctrl+Alt+Delete".action.quit = { };
       };
-
-      window-rules = [
-        {
-          matches = [
-            {
-              app-id = "floorp$";
-              title = "^Picture-in-Picture$";
-            }
-          ];
-          open-floating = true;
-        }
-        {
-          matches = [
-            { app-id = "^steam_app_.*$"; }
-          ];
-          open-maximized = true;
-        }
-      ];
 
       prefer-no-csd = true;
       animations.enable = true;

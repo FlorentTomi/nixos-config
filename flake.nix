@@ -49,17 +49,29 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+
+      # Single source of truth for the base16 scheme name. Consumed by
+      # profiles/ftomi/stylix.nix (builds the base16Scheme file path) and by
+      # home/profiles/shell.nix (starship preset name) — Stylix only owns
+      # *colors*, not a prompt's shape, so the starship preset still has to be
+      # picked by name. This just keeps the name from silently drifting
+      # between the two. If you switch schemes and no matching starship
+      # preset exists, override it locally in shell.nix.
+      themeName = "tokyo-night";
 
       # One host = one hardware/identity dir under ./hosts, plus which
-      # Home Manager feature-profile that user should get on that host.
-      # Desktop environment (niri, stylix, ...) is each host's own choice,
-      # wired from its own imports (see modules/niri.nix, profiles/ftomi/stylix.nix).
+      # optional Home Manager profiles that user should get on that host.
+      # `home/${user}` (identity: always-on regardless of host) is imported
+      # unconditionally; homeProfiles are opt-in extras composed here so the
+      # combination is visible at the call site instead of buried in a
+      # bundle file. Desktop environment (niri, stylix, ...) at the NixOS
+      # level is each host's own choice, wired from its own imports (see
+      # modules/niri.nix, profiles/ftomi/stylix.nix).
       mkHost =
         {
           hostname,
           user,
-          homeProfile,
+          homeProfiles ? [ ],
           system ? "x86_64-linux",
           # Physical disk to install/boot from, as a stable /dev/disk/by-id path.
           # Override per-call (or via `--arg diskDevice ...` / disko-install's
@@ -69,7 +81,7 @@
         }:
         nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs diskDevice; };
+          specialArgs = { inherit inputs diskDevice themeName; };
           modules = [
             ./hosts/${hostname}
             inputs.disko.nixosModules.disko
@@ -82,9 +94,11 @@
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "bak";
               home-manager.extraSpecialArgs = {
-                inherit inputs;
+                inherit inputs themeName;
               };
-              home-manager.users.${user} = import ./home/${homeProfile} { };
+              home-manager.users.${user} = {
+                imports = [ ./home/${user} ] ++ map (p: ./home/profiles + "/${p}.nix") homeProfiles;
+              };
 
               nixpkgs.overlays = [
                 (final: prev: {
@@ -99,29 +113,21 @@
       nixosConfigurations.ftomi-nixos = mkHost {
         hostname = "ftomi-nixos";
         user = "ftomi";
-        homeProfile = "ftomi-desktop";
-        diskDevice = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_M.2_250GB_S33CNX0H801497R";
-      };
-
-      devShells.${system}.pytheas = pkgs.mkShellNoCC {
-        packages = [
-          pkgs.git
-          pkgs.openssh
-          pkgs.pciutils
-          pkgs.dnsutils
-          pkgs.wget
+        homeProfiles = [
+          "shell"
+          "dual-monitor"
+          "waybar"
+          "launcher"
+          "lock"
+          "powermenu"
+          "session"
+          "yazi"
+          "gaming"
+          "hobbies"
+          "ollama"
+          "work"
         ];
-
-        GIT_AUTHOR_NAME = "Florent TOMI";
-        GIT_AUTHOR_EMAIL = "florent.tomi@pytheasnavigation.com";
-        GIT_COMMITTER_NAME = "Florent TOMI";
-        GIT_COMMITTER_EMAIL = "florent.tomi@pytheasnavigation.com";
-
-        GIT_SSH_COMMAND = "ssh -i /run/secrets/ssh-key-pytheas_gitlab -o IdentitiesOnly=yes";
-
-        shellHook = ''
-          echo "→ work git identity + GitLab SSH key active"
-        '';
+        diskDevice = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_M.2_250GB_S33CNX0H801497R";
       };
     };
 }
