@@ -1,9 +1,46 @@
-# Mod+E (open yazi in a terminal) assumes profiles/shell.nix's ghostty is present.
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   programs.yazi = {
     enable = true;
+    enableFishIntegration = true;
+
+    plugins = {
+      mount = "${inputs.yazi-plugins}/mount.yazi";
+      git = "${inputs.yazi-plugins}/git.yazi";
+    };
+
+    initLua = ''
+         require("git"):setup {
+      	    -- Order of status signs showing in the linemode
+          	order = 1500,
+         }
+    '';
+
+    settings = {
+      plugin.prepend_fetchers = [
+        {
+          url = "*";
+          run = "git";
+          group = "git";
+        }
+        {
+          url = "*/";
+          run = "git";
+          group = "git";
+        }
+      ];
+    };
+
+    keymap = {
+      mgr.prepend_keymap = [
+        {
+          on = [ "M" ];
+          run = "plugin mount";
+          desc = "Mount/unmount devices";
+        }
+      ];
+    };
   };
 
   programs.niri.settings.binds."Mod+E".action.spawn = [

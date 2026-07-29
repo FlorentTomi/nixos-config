@@ -35,6 +35,10 @@
       url = "github:jonathanio/update-systemd-resolved";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    yazi-plugins = {
+      url = "github:yazi-rs/plugins";
+      flake = false;
+    };
   };
 
   outputs =
@@ -48,8 +52,6 @@
       ...
     }@inputs:
     let
-      system = "x86_64-linux";
-
       # Single source of truth for the base16 scheme name. Consumed by
       # profiles/ftomi/stylix.nix (builds the base16Scheme file path) and by
       # home/profiles/shell.nix (starship preset name) — Stylix only owns
