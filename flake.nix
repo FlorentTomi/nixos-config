@@ -15,10 +15,10 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    qylock = {
-      url = "github:Darkkal44/qylock";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # qylock = {
+    #   url = "github:Darkkal44/qylock";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -46,7 +46,7 @@
       self,
       nixpkgs,
       home-manager,
-      qylock,
+      # qylock,
       sops-nix,
       nix-index-database,
       ...
@@ -88,7 +88,7 @@
             ./hosts/${hostname}
             inputs.disko.nixosModules.disko
             home-manager.nixosModules.home-manager
-            qylock.nixosModules.default
+            # qylock.nixosModules.default
             sops-nix.nixosModules.sops
             nix-index-database.nixosModules.default
             {

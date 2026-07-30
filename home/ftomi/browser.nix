@@ -30,4 +30,6 @@
       open-floating = true;
     }
   ];
+
+  programs.niri.settings.binds."Mod+B".action.spawn = "floorp";
 }
