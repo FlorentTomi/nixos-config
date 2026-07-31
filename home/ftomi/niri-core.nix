@@ -113,8 +113,7 @@
         "Mod+Ctrl+R".action.reset-window-height = { };
 
         "Mod+F".action.maximize-column = { };
-        "Mod+M".action.fullscreen-window = { };
-        "Mod+Ctrl+F".action.expand-column-to-available-width = { };
+        "Mod+Ctrl+F".action.fullscreen-window = { };
         "Mod+C".action.center-column = { };
         "Mod+Ctrl+C".action.center-visible-columns = { };
 

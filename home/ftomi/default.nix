@@ -8,6 +8,7 @@
     ./browser.nix
     ./security.nix
     ./niri-core.nix
+    ./mail.nix
   ];
 
   home = {
