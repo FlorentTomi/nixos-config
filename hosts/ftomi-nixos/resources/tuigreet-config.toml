@@ -1,0 +1,57 @@
+[display]
+show_time = true
+issue = true
+align_greeting = "center"
+
+[layout]
+width = 60
+window_padding = 2
+container_padding = 1
+prompt_padding = 1
+
+[layout.widgets]
+time_position = "top"
+status_position = "bottom"
+
+[session]
+command = "niri-session"
+
+[remember]
+username = true
+
+[user_menu]
+enabled = true
+
+[secret]
+mode = "characters"
+characters = "*"
+
+[background]
+kind = "matrix"
+
+[background.matrix]
+head_color = "#c0caf5"
+bright_color = "#7aa2f7"
+dim_color = "#3b4261"
+
+# Sizes the greeter to your 4K panel instead of spanning both displays.
+# Matches the DP-1/HDMI-A-1 topology from home/profiles/dual-monitor.nix.
+[[outputs]]
+connector = "DP-1"
+primary = true
+
+[[outputs]]
+connector = "HDMI-A-1"
+
+# Tokyo Night (base16-dark), matched to profiles/ftomi/stylix.nix
+[theme]
+container = "#16161e"  # base01 - slightly darker than the terminal bg
+border    = "#2ac3de"  # base0D
+title     = "#bb9af7"  # base0E
+text      = "#a9b1d6"  # base05
+time      = "#9ece6a"  # base0B
+greet     = "#cbccd1"  # base06
+prompt    = "#0db9d7"  # base0A
+input     = "#d5d6db"  # base07
+action    = "#787c99"  # base04
+button    = "#f7768e"  # base0F

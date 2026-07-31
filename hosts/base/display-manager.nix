@@ -17,7 +17,7 @@ in
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --background matrix --remember --cmd niri-session";
+        command = "${tuigreet}/bin/tuigreet";
         user = "greeter";
       };
     };

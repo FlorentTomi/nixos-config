@@ -19,6 +19,7 @@
   programs.ghostty = {
     enable = true;
     settings.background-opacity = 0.9;
+    settings.copy-on-select = true;
   };
 
   # Mod+Return (terminal) and Mod+P (btop-in-terminal) live here since both

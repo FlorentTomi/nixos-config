@@ -31,6 +31,7 @@
     ./storage.nix
     ./system.nix
     ./gaming.nix
+    ./display-manager.nix
   ];
 
   modules.nvidia.enable = true;
