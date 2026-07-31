@@ -198,5 +198,6 @@
 
   home.packages = [
     pkgs.xwayland-satellite
+    pkgs.nirimon
   ];
 }

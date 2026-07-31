@@ -3,7 +3,7 @@
   imports = [
     ./vcs.nix
     ./editors.nix
-    ./ai-tools.nix
+    # ./ai-tools.nix
     ./dev-languages.nix
     ./browser.nix
     ./security.nix

@@ -1,7 +1,10 @@
 { pkgs, ... }:
 {
   boot.kernelPackages = pkgs.linuxPackages_zen;
-  boot.kernelParams = [ "amd_pstate=active" ];
+  boot.kernelParams = [ 
+    "amd_pstate=active" 
+    "iommu=pt"
+  ];
 
   environment.systemPackages = with pkgs; [ lm_sensors ];
 
