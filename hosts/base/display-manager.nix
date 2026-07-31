@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
+let
+  tuigreet = inputs.tuigreet.packages.${pkgs.stdenv.hostPlatform.system}.tuigreet;
+in
 {
   # services.xserver.enable = true;
   # services.displayManager.sddm = {
@@ -7,18 +10,22 @@
   # };
 
   environment.systemPackages = [
-    pkgs.tuigreet
+    tuigreet
   ];
 
   services.greetd = {
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --background matrix --remember --cmd niri-session";
         user = "greeter";
       };
     };
   };
 
   services.displayManager.defaultSession = "niri";
+
+  systemd.tmpfiles.rules = [
+    "d /var/cache/tuigreet 0755 greeter greeter -"
+  ];
 }

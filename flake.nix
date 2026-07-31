@@ -39,6 +39,10 @@
       url = "github:yazi-rs/plugins";
       flake = false;
     };
+    tuigreet = {
+      url = "github:NotAShelf/tuigreet";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
