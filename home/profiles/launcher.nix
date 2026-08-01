@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   stylix-color = config.lib.stylix.colors;
   stylix-opacity = config.stylix.opacity;
@@ -60,11 +60,14 @@ in
 {
   stylix.targets.rofi.enable = false;
 
+  home.packages = [ pkgs.papirus-icon-theme ];
+
   programs.rofi = {
     enable = true;
     extraConfig = {
       modi = "drun,window,ssh";
       show-icons = true;
+      icon-theme = "Papirus-Dark";
 
       display-drun = "Applications";
       drun-display-format = "{name}";
@@ -152,11 +155,10 @@ in
       imagebox = {
         padding = mkLiteral "20px";
         background-color = mkLiteral "transparent";
-        # background-image = mkLiteral ''url("~/.config/rofi/images/j.jpg", height)'';
         orientation = mkLiteral "vertical";
         children = [
           "inputbar"
-          "dummy"
+          "logo-row"
           "mode-switcher"
         ];
       };
@@ -172,8 +174,31 @@ in
         ];
       };
 
-      dummy = {
+      logo-row = {
         background-color = mkLiteral "transparent";
+        orientation = mkLiteral "horizontal";
+        children = [
+          "logo-filler-left"
+          "icon-logo"
+          "logo-filler-right"
+        ];
+      };
+
+      logo-filler-left = {
+        expand = true;
+        background-color = mkLiteral "transparent";
+      };
+
+      logo-filler-right = {
+        expand = true;
+        background-color = mkLiteral "transparent";
+      };
+
+      icon-logo = {
+        expand = false;
+        filename = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake-white.svg";
+        size = mkLiteral "220";
+        vertical-align = mkLiteral "0.5";
       };
 
       inputbar = {
@@ -223,7 +248,7 @@ in
 
       "button selected" = {
         background-color = mkLiteral "@selected";
-        text-color = c.foreground;
+        text-color = mkLiteral "@selected-normal-text";
       };
 
       listview = {
@@ -271,7 +296,7 @@ in
 
       "element selected.normal" = {
         background-color = mkLiteral "@selected";
-        text-color = c.foreground;
+        text-color = mkLiteral "@selected-normal-text";
       };
 
       "element selected.urgent" = {
@@ -280,8 +305,8 @@ in
       };
 
       "element selected.active" = {
-        background-color = mkLiteral "@urgent";
-        text-color = c.foreground;
+        background-color = mkLiteral "@active";
+        text-color = mkLiteral "@selected-active-text";
       };
 
       element-icon = {
