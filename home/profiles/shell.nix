@@ -18,7 +18,7 @@
   };
 
   programs.niri.settings.binds."Mod+Return".action.spawn = "ghostty";
-  programs.niri.settings.binds."Mod+P".action.spawn = [
+  programs.niri.settings.binds."Mod+Escape".action.spawn = [
     "ghostty"
     "--confirm-close-surface=false"
     "-e"

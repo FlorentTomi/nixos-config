@@ -10,8 +10,6 @@
     package = pkgs.niri;
     settings = {
       input = {
-        # Also set in profiles/ftomi/locale.nix (xserver layer, e.g. greeter/TTY).
-        # Niri has its own input stack and doesn't inherit that, so it's repeated here.
         keyboard = {
           numlock = true;
           xkb.layout = "fr";
@@ -69,7 +67,7 @@
       binds = {
         "Mod+F1".action.show-hotkey-overlay = { };
 
-        "Mod+D".action.spawn = [
+        "Mod+P".action.spawn = [
           "ghostty"
           "--confirm-close-surface=false"
           "-e"
