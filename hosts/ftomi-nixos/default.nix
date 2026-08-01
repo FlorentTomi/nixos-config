@@ -21,6 +21,7 @@
     ../../modules/nvidia.nix
     ../../modules/niri.nix
     ../../modules/openvpn.nix
+    ../../modules/console.nix
 
     # this exact machine
     ./hardware-configuration.nix
@@ -35,6 +36,12 @@
 
   modules.nvidia.enable = true;
   modules.niri.enable = true;
+
+  modules.console = {
+    enable = true;
+    backend = "kmscon";
+  };
+
   modules.openvpn = {
     enable = true;
     configs = [
