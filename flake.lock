@@ -68,21 +68,6 @@
         "type": "github"
       }
     },
-    "crane": {
-      "locked": {
-        "lastModified": 1784564969,
-        "narHash": "sha256-TkTWNhJV/8Wk3czlbz4bwHZkFCaCHPsOy+oJe4PUiXg=",
-        "owner": "ipetkov",
-        "repo": "crane",
-        "rev": "7930f6c291de6f83c257839d434592aa085f290a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ipetkov",
-        "repo": "crane",
-        "type": "github"
-      }
-    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -176,6 +161,24 @@
       "original": {
         "owner": "hercules-ci",
         "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
         "type": "github"
       }
     },
@@ -382,6 +385,27 @@
         "type": "github"
       }
     },
+    "qylock": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785237734,
+        "narHash": "sha256-b8n7JH/hhQCAlFAi/IxPOm7rXsog++U0wuWnWeOiN5s=",
+        "owner": "Darkkal44",
+        "repo": "qylock",
+        "rev": "c45eed24c0f9a3148a7d13081b28acc4d7874853",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Darkkal44",
+        "repo": "qylock",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "disko": "disko",
@@ -389,32 +413,11 @@
         "niri": "niri",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
+        "qylock": "qylock",
         "sops-nix": "sops-nix",
         "stylix": "stylix",
-        "tuigreet": "tuigreet",
         "update-systemd-resolved": "update-systemd-resolved",
         "yazi-plugins": "yazi-plugins"
-      }
-    },
-    "rust-overlay": {
-      "inputs": {
-        "nixpkgs": [
-          "tuigreet",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1784697913,
-        "narHash": "sha256-DK+AmC9SQ9hmOFNIMu1l05gJtsmKyYsfJnuFtt1TnAU=",
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "rev": "47759faaddf38fadaf172151ca9df8adae9c0b2e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "type": "github"
       }
     },
     "sops-nix": {
@@ -450,7 +453,7 @@
           "nixpkgs"
         ],
         "nur": "nur",
-        "systems": "systems",
+        "systems": "systems_2",
         "tinted-kitty": "tinted-kitty",
         "tinted-schemes": "tinted-schemes",
         "tinted-tmux": "tinted-tmux",
@@ -471,6 +474,21 @@
       }
     },
     "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -567,28 +585,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "tuigreet": {
-      "inputs": {
-        "crane": "crane",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "rust-overlay": "rust-overlay"
-      },
-      "locked": {
-        "lastModified": 1785063275,
-        "narHash": "sha256-KBhHCmm1gGtwwAoRqiPQed1eoXqbxGFxhLOEO3nZCTw=",
-        "owner": "NotAShelf",
-        "repo": "tuigreet",
-        "rev": "097848afaa1182450e9daa36b5cd7450f74226b9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NotAShelf",
-        "repo": "tuigreet",
         "type": "github"
       }
     },

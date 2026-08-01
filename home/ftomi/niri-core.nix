@@ -10,6 +10,8 @@
     package = pkgs.niri;
     settings = {
       input = {
+        # Also set in profiles/ftomi/locale.nix (xserver layer, e.g. greeter/TTY).
+        # Niri has its own input stack and doesn't inherit that, so it's repeated here.
         keyboard = {
           numlock = true;
           xkb.layout = "fr";
@@ -204,6 +206,4 @@
     pkgs.xwayland-satellite
     pkgs.nirimon
   ];
-
-  
 }

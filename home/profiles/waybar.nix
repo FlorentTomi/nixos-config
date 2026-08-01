@@ -5,7 +5,7 @@
     enable = true;
     systemd.enable = true;
     style = lib.mkAfter ''
-      ${builtins.readFile ./waybar/style.css}
+      ${builtins.readFile ./resources/waybar_style.css}
     '';
 
     settings.mainBar = {

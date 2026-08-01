@@ -42,8 +42,8 @@ nix-env --list-generations --profile /nix/var/nix/profiles/system
 ## Garbage collection
 
 ```bash
-# Weekly automatic cleanup already configured (nix.gc in common/nix.nix),
-# keeps 14 days of generations. To do it manually right now instead:
+# Daily automatic cleanup already configured (nix.gc in hosts/base/nix.nix),
+# deletes generations older than 2 days. To do it manually right now instead:
 sudo nix-collect-garbage -d      # deletes ALL old generations, keeps only current
 ```
 
