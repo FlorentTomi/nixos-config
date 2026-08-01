@@ -2,6 +2,7 @@
 
 {
   programs.lutris.enable = true;
+  programs.prismlauncher.enable = true;
 
   programs.mangohud = {
     enable = true;

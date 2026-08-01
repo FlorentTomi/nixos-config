@@ -67,6 +67,13 @@
       binds = {
         "Mod+F1".action.show-hotkey-overlay = { };
 
+        "Mod+D".action.spawn = [
+          "ghostty"
+          "--confirm-close-surface=false"
+          "-e"
+          "nirimon"
+        ];
+
         "Mod+WheelScrollDown".action.focus-workspace-down = { };
         "Mod+WheelScrollUp".action.focus-workspace-up = { };
         "Mod+Shift+WheelScrollDown".action.focus-column-right = { };
@@ -132,8 +139,6 @@
           repeat = false;
         };
 
-        # Media keys via swayosd-client — assumes profiles/session.nix's
-        # swayosd service is enabled; harmless no-op spawn failure if not.
         "XF86AudioRaiseVolume".action.spawn = [
           "swayosd-client"
           "--output-volume"
@@ -199,4 +204,6 @@
     pkgs.xwayland-satellite
     pkgs.nirimon
   ];
+
+  
 }

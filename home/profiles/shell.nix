@@ -11,28 +11,19 @@
     git = true;
   };
 
-  programs.television = {
-    enable = true;
-    enableFishIntegration = true;
-  };
-
   programs.ghostty = {
     enable = true;
     settings.background-opacity = 0.9;
     settings.copy-on-select = true;
   };
 
-  # Mod+Return (terminal) and Mod+P (btop-in-terminal) live here since both
-  # spawn ghostty, which this file owns.
-  programs.niri.settings.binds = {
-    "Mod+Return".action.spawn = "ghostty";
-    "Mod+P".action.spawn = [
-      "ghostty"
-      "--confirm-close-surface=false"
-      "-e"
-      "btop"
-    ];
-  };
+  programs.niri.settings.binds."Mod+Return".action.spawn = "ghostty";
+  programs.niri.settings.binds."Mod+P".action.spawn = [
+    "ghostty"
+    "--confirm-close-surface=false"
+    "-e"
+    "btop"
+  ];
 
   programs.fish = {
     enable = true;
@@ -59,11 +50,6 @@
 
   programs.nix-index.enableFishIntegration = true;
 
-  # Stylix only defines starship's colors; the prompt's shape (segments,
-  # icons) comes from a named preset, which Stylix doesn't provide. themeName
-  # (from flake.nix) is reused here so the preset name stays linked to the
-  # base16Scheme — if you switch schemes and no matching preset exists,
-  # override `presets` locally.
   stylix.targets.starship.colors.enable = false;
   programs.starship = {
     enable = true;
