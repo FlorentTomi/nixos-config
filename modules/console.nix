@@ -63,10 +63,10 @@ in
       })
 
       (lib.mkIf (cfg.backend == "kmscon") {
-        boot.kernelParams = lib.mkForce [
-          "nvidia-drm.modeset=1"
-          "nvidia-drm.fbdev=0"
-        ];
+        # boot.kernelParams = lib.mkForce [
+        #   "nvidia-drm.modeset=1"
+        #   "nvidia-drm.fbdev=0"
+        # ];
 
         fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
         fonts.fontconfig.enable = true;
