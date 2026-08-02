@@ -4,8 +4,8 @@
     onCalendar = "daily";
     snapshotOnly = true;
     settings = {
-      snapshot_preserve_min = "2d";
-      snapshot_preserve = "14d 8w 6m";
+      snapshot_preserve_min = "1d";
+      snapshot_preserve = "5d 3w";
       volume."/" = {
         subvolume."." = {
           snapshot_create = "always";

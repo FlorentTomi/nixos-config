@@ -39,16 +39,31 @@
               subvolumes = {
                 "@" = {
                   mountpoint = "/";
+                  mountOptions = [
+                    "compress=zstd:1"
+                    "noatime"
+                  ];
                 };
                 "@home" = {
                   mountpoint = "/home";
+                  mountOptions = [
+                    "compress=zstd:1"
+                    "noatime"
+                  ];
                 };
                 "@nix" = {
                   mountpoint = "/nix";
-                  mountOptions = [ "noatime" ];
+                  mountOptions = [
+                    "compress=zstd:1"
+                    "noatime"
+                  ];
                 };
                 "@log" = {
                   mountpoint = "/var/log";
+                  mountOptions = [
+                    "compress=zstd:1"
+                    "noatime"
+                  ];
                 };
               } // extraSubvolumes;
             };
