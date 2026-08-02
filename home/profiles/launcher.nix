@@ -1,4 +1,8 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 let
   stylix-color = config.lib.stylix.colors;
   stylix-opacity = config.stylix.opacity;
