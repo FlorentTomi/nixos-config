@@ -200,7 +200,7 @@ in
 
       icon-logo = {
         expand = false;
-        filename = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake-white.svg";
+        filename = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
         size = mkLiteral "220";
         vertical-align = mkLiteral "0.5";
       };

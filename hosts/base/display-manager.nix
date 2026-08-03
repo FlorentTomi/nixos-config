@@ -9,7 +9,7 @@
     settings = {
       animation = "dur_file";
       dur_file_path = "${./resources/blackhole-smooth-240x67.dur}";
-      bg = "0x00000000";
+      bg = "0x00191114";
       fg = "0x00FFFFFF";
       border_fg = "0x00FFFFFF";
     };
