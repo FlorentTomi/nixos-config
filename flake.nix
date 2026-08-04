@@ -83,7 +83,7 @@
         }:
         nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs diskDevice themeName; };
+          specialArgs = { inherit inputs diskDevice themeName user; };
           modules = [
             ./hosts/${hostname}
             inputs.disko.nixosModules.disko

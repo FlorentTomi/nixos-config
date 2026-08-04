@@ -8,7 +8,6 @@
       "video"
       "render"
       "input"
-      "docker"
     ];
     shell = pkgs.fish;
   };
