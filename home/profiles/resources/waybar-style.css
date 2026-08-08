@@ -142,7 +142,7 @@ window#waybar.empty #window {
 
 #pulseaudio-slider trough {
     background: @lightbg;
-    min-width: 10rem;
+    min-width: 6rem;
 }
 
 #pulseaudio-slider highlight {

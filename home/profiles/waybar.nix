@@ -120,8 +120,8 @@ in
       modules-right = [
         "group/mpris-drawer"
         "group/vpn-drawer"
-        "tray"
         "group/volume"
+        "tray"
         "clock"
       ];
       "group/mpris-drawer" = {
