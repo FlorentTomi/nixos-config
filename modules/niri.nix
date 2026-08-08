@@ -1,4 +1,4 @@
-{ config, lib, inputs, ... }:
+{ config, lib, inputs, pkgs, ... }:
 let
   cfg = config.modules.niri;
 in
@@ -9,10 +9,7 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.niri.enable = true;
-    niri-flake.cache.enable = false;
-
-    nixpkgs.overlays = [ inputs.niri.overlays.niri ];
-
+    programs.niri.package = pkgs.niri;
     xdg.portal.config.niri = {
       default = [
         "gnome"

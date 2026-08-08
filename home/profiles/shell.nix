@@ -2,7 +2,6 @@
   pkgs,
   lib,
   osConfig,
-  themeName,
   ...
 }:
 
@@ -14,12 +13,6 @@ in
   programs.btop.enable = true;
   programs.bat.enable = true;
   programs.neovim.enable = true;
-
-  programs.eza = {
-    enable = true;
-    enableFishIntegration = true;
-    git = true;
-  };
 
   programs.ghostty = {
     enable = true;
