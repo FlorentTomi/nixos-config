@@ -86,6 +86,7 @@ in
     fuzzel.enable = true;
     hyprlock.enable = true;
     waybar.enable = true;
+    starship.enable = false;
   };
 
   # Bibata isn't a Catppuccin-branded cursor set — it's an independent
