@@ -23,11 +23,11 @@ let
       done
 
       if [[ ''${#active[@]} -eq 0 ]]; then
-        jq -nc '{text: "󰌿 No active VPN", class: "disconnected", tooltip: "No VPN active"}'
+        jq -nc '{text: "No active VPN", alt: "disconnected", class: "disconnected", tooltip: "No VPN active"}'
       else
         tooltip=$(printf '%s\n' "''${active[@]}")
-        jq -nc --arg t "󰌾 ''${active[*]}" --arg tt "$tooltip" \
-          '{text: $t, class: "connected", tooltip: $tt}'
+        jq -nc --arg t "''${active[*]}" --arg tt "$tooltip" \
+          '{text: $t, alt: "connected", class: "connected", tooltip: $tt}'
       fi
     '';
   };
@@ -98,21 +98,27 @@ in
       };
 
       modules-right = [
-        "mpris"
+        "group/mpris-drawer"
+        "group/vpn-drawer"
         "tray"
         "group/volume"
-        "custom/vpn"
         "clock"
       ];
-      mpris = {
-        artist-len = 20;
-        title-len = 10;
-        format = "{player_icon} {dynamic}";
-        format-paused = "{status_icon} <i>{dynamic}</i>";
-        dynamic-order = [
-          "artist"
-          "title"
+      "group/mpris-drawer" = {
+        orientation = "inherit";
+        drawer = {
+          transition-duration = 500;
+          children-class = "mpris";
+          transition-left-to-right = false;
+        };
+        modules = [
+          "mpris#compact"
+          "mpris#full"
         ];
+      };
+      "mpris#compact" = {
+        format = "{player_icon}";
+        format-paused = "{status_icon}";
         player-icons = {
           default = "▶";
           mpv = "🎵";
@@ -120,6 +126,16 @@ in
         status-icons = {
           paused = "⏸";
         };
+      };
+      "mpris#full" = {
+        artist-len = 24;
+        title-len = 24;
+        format = "{dynamic}";
+        format-paused = "<i>{dynamic}</i>";
+        dynamic-order = [
+          "artist"
+          "title"
+        ];
       };
       tray = {
         spacing = 4;
@@ -152,10 +168,34 @@ in
         zero-on-mute = true;
         unmute-on-volume-change = true;
       };
-      "custom/vpn" = {
+      "group/vpn-drawer" = {
+        orientation = "inherit";
+        drawer = {
+          transition-duration = 500;
+          children-class = "vpn";
+          transition-left-to-right = false;
+        };
+        modules = [
+          "custom/vpn#compact"
+          "custom/vpn#full"
+        ];
+      };
+      "custom/vpn#compact" = {
         exec = "${vpnStatus}/bin/waybar-vpn-status";
         return-type = "json";
         interval = 5;
+        format = "{icon}";
+        format-icons = {
+          connected = "󰌾";
+          disconnected = "󰌿";
+        };
+        on-click = "rofi -show vpn";
+      };
+      "custom/vpn#full" = {
+        exec = "${vpnStatus}/bin/waybar-vpn-status";
+        return-type = "json";
+        interval = 5;
+        format = "{}";
         on-click = "rofi -show vpn";
       };
       clock = {
