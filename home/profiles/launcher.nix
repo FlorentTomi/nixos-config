@@ -10,12 +10,7 @@ let
   stylix-opacity = config.stylix.opacity;
   alternatePattern = config.stylix.targets.rofi.alternatePattern;
 
-  # osConfig's own VPN list (modules/openvpn.nix), not a systemctl unit-name
-  # glob: services.openvpn also creates its own internal units matching
-  # "openvpn-*" (e.g. openvpn-restart.service, a sleep/resume hook) that
-  # aren't actual VPNs and would otherwise leak into the menu. Same lookup
-  # as home/profiles/shell.nix's fish completions.
-  vpnNames = map (c: c.name) osConfig.modules.openvpn.configs;
+  vpnNames = import ./resources/vpn-names.nix { inherit osConfig; };
 
   # rofi script-mode backend for the VPN menu below.
   rofiVpnScript = pkgs.writeShellApplication {
@@ -112,6 +107,8 @@ in
       modi = "drun,window,ssh,vpn:${rofiVpnScript}/bin/rofi-vpn";
       show-icons = true;
       icon-theme = "Papirus-Dark";
+      me-select-entry = "";
+      me-accept-entry = "MousePrimary";
 
       display-drun = "Applications";
       drun-display-format = "{name}";

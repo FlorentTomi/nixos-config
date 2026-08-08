@@ -1,5 +1,37 @@
-{ lib, ... }:
+{
+  osConfig,
+  lib,
+  pkgs,
+  ...
+}:
 
+let
+  vpnNames = import ./resources/vpn-names.nix { inherit osConfig; };
+
+  vpnStatus = pkgs.writeShellApplication {
+    name = "waybar-vpn-status";
+    runtimeInputs = [
+      pkgs.systemd
+      pkgs.jq
+    ];
+    text = ''
+      vpns=(${lib.concatStringsSep " " vpnNames})
+      active=()
+
+      for name in "''${vpns[@]}"; do
+        systemctl is-active --quiet "openvpn-$name" && active+=("$name")
+      done
+
+      if [[ ''${#active[@]} -eq 0 ]]; then
+        jq -nc '{text: "󰌿 No active VPN", class: "disconnected", tooltip: "No VPN active"}'
+      else
+        tooltip=$(printf '%s\n' "''${active[@]}")
+        jq -nc --arg t "󰌾 ''${active[*]}" --arg tt "$tooltip" \
+          '{text: $t, class: "connected", tooltip: $tt}'
+      fi
+    '';
+  };
+in
 {
   programs.waybar = {
     enable = true;
@@ -69,6 +101,7 @@
         "mpris"
         "tray"
         "group/volume"
+        "custom/vpn"
         "clock"
       ];
       mpris = {
@@ -118,6 +151,12 @@
         orientation = "horizontal";
         zero-on-mute = true;
         unmute-on-volume-change = true;
+      };
+      "custom/vpn" = {
+        exec = "${vpnStatus}/bin/waybar-vpn-status";
+        return-type = "json";
+        interval = 5;
+        on-click = "rofi -show vpn";
       };
       clock = {
         interval = 60;
