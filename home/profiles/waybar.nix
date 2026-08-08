@@ -1,4 +1,5 @@
 {
+  config,
   osConfig,
   lib,
   pkgs,
@@ -7,6 +8,22 @@
 
 let
   vpnNames = import ./resources/vpn-names.nix { inherit osConfig; };
+  vpnSelect = import ./resources/vpn-select.nix { inherit lib pkgs vpnNames; };
+
+  # fuzzel dmenu picker for the waybar VPN drawer — stylix-themed via
+  # `programs.fuzzel` (stylix.targets.fuzzel below writes the colors into
+  # its config), single click accepts by default.
+  vpnMenu = pkgs.writeShellApplication {
+    name = "waybar-vpn-menu";
+    runtimeInputs = [
+      config.programs.fuzzel.package
+      vpnSelect
+    ];
+    text = ''
+      selected=$(vpn-select | fuzzel --dmenu --prompt "VPN> ")
+      [[ -n "$selected" ]] && vpn-select "$selected"
+    '';
+  };
 
   vpnStatus = pkgs.writeShellApplication {
     name = "waybar-vpn-status";
@@ -33,6 +50,9 @@ let
   };
 in
 {
+  programs.fuzzel.enable = true;
+  stylix.targets.fuzzel.enable = true;
+
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -183,20 +203,20 @@ in
       "custom/vpn#compact" = {
         exec = "${vpnStatus}/bin/waybar-vpn-status";
         return-type = "json";
-        interval = 5;
+        interval = 1;
         format = "{icon}";
         format-icons = {
           connected = "󰌾";
           disconnected = "󰌿";
         };
-        on-click = "rofi -show vpn";
+        on-click = "${vpnMenu}/bin/waybar-vpn-menu";
       };
       "custom/vpn#full" = {
         exec = "${vpnStatus}/bin/waybar-vpn-status";
         return-type = "json";
-        interval = 5;
+        interval = 1;
         format = "{}";
-        on-click = "rofi -show vpn";
+        on-click = "${vpnMenu}/bin/waybar-vpn-menu";
       };
       clock = {
         interval = 60;

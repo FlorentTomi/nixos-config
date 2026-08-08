@@ -11,34 +11,7 @@ let
   alternatePattern = config.stylix.targets.rofi.alternatePattern;
 
   vpnNames = import ./resources/vpn-names.nix { inherit osConfig; };
-
-  # rofi script-mode backend for the VPN menu below.
-  rofiVpnScript = pkgs.writeShellApplication {
-    name = "rofi-vpn";
-    runtimeInputs = [ pkgs.systemd ];
-    text = ''
-      vpns=(${lib.concatStringsSep " " vpnNames})
-
-      # Rofi calls a script-mode backend a second time with the selected
-      # line as $1 when the user hits enter on an entry.
-      if [[ -n "''${1-}" ]]; then
-        name="''${1%% *}"
-        if systemctl is-active --quiet "openvpn-$name"; then
-          systemctl stop "openvpn-$name"
-        else
-          systemctl start "openvpn-$name"
-        fi
-      fi
-
-      for name in "''${vpns[@]}"; do
-        if systemctl is-active --quiet "openvpn-$name"; then
-          echo "$name (on)"
-        else
-          echo "$name (off)"
-        fi
-      done
-    '';
-  };
+  rofiVpnScript = import ./resources/vpn-select.nix { inherit lib pkgs vpnNames; };
 
   inherit (config.lib.formats.rasi) mkLiteral;
 
@@ -104,7 +77,7 @@ in
   programs.rofi = {
     enable = true;
     extraConfig = {
-      modi = "drun,window,ssh,vpn:${rofiVpnScript}/bin/rofi-vpn";
+      modi = "drun,window,ssh,vpn:${rofiVpnScript}/bin/vpn-select";
       show-icons = true;
       icon-theme = "Papirus-Dark";
       me-select-entry = "";
