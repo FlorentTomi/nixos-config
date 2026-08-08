@@ -70,7 +70,10 @@ in
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
-    presets = [ themeName ];
+    presets = [ "catppuccin-powerline" ];
+    settings = {
+      palette = "catppuccin_mocha";
+    };
   };
 
   programs.fastfetch = {

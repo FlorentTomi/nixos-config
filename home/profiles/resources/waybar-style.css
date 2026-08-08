@@ -4,22 +4,27 @@
 @define-color lightfg @base06;
 @define-color foreground @base05;
 @define-color red @base08;
+@define-color orange @base09;
+@define-color yellow @base0A;
+@define-color green @base0B;
+@define-color cyan @base0C;
 @define-color blue @base0D;
 @define-color selected @blue;
 @define-color active @blue;
 @define-color urgent @red;
 
-@define-color power #B22222;
-@define-color cpu #FF8C00;
-@define-color temperature #FFD700;
-@define-color gpu #32CD32;
-@define-color memory #20B2AA;
-@define-color disk #1E90FF;
-@define-color vpn-connected #32CD32;
-@define-color vpn-disconnected #B22222;
+@define-color power @red;
+@define-color cpu @orange;
+@define-color temperature @yellow;
+@define-color gpu @green;
+@define-color memory @cyan;
+@define-color disk @blue;
+@define-color vpn-connected @green;
+@define-color vpn-disconnected @red;
 
 window#waybar {
     background-color: alpha(#000000, 0);
+    font-weight: bold;
 }
 
 /* Left */
@@ -27,11 +32,10 @@ window#waybar {
 #custom-power {
     background-color: @power;
     color: @background;
-    border: 1px solid lighter(@power);
+    border: 1px solid @power;
     border-radius: 0.5rem 0px 0px 0.5rem;
     margin: 0.5rem 0;
     font-size: 20px;
-    font-weight: bolder;
 }
 
 #cpu {

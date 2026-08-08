@@ -12,7 +12,7 @@ in
   stylix = {
     enable = true;
     polarity = "dark";
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/${themeName}-dark.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/${themeName}.yaml";
     fonts = {
       serif = font;
       sansSerif = font;
