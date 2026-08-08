@@ -18,18 +18,25 @@
     };
   };
 
-  # Floorp's picture-in-picture window shouldn't get tiled like a normal window.
-  programs.niri.settings.window-rules = [
+  # Floorp's picture-in-picture window shouldn't get tiled like a normal
+  # window. wayland.windowManager.niri.settings is freeform/generic KDL, not
+  # niri-flake's typed schema — a repeated top-level `window-rule { }` node
+  # has to go through the root-level `_children` list (see also gaming.nix,
+  # which contributes its own window-rule the same way; NixOS's module
+  # merge concatenates both files' `_children` lists into one).
+  wayland.windowManager.niri.settings._children = [
     {
-      matches = [
+      window-rule._children = [
         {
-          app-id = "floorp$";
-          title = "^Picture-in-Picture$";
+          match._props = {
+            app-id = "floorp$";
+            title = "^Picture-in-Picture$";
+          };
         }
+        { open-floating = true; }
       ];
-      open-floating = true;
     }
   ];
 
-  programs.niri.settings.binds."Mod+B".action.spawn = "floorp";
+  wayland.windowManager.niri.settings.binds."Mod+B".spawn = [ "floorp" ];
 }

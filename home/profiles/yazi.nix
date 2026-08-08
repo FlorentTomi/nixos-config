@@ -43,7 +43,7 @@
     };
   };
 
-  programs.niri.settings.binds."Mod+E".action.spawn = [
+  wayland.windowManager.niri.settings.binds."Mod+E".spawn = [
     "ghostty"
     "--confirm-close-surface=false"
     "-e"

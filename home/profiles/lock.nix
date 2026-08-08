@@ -5,5 +5,5 @@
     extraConfig = builtins.readFile ./resources/hyprlock-config.conf;
   };
 
-  programs.niri.settings.binds."Mod+L".action.spawn = "hyprlock";
+  wayland.windowManager.niri.settings.binds."Mod+L".spawn = [ "hyprlock" ];
 }

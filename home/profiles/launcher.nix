@@ -362,7 +362,7 @@ in
     };
   };
 
-  programs.niri.settings.binds."Mod+Space".action.spawn = [
+  wayland.windowManager.niri.settings.binds."Mod+Space".spawn = [
     "rofi"
     "-show"
     "drun"

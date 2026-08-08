@@ -20,8 +20,8 @@ in
     settings.copy-on-select = true;
   };
 
-  programs.niri.settings.binds."Mod+Return".action.spawn = "ghostty";
-  programs.niri.settings.binds."Mod+Escape".action.spawn = [
+  wayland.windowManager.niri.settings.binds."Mod+Return".spawn = [ "ghostty" ];
+  wayland.windowManager.niri.settings.binds."Mod+Escape".spawn = [
     "ghostty"
     "--confirm-close-surface=false"
     "-e"
