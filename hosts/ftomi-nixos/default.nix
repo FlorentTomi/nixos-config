@@ -15,7 +15,6 @@
     # personal preferences, same across any host you'd use
     ../../profiles/ftomi/locale.nix
     ../../profiles/ftomi/stylix.nix
-    ../../profiles/ftomi/login-theme.nix
 
     # optional, hardware-dependent modules (toggled below)
     ../../modules/nvidia.nix

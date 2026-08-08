@@ -48,6 +48,15 @@
     '';
   };
 
+  # VPN names come from whatever openvpn-*.service units exist on this host
+  # (see modules/openvpn.nix) rather than being hardcoded here, since this
+  # profile is host-agnostic and the VPN list is set per-host.
+  xdg.configFile."fish/completions/vpn.fish".text = ''
+    complete -c vpn -f
+    complete -c vpn -n 'test (count (commandline -opc)) = 1' -a "(systemctl list-unit-files 'openvpn-*.service' --no-legend | sed -E 's/^openvpn-//; s/\.service.*//')" -d 'VPN name'
+    complete -c vpn -n 'test (count (commandline -opc)) = 2' -a 'on off status start stop' -d 'action'
+  '';
+
   programs.nix-index.enableFishIntegration = true;
 
   stylix.targets.starship.colors.enable = false;

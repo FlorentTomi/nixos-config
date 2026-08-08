@@ -2,7 +2,7 @@
 
 NixOS + Home Manager flake for `ftomi`'s desktop — AMD 5800X, RTX 3060 (open
 kernel module), Niri (structured config via niri-flake, not raw KDL), Stylix
-theming, SDDM login (qylock theme), Steam/gaming.
+theming, Ly login, Steam/gaming.
 
 ## Day-to-day
 

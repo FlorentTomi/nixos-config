@@ -12,7 +12,10 @@
       input = {
         keyboard = {
           numlock = true;
-          xkb.layout = "fr";
+          # Single source of truth: profiles/ftomi/locale.nix sets
+          # services.xserver.xkb.layout; read it back instead of duplicating
+          # the layout string here.
+          xkb.layout = osConfig.services.xserver.xkb.layout;
         };
       };
 
@@ -44,8 +47,6 @@
           { proportion = 2. / 3.; }
           { proportion = 1.; }
         ];
-
-        border.width = 1.;
       };
 
       hotkey-overlay = {
