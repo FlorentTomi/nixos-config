@@ -4,7 +4,6 @@
   ftomi-nixos = mkHost {
     hostname = "ftomi-nixos";
     user = "ftomi";
-    themeName = "catppuccin-mocha";
     homeProfiles = [
       "shell"
       "dual-monitor"

@@ -16,6 +16,11 @@ in
 
   programs.ghostty = {
     enable = true;
+    # No longer auto-injected by Stylix's ghostty target — without this
+    # explicit setting, Ghostty falls back to its own bundled default font
+    # rather than reading fontconfig's monospace default, which is why
+    # Starship's powerline separators/icons were rendering broken.
+    settings.font-family = "JetBrainsMono Nerd Font";
     settings.background-opacity = 0.9;
     settings.copy-on-select = true;
   };
@@ -59,7 +64,8 @@ in
 
   programs.nix-index.enableFishIntegration = true;
 
-  stylix.targets.starship.colors.enable = false;
+  # Starship's colors come from its own "catppuccin-powerline" preset below,
+  # not from any theming framework — no coordination needed here.
   programs.starship = {
     enable = true;
     enableFishIntegration = true;

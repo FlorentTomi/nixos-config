@@ -3,22 +3,8 @@
 # capability that provides the app (see e.g. profiles/launcher.nix,
 # profiles/lock.nix, profiles/shell.nix) so a host that imports only
 # niri-core gets a working (if sparse) WM with no dangling spawn targets.
-{ config, pkgs, osConfig, lib, ... }:
+{ config, pkgs, osConfig, lib, catppuccinPalette, ... }:
 
-let
-  # niri-flake's homeModules.stylix used to inject this automatically
-  # whenever both home-manager and stylix were present in the NixOS config
-  # (see stylix.nix in sodiboo/niri-flake). That auto-injection targeted
-  # niri-flake's own config writer, which we've disabled below, so its
-  # output was silently dropped — same failure mode as the profile files'
-  # binds/window-rules/outputs, just from niri-flake itself rather than
-  # anything in this repo. Reimplemented here by hand, reading the same
-  # base16 keys niri-flake's module used (base0D active / base03 inactive),
-  # so it still tracks whatever theme profiles/ftomi/stylix.nix sets rather
-  # than hardcoding colors that would silently drift from the rest of the
-  # desktop if the theme ever changes.
-  stylix-colors = config.lib.stylix.colors.withHashtag;
-in
 {
   # modules/niri.nix (NixOS-level) still imports niri-flake's nixosModules.niri
   # for systemd/portal/polkit wiring. That module unconditionally injects its
@@ -97,8 +83,8 @@ in
         # under `layout`, not top-level.
         focus-ring.off = { };
         border = {
-          active-color = stylix-colors.base0D;
-          inactive-color = stylix-colors.base03;
+          active-color = "#${catppuccinPalette.blue}";
+          inactive-color = "#${catppuccinPalette.overlay0}";
         };
       };
 
@@ -109,13 +95,14 @@ in
 
       # cursor IS top-level (unlike focus-ring/border above, which nest
       # under layout) — matches niri's actual node hierarchy.
-      cursor = lib.mkIf (config.stylix.cursor != null) {
+      cursor = {
         # niri's actual KDL node names are xcursor-theme / xcursor-size —
         # niri-flake's typed schema called these `theme`/`size` internally
         # and translated them under the hood; the freeform module doesn't,
-        # so the raw KDL names have to be used directly here.
-        xcursor-theme = config.stylix.cursor.name;
-        xcursor-size = config.stylix.cursor.size;
+        # so the raw KDL names have to be used directly here. Sourced from
+        # home.pointerCursor (theme.nix) rather than Stylix now.
+        xcursor-theme = config.home.pointerCursor.name;
+        xcursor-size = config.home.pointerCursor.size;
       };
 
       # NVIDIA-specific Wayland/DRM env vars — only relevant if this host

@@ -3,17 +3,17 @@
   osConfig,
   lib,
   pkgs,
+  catppuccinPalette,
   ...
 }:
 
 let
-  stylix-color = config.lib.stylix.colors;
   vpnNames = import ./resources/vpn-names.nix { inherit osConfig; };
   vpnSelect = import ./resources/vpn-select.nix { inherit lib pkgs vpnNames; };
 
-  # fuzzel dmenu picker for the waybar VPN drawer — stylix-themed via
-  # `programs.fuzzel` (stylix.targets.fuzzel below writes the colors into
-  # its config), single click accepts by default.
+  # fuzzel dmenu picker for the waybar VPN drawer — theming now comes from
+  # catppuccin.fuzzel.enable (home/ftomi/theme.nix) instead of Stylix,
+  # single click accepts by default.
   vpnMenu = pkgs.writeShellApplication {
     name = "waybar-vpn-menu";
     runtimeInputs = [
@@ -52,11 +52,16 @@ let
 in
 {
   programs.fuzzel.enable = true;
-  stylix.targets.fuzzel.enable = true;
 
   programs.waybar = {
     enable = true;
     systemd.enable = true;
+    # Built explicitly here as a single string, rather than relying on
+    # catppuccin.waybar.enable's own contribution (lib.mkBefore) and ours
+    # (lib.mkAfter) composing correctly across two separate modules into
+    # `programs.waybar.style` — see home/ftomi/theme.nix for why. Reading
+    # config.catppuccin.sources.waybar directly reproduces exactly what
+    # that module would have generated in "prependImport" mode.
     style = lib.mkAfter ''
       ${builtins.readFile ./resources/waybar-style.css}
     '';
@@ -163,10 +168,10 @@ in
       };
       "group/volume" = {
         orientation = "inherit";
-        drawer= {
-            transition-duration= 500;
-            children-class = "volume";
-            transition-left-to-right = false;
+        drawer = {
+          transition-duration = 500;
+          children-class = "volume";
+          transition-left-to-right = false;
         };
         modules = [
           "pulseaudio"
@@ -230,11 +235,11 @@ in
           weeks-pos = "right";
           on-scroll = 1;
           format = {
-            months = "<span color='#${stylix-color.base0D}'><b>{}</b></span>";
-            days = "<span color='#${stylix-color.base05}'><b>{}</b></span>";
-            weeks = "<span color='#${stylix-color.base0C}'><b>W{}</b></span>";
-            weekdays = "<span color='#${stylix-color.base0A}'><b>{}</b></span>";
-            today = "<span color='#${stylix-color.base08}'><b><u>{}</u></b></span>";
+            months = "<span color='#${catppuccinPalette.blue}'><b>{}</b></span>";
+            days = "<span color='#${catppuccinPalette.text}'><b>{}</b></span>";
+            weeks = "<span color='#${catppuccinPalette.teal}'><b>W{}</b></span>";
+            weekdays = "<span color='#${catppuccinPalette.yellow}'><b>{}</b></span>";
+            today = "<span color='#${catppuccinPalette.red}'><b><u>{}</u></b></span>";
           };
         };
         actions = {

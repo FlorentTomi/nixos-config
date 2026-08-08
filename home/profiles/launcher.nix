@@ -3,39 +3,48 @@
   osConfig,
   lib,
   pkgs,
+  catppuccinRgb,
   ...
 }:
 let
-  stylix-color = config.lib.stylix.colors;
-  stylix-opacity = config.stylix.opacity;
-  alternatePattern = config.stylix.targets.rofi.alternatePattern;
-
   vpnNames = import ./resources/vpn-names.nix { inherit osConfig; };
   rofiVpnScript = import ./resources/vpn-select.nix { inherit lib pkgs vpnNames; };
 
   inherit (config.lib.formats.rasi) mkLiteral;
 
-  mkRgba =
-    opacity': color:
-    let
-      r = stylix-color."${color}-rgb-r";
-      g = stylix-color."${color}-rgb-g";
-      b = stylix-color."${color}-rgb-b";
-    in
-    "rgba ( ${r}, ${g}, ${b}, ${opacity'} % )";
+  # catppuccinRgb (home/ftomi/theme.nix) reads decimal RGB straight out of
+  # the catppuccin/palette package's JSON by color name — no hex
+  # intermediate, no hand-typed decimal table.
+  mkRgba = opacity': color: "rgba ( ${catppuccinRgb color}, ${opacity'} % )";
   mkRgb = mkRgba "100";
-  rofiOpacity = toString (builtins.ceil (stylix-opacity.popups * 100));
+  # Was config.stylix.opacity.popups * 100 — no direct catppuccin/nix
+  # equivalent (opacity isn't part of a color scheme), so picked a sensible
+  # near-opaque default by hand. Adjust to taste.
+  rofiOpacity = "95";
+  # Was config.stylix.targets.rofi.alternatePattern — a Stylix-specific
+  # concept with no equivalent elsewhere. Must be `true`, not just a stylistic
+  # choice: every `alternate-*` property below builds on a `base` argument
+  # that's already `mkLiteral`-wrapped (e.g. `active-background`), and
+  # `mkAlternate` wraps its result in `mkLiteral` again at each call site —
+  # if `alternatePattern` is `false`, `mkAlternate` returns that
+  # already-wrapped `base` unchanged, and the outer `mkLiteral` wraps it a
+  # second time, which home-manager's rofi module rejects (nested `.value`
+  # isn't a string). `true` makes `mkAlternate` return the plain-string
+  # `alternate` argument instead, avoiding the double-wrap — this is almost
+  # certainly what Stylix's real value was, since the bug would otherwise
+  # have shown up under the old setup too.
+  alternatePattern = true;
   mkAlternate = base: alternate: if alternatePattern then alternate else base;
 
   c = rec {
-    background = mkLiteral (mkRgba rofiOpacity "base00");
-    lightbg = mkLiteral (mkRgba rofiOpacity "base01");
-    red = mkLiteral (mkRgba rofiOpacity "base08");
-    blue = mkLiteral (mkRgba rofiOpacity "base0D");
-    lightfg = mkLiteral (mkRgba rofiOpacity "base06");
-    foreground = mkLiteral (mkRgba rofiOpacity "base05");
-    background-color = mkLiteral (mkRgb "base00");
-    background-alt = mkLiteral (mkRgba rofiOpacity "base02");
+    background = mkLiteral (mkRgba rofiOpacity "base");
+    lightbg = mkLiteral (mkRgba rofiOpacity "mantle");
+    red = mkLiteral (mkRgba rofiOpacity "red");
+    blue = mkLiteral (mkRgba rofiOpacity "blue");
+    lightfg = mkLiteral (mkRgba rofiOpacity "subtext1");
+    foreground = mkLiteral (mkRgba rofiOpacity "text");
+    background-color = mkLiteral (mkRgb "base");
+    background-alt = mkLiteral (mkRgba rofiOpacity "surface0");
     selected = mkLiteral "@blue";
     active = mkLiteral "@blue";
     urgent = mkLiteral "@red";
@@ -54,20 +63,19 @@ let
     alternate-urgent-foreground = mkLiteral (mkAlternate urgent-foreground "@red");
     alternate-urgent-background = mkLiteral (mkAlternate urgent-background "@lightbg");
 
-    base-text = mkLiteral (mkRgb "base05");
-    selected-normal-text = mkLiteral (mkRgb "base01");
-    selected-active-text = mkLiteral (mkRgb "base00");
-    selected-urgent-text = mkLiteral (mkRgb "base00");
-    normal-text = mkLiteral (mkRgb "base05");
-    active-text = mkLiteral (mkRgb "base0D");
-    urgent-text = mkLiteral (mkRgb "base08");
-    alternate-normal-text = mkLiteral (mkAlternate normal-text (mkRgb "base05"));
-    alternate-active-text = mkLiteral (mkAlternate active-text (mkRgb "base0D"));
-    alternate-urgent-text = mkLiteral (mkAlternate urgent-text (mkRgb "base08"));
+    base-text = mkLiteral (mkRgb "text");
+    selected-normal-text = mkLiteral (mkRgb "mantle");
+    selected-active-text = mkLiteral (mkRgb "base");
+    selected-urgent-text = mkLiteral (mkRgb "base");
+    normal-text = mkLiteral (mkRgb "text");
+    active-text = mkLiteral (mkRgb "blue");
+    urgent-text = mkLiteral (mkRgb "red");
+    alternate-normal-text = mkLiteral (mkAlternate normal-text (mkRgb "text"));
+    alternate-active-text = mkLiteral (mkAlternate active-text (mkRgb "blue"));
+    alternate-urgent-text = mkLiteral (mkAlternate urgent-text (mkRgb "red"));
   };
 in
 {
-  stylix.targets.rofi.enable = false;
 
   home.packages = [
     pkgs.papirus-icon-theme
@@ -278,6 +286,12 @@ in
         reverse = false;
         fixed-height = true;
         fixed-columns = true;
+        # rofi's built-in default theme applies a dashed separator to
+        # listview when nothing overrides it explicitly — the dotted line
+        # visible at the top of the results panel. Predates this migration
+        # (this file never set it, under Stylix or otherwise); explicitly
+        # disabled now that it's been noticed.
+        border = mkLiteral "0px";
 
         spacing = mkLiteral "10px";
         background-color = mkLiteral "transparent";
