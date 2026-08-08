@@ -21,6 +21,7 @@
     ../../modules/niri.nix
     ../../modules/openvpn.nix
     ../../modules/console.nix
+    ../../modules/virtualisation.nix
 
     # this exact machine
     ./hardware-configuration.nix
@@ -35,6 +36,11 @@
 
   modules.nvidia.enable = true;
   modules.niri.enable = true;
+  modules.virtualisation = {
+    enable = true;
+    users = [ "ftomi" ];
+    nvidia = true;
+  };
 
   modules.console = {
     enable = true;

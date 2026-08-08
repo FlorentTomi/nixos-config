@@ -19,7 +19,7 @@
 @define-color vpn-disconnected #B22222;
 
 window#waybar {
-    background-color: alpha(#000000, 0.1);
+    background-color: alpha(#000000, 0);
 }
 
 /* Left */
