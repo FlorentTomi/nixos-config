@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  inputs,
   pkgs,
   ...
 }:
@@ -10,8 +9,13 @@ let
   cfg = config.modules.openvpn;
 in
 {
-  imports = [ inputs.update-systemd-resolved.nixosModules.default ];
-
+  # pkgs.update-systemd-resolved is nixpkgs' own package
+  # (pkgs/tools/networking/openvpn/update-systemd-resolved.nix) — the
+  # jonathanio/update-systemd-resolved flake input previously imported here
+  # only added options under programs.update-systemd-resolved.*, which
+  # nothing in this config touches; the `up`/`down` script below has always
+  # referenced the plain nixpkgs package directly, so removing the input
+  # changes nothing.
   options.modules.openvpn = {
     enable = lib.mkEnableOption "OpenVPN client connections";
     configs = lib.mkOption {

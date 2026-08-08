@@ -23,10 +23,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    update-systemd-resolved = {
-      url = "github:jonathanio/update-systemd-resolved";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     yazi-plugins = {
       url = "github:yazi-rs/plugins";
       flake = false;
