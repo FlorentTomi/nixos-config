@@ -12,27 +12,9 @@ let
 
   inherit (config.lib.formats.rasi) mkLiteral;
 
-  # catppuccinRgb (home/ftomi/theme.nix) reads decimal RGB straight out of
-  # the catppuccin/palette package's JSON by color name — no hex
-  # intermediate, no hand-typed decimal table.
   mkRgba = opacity': color: "rgba ( ${catppuccinRgb color}, ${opacity'} % )";
   mkRgb = mkRgba "100";
-  # Was config.stylix.opacity.popups * 100 — no direct catppuccin/nix
-  # equivalent (opacity isn't part of a color scheme), so picked a sensible
-  # near-opaque default by hand. Adjust to taste.
   rofiOpacity = "95";
-  # Was config.stylix.targets.rofi.alternatePattern — a Stylix-specific
-  # concept with no equivalent elsewhere. Must be `true`, not just a stylistic
-  # choice: every `alternate-*` property below builds on a `base` argument
-  # that's already `mkLiteral`-wrapped (e.g. `active-background`), and
-  # `mkAlternate` wraps its result in `mkLiteral` again at each call site —
-  # if `alternatePattern` is `false`, `mkAlternate` returns that
-  # already-wrapped `base` unchanged, and the outer `mkLiteral` wraps it a
-  # second time, which home-manager's rofi module rejects (nested `.value`
-  # isn't a string). `true` makes `mkAlternate` return the plain-string
-  # `alternate` argument instead, avoiding the double-wrap — this is almost
-  # certainly what Stylix's real value was, since the bug would otherwise
-  # have shown up under the old setup too.
   alternatePattern = true;
   mkAlternate = base: alternate: if alternatePattern then alternate else base;
 
@@ -78,7 +60,6 @@ in
 {
 
   home.packages = [
-    pkgs.papirus-icon-theme
     rofiVpnScript
   ];
 

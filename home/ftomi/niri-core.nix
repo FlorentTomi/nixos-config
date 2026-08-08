@@ -3,7 +3,14 @@
 # capability that provides the app (see e.g. profiles/launcher.nix,
 # profiles/lock.nix, profiles/shell.nix) so a host that imports only
 # niri-core gets a working (if sparse) WM with no dangling spawn targets.
-{ config, pkgs, osConfig, lib, catppuccinPalette, ... }:
+{
+  config,
+  pkgs,
+  osConfig,
+  lib,
+  catppuccinPalette,
+  ...
+}:
 
 {
   # modules/niri.nix (NixOS-level) still imports niri-flake's nixosModules.niri
@@ -45,9 +52,16 @@
 
       # spawn-at-startup takes its command as positional node arguments
       # (`spawn-at-startup "cmd" "arg"`), not a named `argv` property.
-      spawn-at-startup._args = [
-        "waypaper"
-        "--restore"
+      _children = [
+        {
+          spawn-at-startup._args = [
+            "waypaper"
+            "--restore"
+          ];
+        }
+        {
+          spawn-at-startup._args = [ "pasystray" ];
+        }
       ];
 
       layout = {
