@@ -1,4 +1,18 @@
-{ pkgs, themeName, ... }:
+{
+  pkgs,
+  lib,
+  osConfig,
+  themeName,
+  ...
+}:
+
+let
+  # osConfig's own VPN list (modules/openvpn.nix), not a systemctl unit-name
+  # glob: services.openvpn also creates its own internal units matching
+  # "openvpn-*" (e.g. openvpn-restart.service, a sleep/resume hook) that
+  # aren't actual VPNs and would otherwise leak into completions.
+  vpnNames = map (c: c.name) osConfig.modules.openvpn.configs;
+in
 
 {
   programs.btop.enable = true;
@@ -48,12 +62,9 @@
     '';
   };
 
-  # VPN names come from whatever openvpn-*.service units exist on this host
-  # (see modules/openvpn.nix) rather than being hardcoded here, since this
-  # profile is host-agnostic and the VPN list is set per-host.
   xdg.configFile."fish/completions/vpn.fish".text = ''
     complete -c vpn -f
-    complete -c vpn -n 'test (count (commandline -opc)) = 1' -a "(systemctl list-unit-files 'openvpn-*.service' --no-legend | sed -E 's/^openvpn-//; s/\.service.*//')" -d 'VPN name'
+    complete -c vpn -n 'test (count (commandline -opc)) = 1' -a '${lib.concatStringsSep " " vpnNames}' -d 'VPN name'
     complete -c vpn -n 'test (count (commandline -opc)) = 2' -a 'on off status start stop' -d 'action'
   '';
 

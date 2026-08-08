@@ -1,5 +1,7 @@
 {
   config,
+  osConfig,
+  lib,
   pkgs,
   ...
 }:
@@ -7,6 +9,41 @@ let
   stylix-color = config.lib.stylix.colors;
   stylix-opacity = config.stylix.opacity;
   alternatePattern = config.stylix.targets.rofi.alternatePattern;
+
+  # osConfig's own VPN list (modules/openvpn.nix), not a systemctl unit-name
+  # glob: services.openvpn also creates its own internal units matching
+  # "openvpn-*" (e.g. openvpn-restart.service, a sleep/resume hook) that
+  # aren't actual VPNs and would otherwise leak into the menu. Same lookup
+  # as home/profiles/shell.nix's fish completions.
+  vpnNames = map (c: c.name) osConfig.modules.openvpn.configs;
+
+  # rofi script-mode backend for the VPN menu below.
+  rofiVpnScript = pkgs.writeShellApplication {
+    name = "rofi-vpn";
+    runtimeInputs = [ pkgs.systemd ];
+    text = ''
+      vpns=(${lib.concatStringsSep " " vpnNames})
+
+      # Rofi calls a script-mode backend a second time with the selected
+      # line as $1 when the user hits enter on an entry.
+      if [[ -n "''${1-}" ]]; then
+        name="''${1%% *}"
+        if systemctl is-active --quiet "openvpn-$name"; then
+          systemctl stop "openvpn-$name"
+        else
+          systemctl start "openvpn-$name"
+        fi
+      fi
+
+      for name in "''${vpns[@]}"; do
+        if systemctl is-active --quiet "openvpn-$name"; then
+          echo "$name (on)"
+        else
+          echo "$name (off)"
+        fi
+      done
+    '';
+  };
 
   inherit (config.lib.formats.rasi) mkLiteral;
 
@@ -64,12 +101,15 @@ in
 {
   stylix.targets.rofi.enable = false;
 
-  home.packages = [ pkgs.papirus-icon-theme ];
+  home.packages = [
+    pkgs.papirus-icon-theme
+    rofiVpnScript
+  ];
 
   programs.rofi = {
     enable = true;
     extraConfig = {
-      modi = "drun,window,ssh";
+      modi = "drun,window,ssh,vpn:${rofiVpnScript}/bin/rofi-vpn";
       show-icons = true;
       icon-theme = "Papirus-Dark";
 
@@ -78,6 +118,8 @@ in
 
       display-window = "Windows";
       window-format = "{w} · {c} · {t}";
+
+      display-vpn = "VPN";
 
       display-ssh = "SSH";
       parse-known-hosts = false;
