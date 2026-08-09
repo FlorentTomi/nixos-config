@@ -49,6 +49,83 @@ let
       fi
     '';
   };
+
+  # The built-in "mpris" module never hides its own widget when there's no
+  # player (confirmed empirically — it just renders an empty label inside a
+  # still-visible, still-bordered box), so the #mpris-drawer group pill stays
+  # visible even with nothing playing. A "custom" module's box, by contrast,
+  # is fully removed by "hide-empty-text" when its script prints no text —
+  # so the drawer's chrome moved from the group onto this module (see
+  # waybar-style.css) actually disappears.
+  mprisStatus = pkgs.writeShellApplication {
+    name = "waybar-mpris-status";
+    runtimeInputs = [
+      pkgs.playerctl
+      pkgs.jq
+    ];
+    text = ''
+      mode="$1"
+
+      trunc() {
+        local s="$1"
+        if [[ ''${#s} -gt 24 ]]; then
+          printf '%s…' "''${s:0:24}"
+        else
+          printf '%s' "$s"
+        fi
+      }
+
+      esc() {
+        local s="$1"
+        s="''${s//&/&amp;}"
+        s="''${s//</&lt;}"
+        s="''${s//>/&gt;}"
+        printf '%s' "$s"
+      }
+
+      status=$(playerctl status 2>/dev/null || true)
+      if [[ -z "$status" || "$status" == "Stopped" ]]; then
+        echo '{"text":""}'
+        exit 0
+      fi
+      class=$(printf '%s' "$status" | tr '[:upper:]' '[:lower:]')
+      player=$(playerctl metadata --format '{{ playerName }}' 2>/dev/null || true)
+      artist=$(playerctl metadata artist 2>/dev/null || true)
+      title=$(playerctl metadata title 2>/dev/null || true)
+
+      artist_full=$(esc "$artist")
+      title_full=$(esc "$title")
+      if [[ -n "$artist_full" && -n "$title_full" ]]; then
+        dynamic_full="$artist_full - $title_full"
+      else
+        dynamic_full="$artist_full$title_full"
+      fi
+
+      case "$mode" in
+        compact)
+          icon="▶"
+          [[ "$player" == mpv* ]] && icon="🎵"
+          text="$icon"
+          [[ "$status" == "Paused" ]] && text="⏸"
+          ;;
+        full)
+          artist_t=$(esc "$(trunc "$artist")")
+          title_t=$(esc "$(trunc "$title")")
+          if [[ -n "$artist_t" && -n "$title_t" ]]; then
+            dynamic="$artist_t - $title_t"
+          else
+            dynamic="$artist_t$title_t"
+          fi
+          text="$dynamic"
+          [[ "$status" == "Paused" ]] && text="<i>$dynamic</i>"
+          ;;
+      esac
+
+      tooltip="$player ($status) $dynamic_full"
+      jq -nc --arg t "$text" --arg c "$class" --arg tt "$tooltip" \
+        '{text: $t, class: $c, tooltip: $tt}'
+    '';
+  };
 in
 {
   programs.fuzzel.enable = true;
@@ -138,30 +215,27 @@ in
           transition-left-to-right = false;
         };
         modules = [
-          "mpris#compact"
-          "mpris#full"
+          "custom/mpris#compact"
+          "custom/mpris#full"
         ];
       };
-      "mpris#compact" = {
-        format = "{player_icon}";
-        format-paused = "{status_icon}";
-        player-icons = {
-          default = "▶";
-          mpv = "🎵";
-        };
-        status-icons = {
-          paused = "⏸";
-        };
+      "custom/mpris#compact" = {
+        exec = "${mprisStatus}/bin/waybar-mpris-status compact";
+        return-type = "json";
+        interval = 1;
+        hide-empty-text = true;
+        on-click = "playerctl play-pause";
+        on-click-middle = "playerctl previous";
+        on-click-right = "playerctl next";
       };
-      "mpris#full" = {
-        artist-len = 24;
-        title-len = 24;
-        format = "{dynamic}";
-        format-paused = "<i>{dynamic}</i>";
-        dynamic-order = [
-          "artist"
-          "title"
-        ];
+      "custom/mpris#full" = {
+        exec = "${mprisStatus}/bin/waybar-mpris-status full";
+        return-type = "json";
+        interval = 1;
+        hide-empty-text = true;
+        on-click = "playerctl play-pause";
+        on-click-middle = "playerctl previous";
+        on-click-right = "playerctl next";
       };
       tray = {
         spacing = 4;
