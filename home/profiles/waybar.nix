@@ -1,5 +1,4 @@
 {
-  config,
   osConfig,
   lib,
   pkgs,
@@ -9,20 +8,6 @@
 
 let
   vpnNames = import ./resources/vpn-names.nix { inherit osConfig; };
-  vpnSelect = import ./resources/vpn-select.nix { inherit lib pkgs vpnNames; };
-
-  vpnMenu = pkgs.writeShellApplication {
-    name = "waybar-vpn-menu";
-    runtimeInputs = [
-      config.programs.fuzzel.package
-      vpnSelect
-    ];
-    text = ''
-      selected=$(vpn-select | fuzzel --dmenu --prompt "VPN> ")
-      [[ -n "$selected" ]] && vpn-select "$selected"
-    '';
-  };
-
   vpnStatus = pkgs.writeShellApplication {
     name = "waybar-vpn-status";
     runtimeInputs = [
@@ -180,14 +165,14 @@ in
           connected = "󰌾";
           disconnected = "󰌿";
         };
-        on-click = "${vpnMenu}/bin/waybar-vpn-menu";
+        on-click = "rofi -show vpn";
       };
       "custom/vpn#full" = {
         exec = "${vpnStatus}/bin/waybar-vpn-status";
         return-type = "json";
         interval = 1;
         format = "{}";
-        on-click = "${vpnMenu}/bin/waybar-vpn-menu";
+        on-click = "rofi -show vpn";
       };
       clock = {
         interval = 60;

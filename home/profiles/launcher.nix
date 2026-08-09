@@ -71,6 +71,8 @@ in
       icon-theme = "Papirus-Dark";
       me-select-entry = "";
       me-accept-entry = "MousePrimary";
+      click-to-exit = true;
+      global-kb = true;
 
       display-drun = "Applications";
       drun-display-format = "{name}";

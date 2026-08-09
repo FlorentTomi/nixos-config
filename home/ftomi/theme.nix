@@ -46,7 +46,10 @@ in
 
     gtk.icon.enable = true;
     fuzzel.enable = true;
-    hyprlock.enable = true;
+    hyprlock = {
+      enable = true;
+      useDefaultConfig = false;
+    };
     waybar.enable = true;
     starship.enable = false;
   };
