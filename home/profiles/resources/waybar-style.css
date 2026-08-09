@@ -115,43 +115,6 @@ window#waybar.empty #window {
 
 /* Right */
 
-/* Chrome lives on #custom-mpris (not the group) so it collapses to nothing
-   along with the module when hide-empty-text hides it — see mprisStatus in
-   waybar.nix for why the built-in mpris module couldn't do this. */
-#mpris-drawer {
-    margin: 0.5rem 0 0.5rem 0.5rem;
-}
-
-#custom-mpris {
-    background-color: @background;
-    border-top: 1px solid @background-alt;
-    border-bottom: 1px solid @background-alt;
-    padding: 0 0.5rem;
-}
-
-/* Idle: only "compact" is visible, so it gets a complete pill like every
-   other module (#tray, #clock, ...). Hovered: "full" slides out to its
-   left (transition-left-to-right: false anchors "compact" on the right),
-   so the shared seam is flattened on both and the outer corners keep the
-   rounding — :first-child/:last-child can't express this because "full"
-   is wrapped in a GtkRevealer for the animation, which breaks positional
-   selectors; class + :hover on the group see through that wrapper fine. */
-#custom-mpris.compact {
-    border-left: 1px solid @background-alt;
-    border-right: 1px solid @background-alt;
-    border-radius: 0.5rem;
-}
-
-#mpris-drawer:hover #custom-mpris.compact {
-    border-left: none;
-    border-radius: 0 0.5rem 0.5rem 0;
-}
-
-#mpris-drawer:hover #custom-mpris.full {
-    border-left: 1px solid @background-alt;
-    border-radius: 0.5rem 0 0 0.5rem;
-}
-
 #tray {
     background-color: @background;
     border: 1px solid @background-alt;
