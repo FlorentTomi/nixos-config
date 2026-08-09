@@ -38,6 +38,7 @@ in
   };
 
   catppuccin = {
+    autoEnable = true;
     enable = true;
     inherit flavor accent;
 

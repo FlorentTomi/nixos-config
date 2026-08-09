@@ -108,14 +108,18 @@ in
       disk = {
         interval = 10;
         format = "󰋊 {percentage_used}% (Free: {free})";
-        on-click = "ghostty --confirm-close-surface=false -e gdu -x /home";
-        on-click-right = "ghostty --confirm-close-surface=false -e gdu -x /";
+        on-click = "ghostty --confirm-close-surface=false -e diskonaut /home";
+        on-click-right = "ghostty --confirm-close-surface=false -e diskonaut /";
       };
 
       modules-center = [ "niri/window" ];
       "niri/window" = {
         separate-outputs = true;
         icon = true;
+        format = "{}";
+        rewrite = {
+          "(.*) — Ablaze Floorp" = "$1";
+        };
       };
 
       modules-right = [
