@@ -80,6 +80,7 @@ in
         interval = 5;
         format = " {usage}%";
         on-click = "ghostty --confirm-close-surface=false -e btop";
+        align = 0.5;
       };
       temperature = {
         interval = 5;
@@ -89,17 +90,20 @@ in
         # isn't (probe order can shift it on kernel/driver updates).
         hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
         input-filename = "temp1_input";
+        align = 0.5;
       };
       "custom/gpu" = {
         interval = 5;
         format = "󱓞 {}";
         tooltip = false;
         exec = "nvtop -s | jq -r '.[].gpu_util'";
+        align = 0.5;
       };
       memory = {
         interval = 5;
         format = "  {percentage}%";
         on-click = "ghostty --confirm-close-surface=false -e btop";
+        align = 0.5;
       };
       disk = {
         interval = 10;
