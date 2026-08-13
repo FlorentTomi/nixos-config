@@ -82,6 +82,7 @@ in
         format = "󱓞 {}";
         tooltip = false;
         exec = "nvtop -s | jq -r '.[].gpu_util'";
+        on-click = "ghostty --confirm-close-surface=false -e nvtop";
         align = 0.5;
       };
       memory = {
