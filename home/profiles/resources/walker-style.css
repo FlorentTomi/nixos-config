@@ -1,0 +1,88 @@
+/* Based on https://github.com/rahulkumarparida/Walker-themes */
+
+* {
+    all: unset;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 18px;
+    color: @@text@@;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+scrollbar {
+    opacity: 0;
+}
+
+.normal-icons {
+    -gtk-icon-size: 16px;
+}
+
+.large-icons {
+    -gtk-icon-size: 32px;
+}
+
+.box-wrapper {
+    background-image:
+        linear-gradient(
+            rgba(@@base-rgb@@, 0.9),
+            rgba(@@surface0-rgb@@, 0.95)
+        ),
+        url(@@background-image@@);
+    background-size: cover;
+    background-position: center;
+    padding: 16px;
+    border: 2px solid @@surface2@@;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(@@mauve-rgb@@, 0.2);
+}
+
+.search-container {
+    background: rgba(@@base-rgb@@, 0.8);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid @@lavender@@;
+}
+
+.input {
+    color: @@mauve@@;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+child .item-box {
+    border-radius: 8px;
+    border: 1px solid transparent;
+}
+
+child:hover .item-box {
+    background: rgba(@@mauve-rgb@@, 0.15);
+    border: 1px solid rgba(@@mauve-rgb@@, 0.4);
+}
+
+child:selected .item-box {
+    background: linear-gradient(
+        90deg,
+        rgba(@@lavender-rgb@@, 0.4) 0%,
+        rgba(@@base-rgb@@, 0) 100%
+    );
+    border-left: 4px solid @@mauve@@;
+    border-radius: 8px;
+}
+
+child:selected .item-box * {
+    color: @@rosewater@@;
+    text-shadow: 0 0 8px rgba(@@mauve-rgb@@, 0.6);
+    font-weight: bold;
+}
+
+.item-box {
+    padding-left: 14px;
+}
+
+.item-text-box {
+    padding: 12px 0;
+}
+
+.item-image {
+    margin-right: 14px;
+}
