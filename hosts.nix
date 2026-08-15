@@ -8,7 +8,7 @@
       "shell"
       "dual-monitor"
       "waybar"
-      "launcher"
+      "walker"
       "lock"
       "powermenu"
       "session"
