@@ -56,8 +56,7 @@
           nix-index-database
           ;
       };
+      mkHome = import ./lib/mk-home.nix { inherit inputs home-manager; };
     in
-    {
-      nixosConfigurations = import ./hosts.nix { inherit mkHost; };
-    };
+    import ./hosts.nix { inherit mkHost mkHome; };
 }
