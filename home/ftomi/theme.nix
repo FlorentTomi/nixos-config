@@ -6,7 +6,7 @@
 }:
 let
   flavor = "macchiato";
-  accent = "mauve";
+  accent = "lavender";
 
   system = pkgs.stdenv.hostPlatform.system;
 
