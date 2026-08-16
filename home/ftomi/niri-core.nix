@@ -1,8 +1,3 @@
-# Genuinely core niri: window/workspace management, layout, hardware-level
-# media/screenshot keys. No app-launch binds here — those live with the
-# capability that provides the app (see e.g. profiles/launcher.nix,
-# profiles/lock.nix, profiles/shell.nix) so a host that imports only
-# niri-core gets a working (if sparse) WM with no dangling spawn targets.
 {
   config,
   pkgs,
@@ -13,45 +8,23 @@
 }:
 
 {
-  # modules/niri.nix (NixOS-level) still imports niri-flake's nixosModules.niri
-  # for systemd/portal/polkit wiring. That module unconditionally injects its
-  # own homeModules.config into home-manager.sharedModules whenever
-  # home-manager is present at all — regardless of whether we ever touch
-  # programs.niri ourselves — which writes its own niri/config.kdl in
-  # parallel with wayland.windowManager.niri below. Same target file, two
-  # writers, hence the "Conflicting managed target files" assertion.
-  # Disabling niri-flake's entry by its xdg.configFile key (not the target
-  # path) leaves ours as the only writer.
   xdg.configFile.niri-config.enable = lib.mkForce false;
 
   wayland.windowManager.niri = {
     enable = true;
     package = pkgs.niri;
-
-    # modules/niri.nix (NixOS-level, via niri-flake) already installs niri's
-    # systemd units and configures xdg-portal system-wide. Disable this
-    # module's own copies of both so we don't end up with two sources of
-    # truth for the same thing.
     systemd.enable = false;
     portalPackage = null;
-    # xwayland-satellite is already declared explicitly below in
-    # home.packages, so don't let this module add a second copy.
+
     xwaylandSatellitePackage = null;
     settings = {
       input = {
         keyboard = {
-          # best-effort: numlock is a flag in niri's KDL grammar (no
-          # argument), not a bool-valued node. Verify with `niri validate`.
           numlock = { };
-          # Single source of truth: profiles/ftomi/locale.nix sets
-          # services.xserver.xkb.layout; read it back instead of duplicating
-          # the layout string here.
           xkb.layout = osConfig.services.xserver.xkb.layout;
         };
       };
 
-      # spawn-at-startup takes its command as positional node arguments
-      # (`spawn-at-startup "cmd" "arg"`), not a named `argv` property.
       _children = [
         {
           spawn-at-startup._args = [
@@ -66,16 +39,14 @@
 
       layout = {
         gaps = 0;
-        # best-effort: also a flag node. `false` is niri's default, so
-        # omitting it entirely has the same effect — leaving this comment
-        # instead of the line so the intent isn't lost.
-        # always-center-single-column = false;
+
         preset-column-widths._children = [
           { proportion = 1. / 3.; }
           { proportion = 1. / 2.; }
           { proportion = 2. / 3.; }
           { proportion = 1.; }
         ];
+
         default-column-width = {
           proportion = 1. / 2.;
         };
@@ -87,15 +58,8 @@
           { proportion = 1.; }
         ];
 
-        # This is the actual fix for the active border extending past
-        # screen edges: with gaps = 0 above, niri's *default* focus-ring
-        # (drawn outside each window, in the gap) has no gap to render
-        # into at screen edges, so it bleeds past the visible area.
-        # niri-flake's Stylix module used to disable focus-ring and switch
-        # to `border` instead, which is drawn as part of the window's own
-        # space and doesn't need a gap to render correctly. Both nest
-        # under `layout`, not top-level.
         focus-ring.off = { };
+
         border = {
           active-color = "#${catppuccinPalette.blue}";
           inactive-color = "#${catppuccinPalette.overlay0}";
@@ -103,25 +67,14 @@
       };
 
       hotkey-overlay = {
-        # best-effort: flag node.
         skip-at-startup = { };
       };
 
-      # cursor IS top-level (unlike focus-ring/border above, which nest
-      # under layout) — matches niri's actual node hierarchy.
       cursor = {
-        # niri's actual KDL node names are xcursor-theme / xcursor-size —
-        # niri-flake's typed schema called these `theme`/`size` internally
-        # and translated them under the hood; the freeform module doesn't,
-        # so the raw KDL names have to be used directly here. Sourced from
-        # home.pointerCursor (theme.nix) rather than Stylix now.
         xcursor-theme = config.home.pointerCursor.name;
         xcursor-size = config.home.pointerCursor.size;
       };
 
-      # NVIDIA-specific Wayland/DRM env vars — only relevant if this host
-      # actually has the nvidia module enabled, so a laptop with a
-      # different/no discrete GPU doesn't inherit them.
       environment = lib.mkIf osConfig.modules.nvidia.enable {
         LIBVA_DRIVER_NAME = "nvidia";
         XDG_SESSION_TYPE = "wayland";
@@ -255,18 +208,18 @@
         ];
 
         "Print".screenshot = { };
-        "Ctrl+Print".screenshot-screen = { };
-        "Alt+Print".screenshot-window = { };
+        "Ctrl+Print".screenshot-screen = {
+          _props.write-to-disk = false;
+        };
+        "Alt+Print".screenshot-window = {
+          _props.write-to-disk = false;
+        };
 
         "Ctrl+Alt+Delete".quit = { };
       };
 
-      # best-effort: prefer-no-csd is a top-level flag node.
       prefer-no-csd = { };
-      # best-effort: animations are enabled by default; an empty block just
-      # documents intent without changing behavior.
       animations = { };
-      # best-effort: `off` is niri's flag for disabling hot-corners.
       gestures.hot-corners.off = { };
     };
   };

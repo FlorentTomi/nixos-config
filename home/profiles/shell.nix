@@ -4,11 +4,9 @@
   osConfig,
   ...
 }:
-
 let
   vpnNames = import ./resources/vpn-names.nix { inherit osConfig; };
 in
-
 {
   programs.btop.enable = true;
   programs.bat.enable = true;
@@ -60,8 +58,6 @@ in
 
   programs.nix-index.enableFishIntegration = true;
 
-  # Starship's colors come from its own "catppuccin-powerline" preset below,
-  # not from any theming framework — no coordination needed here.
   programs.starship = {
     enable = true;
     enableFishIntegration = true;

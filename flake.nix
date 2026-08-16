@@ -27,12 +27,6 @@
       url = "github:yazi-rs/plugins";
       flake = false;
     };
-
-    # Backend data-provider service Walker talks to over a Unix socket —
-    # not optional, even for plain drun-style app search (see
-    # home/profiles/launcher-walker.nix). Pinned via walker's own
-    # `inputs.elephant.follows` below so the two are always built from a
-    # matching pair of versions, same as any other paired inputs here.
     elephant = {
       url = "github:abenz1267/elephant";
       inputs.nixpkgs.follows = "nixpkgs";
