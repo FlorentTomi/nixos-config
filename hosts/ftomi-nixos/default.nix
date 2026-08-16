@@ -7,7 +7,6 @@
     ../base/portals.nix
     ../base/boot.nix
     ../base/networking.nix
-    ../base/display-manager.nix
     ../base/sops.nix
     ../base/nix-utils.nix
     ../base/snapshots.nix
@@ -23,6 +22,7 @@
     ../../modules/virtualisation.nix
 
     # this exact machine
+    ../profiles/sddm.nix
     ./hardware-configuration.nix
     ./disko-config.nix
     ./users.nix

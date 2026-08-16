@@ -39,6 +39,11 @@
     nixvim = {
       url = "github:nix-community/nixvim";
     };
+    sddm-qylock = {
+      url = "github:Darkkal44/qylock";
+      inputs.nixpkgs.follows = "nixpkgs";
+
+    };
   };
 
   outputs =
