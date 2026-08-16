@@ -46,7 +46,11 @@ inputs.nixpkgs.lib.nixosSystem {
         imports = [ ../home/${user} ] ++ map (p: ../home/profiles + "/${p}.nix") homeProfiles;
       };
 
-      nixpkgs.overlays = import ./overlays.nix;
+      nixpkgs.overlays = [
+        (final: prev: {
+          dashlane-cli = final.callPackage ../pkgs/dashlane-cli.nix { };
+        })
+      ];
     }
   ];
 }
