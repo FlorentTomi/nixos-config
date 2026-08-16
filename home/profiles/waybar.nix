@@ -56,7 +56,7 @@ in
         "disk"
       ];
       "custom/power" = {
-        format = "󰐥";
+        format = "󰍃";
         tooltip = false;
         on-click = "wleave";
         min-length = 4;

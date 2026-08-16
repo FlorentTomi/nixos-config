@@ -10,7 +10,6 @@ in
 {
   programs.btop.enable = true;
   programs.bat.enable = true;
-  programs.neovim.enable = true;
 
   programs.ghostty = {
     enable = true;
