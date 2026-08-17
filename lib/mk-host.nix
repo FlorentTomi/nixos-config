@@ -1,10 +1,10 @@
 # Builds one nixosConfiguration from a host definition (see ../hosts.nix).
 #
-# One host = one hardware/identity dir under ./hosts, plus which optional
-# Home Manager profiles that user should get on that host. `home/${user}`
+# One host = one hardware/identity dir under ./hosts. `home/${user}`
 # (identity: always-on regardless of host) is imported unconditionally;
-# homeProfiles are opt-in extras composed here so the combination is visible
-# at the call site instead of buried in a bundle file. Desktop environment
+# `hosts/${hostname}/home.nix` is that host's own list of opt-in
+# home-manager profiles — a single, self-contained entrypoint instead of a
+# string-list stitched together here. Desktop environment
 # (niri, ...) at the NixOS level is each host's own choice, wired from its
 # own imports (see modules/niri.nix). Theming (Catppuccin, via
 # home/ftomi/theme.nix) is scoped entirely to the user's home-manager
@@ -18,7 +18,6 @@
 {
   hostname,
   user,
-  homeProfiles ? [ ],
   system ? "x86_64-linux",
   # Physical disk to install/boot from, as a stable /dev/disk/by-id path.
   # Override per-call (or via `--arg diskDevice ...` / disko-install's own
@@ -43,7 +42,10 @@ inputs.nixpkgs.lib.nixosSystem {
         inherit inputs;
       };
       home-manager.users.${user} = {
-        imports = [ ../home/${user} ] ++ map (p: ../home/profiles + "/${p}.nix") homeProfiles;
+        imports = [
+          ../home/${user}
+          ../hosts/${hostname}/home.nix
+        ];
       };
 
       nixpkgs.overlays = [

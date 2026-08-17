@@ -16,7 +16,7 @@ let
   flavorColors = paletteData.${flavor}.colors;
 
   # Hex, without the leading '#' — e.g. palette.blue -> "89b4fa" — matching
-  # what niri-core.nix/waybar.nix/launcher.nix already expect.
+  # what niri.nix/waybar.nix/launcher.nix already expect.
   palette = lib.mapAttrs (_name: c: lib.removePrefix "#" c.hex) flavorColors;
   cssPaletteRgb = lib.mapAttrs' (name: _: lib.nameValuePair "${name}-rgb" (rgbOf name)) flavorColors;
   cssPalette = (lib.mapAttrs (_name: hex: "#${hex}") palette) // cssPaletteRgb;

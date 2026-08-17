@@ -33,8 +33,6 @@ let
   };
 in
 {
-  programs.fuzzel.enable = true;
-
   programs.waybar = {
     enable = true;
     systemd.enable = true;

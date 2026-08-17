@@ -1,7 +1,7 @@
 # Reusable single-disk GPT + btrfs layout.
 #
 # Every host shares the core subvolumes (@, @home, @nix, @log) since
-# hosts/base/snapshots.nix backs those up on every host unconditionally.
+# hosts/base/btrbk.nix backs those up on every host unconditionally.
 # Host-specific subvolumes (e.g. @games) are passed in via extraSubvolumes
 # and are NOT snapshotted by base — add host-specific backup config
 # alongside whatever host declares the extra subvolume, if needed.

@@ -3,13 +3,17 @@
   imports = [
     # shared across any host
     ../base/nix.nix
-    ../base/audio.nix
-    ../base/portals.nix
-    ../base/boot.nix
-    ../base/networking.nix
+    ../base/pipewire.nix
+    ../base/dconf.nix
+    ../base/xdg-portal.nix
+    ../base/bootloader.nix
+    ../base/zram.nix
+    ../base/networkmanager.nix
+    ../base/tailscale.nix
     ../base/sops.nix
-    ../base/nix-utils.nix
-    ../base/snapshots.nix
+    ../base/nix-ld.nix
+    ../base/envfs.nix
+    ../base/btrbk.nix
 
     # personal preferences, same across any host you'd use
     ../../profiles/ftomi/locale.nix
@@ -20,6 +24,7 @@
     ../../modules/openvpn.nix
     ../../modules/console.nix
     ../../modules/virtualisation.nix
+    ../../modules/ollama.nix
 
     # this exact machine
     ../profiles/sddm.nix
@@ -28,13 +33,20 @@
     ./users.nix
     ./boot.nix
     ./networking.nix
-    ./storage.nix
-    ./system.nix
-    ./gaming.nix
+    ./fstrim.nix
+    ./smartd.nix
+    ./coolercontrol.nix
+    ./via.nix
+    ./bluetooth.nix
+    ./openvpn-polkit.nix
+    ./steam.nix
+    ./gamemode.nix
+    ./sunshine.nix
   ];
 
   modules.nvidia.enable = true;
   modules.niri.enable = true;
+  # modules.ollama.enable = true;
   modules.virtualisation = {
     enable = true;
     users = [ "ftomi" ];

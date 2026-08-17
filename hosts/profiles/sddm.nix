@@ -1,14 +1,19 @@
-{ inputs, ... }:
+{ pkgs, ... }:
+let
+  sddm-astronaut = (
+    pkgs.sddm-astronaut.override {
+      embeddedTheme = "jake_the_dog";
+    }
+  );
+in
 {
-  imports = [ inputs.sddm-qylock.nixosModules.default ];
-
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
+    theme = "sddm-astronaut-theme";
   };
 
-  programs.qylock = {
-    enable = true;
-    theme = "pixel-night-city";
-  };
+  environment.systemPackages = [
+    sddm-astronaut
+  ];
 }

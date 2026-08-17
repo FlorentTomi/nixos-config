@@ -1,6 +1,6 @@
 # This machine's specific monitor topology (4K primary + 144Hz secondary).
 # Not portable to other hardware — kept as an opt-in profile rather than in
-# niri-core so a host with different/no external monitors doesn't inherit it.
+# home/ftomi/niri.nix so a host with different/no external monitors doesn't inherit it.
 { ... }:
 {
   # wayland.windowManager.niri.settings is freeform/generic KDL, not
