@@ -1,77 +1,42 @@
 # nixos-config
 
 NixOS + Home Manager flake for `ftomi`'s desktop — AMD 5800X, RTX 3060 (open
-kernel module), Niri (structured config via niri-flake, not raw KDL), Stylix
-theming, Ly login, Steam/gaming.
+kernel module), Niri (structured config via niri-flake, not raw KDL),
+Catppuccin theming, SDDM login, Steam/gaming.
 
-## Day-to-day
+## Layout
 
-```bash
-cd ~/nixos-config
-# edit whatever you need
-sudo nixos-rebuild switch --flake .#ftomi-nixos
-```
+- `home/<user>/` — home-manager **identity**: always on for that user,
+  regardless of host. One file per program (`git.nix`, `neovim.nix`,
+  `niri.nix`, ...).
+- `home/profiles/` — home-manager **opt-in** pieces a host can pick from.
+  Single-program profiles are a flat `program-name.nix`; anything that used
+  to bundle several programs is a directory (`shell/`, `session/`, `gaming/`,
+  `hobbies/`) with a `default.nix` that imports the split-out files, so it's
+  still one path to import.
+- `hosts/base/` — NixOS config shared by every host, one file per subsystem
+  (`pipewire.nix`, `tailscale.nix`, `bootloader.nix`, ...).
+- `hosts/<name>/` — one machine. `default.nix` wires together `base/`,
+  `modules/`, this machine's own files (kernel tuning, hardware-specific
+  services...), and `disko-config.nix`. `home.nix` lists exactly the
+  `home/profiles/*` this host wants — the single home-manager entrypoint.
+- `modules/` — toggleable NixOS subsystems with their own
+  `options.modules.<name>.enable` (nvidia, niri, openvpn, virtualisation,
+  console, ollama).
+- `profiles/<person>/` — personal preferences that aren't host-specific
+  (locale, keyboard layout).
+- `lib/mk-host.nix` — builds one `nixosConfiguration` from a host definition
+  in `hosts.nix`.
 
-No reboot needed *except* for: kernel changes, bootloader changes, display/GPU
-driver changes, or display-manager swaps. Everything else (packages, niri config,
-waybar, dotfiles, services) applies live.
+Adding a program to this user's identity, or to an opt-in profile, is one new
+`program-name.nix` file plus one line in the relevant `default.nix`.
 
-## Try before committing
-
-```bash
-sudo nixos-rebuild test --flake .#ftomi-nixos
-```
-
-Applies for this session only. Reboot reverts cleanly to the last `switch`ed
-generation if something's broken — nothing is made permanent until you `switch`.
-
-## Rollback
-
-```bash
-sudo nixos-rebuild switch --rollback
-```
-
-Or pick an older generation directly from the Limine boot menu at boot.
-
-## List generations
-
-```bash
-nix-env --list-generations --profile /nix/var/nix/profiles/system
-```
-
-## Garbage collection
-
-```bash
-# Daily automatic cleanup already configured (nix.gc in hosts/base/nix.nix),
-# deletes generations older than 2 days. To do it manually right now instead:
-sudo nix-collect-garbage -d      # deletes ALL old generations, keeps only current
-```
-
-## Finding a package to add
-
-```bash
-nix search nixpkgs 
-```
-Or browse https://search.nixos.org/packages — and check
-https://search.nixos.org/options first for a structured `programs.<name>` /
-`services.<name>` module before just dropping it in `home.packages` /
-`environment.systemPackages`.
-
-## Try a package once, without adding it to config
-
-```bash
-nix shell nixpkgs#
-```
-
-## Installing on new hardware
+## First install (new machine)
 
 Disk layout (partitions, btrfs subvolumes `@`, `@home`, `@nix`, `@log`,
 `@games`) is declared once in `hosts/<name>/disko-config.nix` and driven by
 [disko](https://github.com/nix-community/disko). You should never need to
-manually `mkfs`, `btrfs subvolume create`, or hand-edit `fileSystems` again —
-disko generates all of that from the flake.
-
-### Fresh install (recommended: `disko-install`)
+manually `mkfs`, `btrfs subvolume create`, or hand-edit `fileSystems`.
 
 1. Boot the NixOS minimal ISO on the target machine.
 2. Find the target disk's stable identifier (never use `/dev/sda`-style
@@ -80,8 +45,7 @@ disko generates all of that from the flake.
    ls -l /dev/disk/by-id/
    ```
 3. Run `disko-install`, pointing `--disk main` at that path. This partitions,
-   formats, mounts, and installs in one step — no manual partitioning, no
-   `nixos-generate-config` for filesystems:
+   formats, mounts, and installs in one step:
    ```bash
    sudo nix run github:nix-community/disko/latest#disko-install -- \
      --flake github:FlorentTomi/nixos-config#ftomi-nixos \
@@ -89,37 +53,24 @@ disko generates all of that from the flake.
      --write-efi-boot-entries
    ```
    The `--disk main <device>` flag overrides the disk path for this install
-   **without needing to edit any file in the repo first** — this is what
-   makes the config portable across different physical disks/machines.
+   **without editing the repo first** — that's what makes the config
+   portable across physical disks/machines.
 4. Reboot into the new system.
 5. **After confirming it boots correctly**, update the default disk path so
    future `nixos-rebuild switch` runs (which don't go through
    `disko-install`, so don't get the `--disk` override) use the right device
-   too — edit `diskDevice` for this host in `flake.nix`:
+   too — edit `diskDevice` for this host in `hosts.nix`:
    ```nix
-   nixosConfigurations.ftomi-nixos = mkHost {
+   ftomi-nixos = mkHost {
      # ...
      diskDevice = "/dev/disk/by-id/<the-disk-you-actually-installed-on>";
    };
    ```
-   Commit that change. This step only matters if the disk differs from
-   what's already set — reinstalling onto the *same* physical disk needs no
-   edit at all.
+   Commit that change. Only needed if the disk differs from what's already
+   set — reinstalling onto the *same* physical disk needs no edit.
 
-### Adding a brand new host
-
-If you're setting up a different machine (not replacing this one's disk),
-copy `hosts/ftomi-nixos/disko-config.nix` into the new host's directory,
-adjust subvolume names/mountpoints if needed, and give it its own
-`diskDevice` when registering it in `flake.nix` (see step below). Each host
-gets its own disk identity — never share a `diskDevice` value between two
-different machines.
-
-### What's still genuinely per-machine
-
-Disko covers disk layout, but two things still need generating/checking on
-first install of *any* new host, since they depend on physical hardware
-disko doesn't know about:
+Two things disko can't cover, still need doing by hand on first install of
+*any* new host:
 
 - **`hardware-configuration.nix`'s non-filesystem parts** (kernel modules,
   CPU microcode) — generate with filesystems excluded, since disko already
@@ -127,47 +78,137 @@ disko doesn't know about:
   ```bash
   sudo nixos-generate-config --no-filesystems --root /mnt
   ```
-- **sops-nix age/GPG key** — must be present on the new machine before
-  secrets will decrypt; this is unrelated to disko and has to be bootstrapped
-  separately (copy the key, or generate + re-encrypt secrets for the new
-  host's key).
+- **sops-nix age key** — must be present on the new machine before secrets
+  decrypt (`/var/lib/sops-nix/key.txt`); copy it over or generate a new one
+  and re-encrypt secrets for this host's key.
+
+## Subsequent builds / switches
+
+This config uses [`nh`](https://github.com/nix-community/nh) (`programs.nh`,
+`hosts/base/nix.nix`) instead of raw `nixos-rebuild` — nicer diff/output via
+`nix-output-monitor`, and `NH_FLAKE` is already pointed at this repo so no
+`--flake .#hostname` needed. `nh` finds `sudo` itself; don't prefix it.
+
+```bash
+cd ~/nixos-config
+# edit whatever you need
+nh os switch                # or: ./nixos-switch.sh
+```
+
+No reboot needed *except* for: kernel changes, bootloader changes,
+display/GPU driver changes, or display-manager swaps. Everything else
+(packages, niri config, waybar, dotfiles, services) applies live.
+
+### Try before committing
+
+```bash
+nh os test
+```
+
+Applies for this session only. Reboot reverts cleanly to the last `switch`ed
+generation if something's broken — nothing is made permanent until you
+`nh os switch` (or `nh os boot`, which sets the boot default without
+activating now).
+
+### Rollback
+
+```bash
+nh os rollback              # previous generation
+nh os rollback --to <N>     # a specific one
+```
+
+Or pick an older generation directly from the Limine boot menu at boot.
+
+### List generations
+
+```bash
+nh os info
+```
+
+## Updates
+
+Update every flake input (nixpkgs, home-manager, niri, walker, nixvim, ...)
+and switch in one go:
+
+```bash
+nh os switch --update
+```
+
+Update just one input instead:
+
+```bash
+nh os switch --update-input nixpkgs
+```
+
+Either way, review `flake.lock`'s diff (`git diff flake.lock`) before
+trusting the result, and commit it once you've confirmed the new generation
+boots and works. `--update`/`--update-input` also work with `nh os
+test`/`build` if you want to check before committing to a switch.
+
+### Garbage collection
+
+`hosts/base/nix.nix` already runs `nh clean` daily (`--keep 5 --keep-since
+2d`), so old generations get pruned automatically. To do it manually right
+now instead:
+
+```bash
+nh clean all --keep 5 --keep-since 2d
+```
+
+## Finding a package to add
+
+```bash
+nix search nixpkgs <name>
+```
+
+Or browse https://search.nixos.org/packages — and check
+https://search.nixos.org/options first for a structured `programs.<name>` /
+`services.<name>` module before just dropping it in `home.packages` /
+`environment.systemPackages`.
+
+### Try a package once, without adding it to config
+
+```bash
+nix shell nixpkgs#<name>
+```
 
 ## Adding a new host
 
-Each host is one hardware/identity directory under `./hosts`, wired up by the
-`mkHost` function in `flake.nix`. Everything else — Stylix, Niri, Home Manager
-plumbing, overlays — is shared automatically.
-
 1. **Generate the hardware facts** (filesystems excluded — disko supplies
-   those via `disko-config.nix`, see "Installing on new hardware" above):
+   those via `disko-config.nix`):
    ```bash
    sudo nixos-generate-config --no-filesystems --show-hardware-config > hosts/<name>/hardware-configuration.nix
    ```
-1b. **Write `hosts/<name>/disko-config.nix`** describing the disk layout for
-   this host (copy `hosts/ftomi-nixos/disko-config.nix` as a starting point).
-2. **Create `hosts/<name>/default.nix`**, modeled on `hosts/ftomi-nixos/default.nix`:
-   - import the `common/*.nix` modules you want (most hosts want all of them)
-   - import a `profiles/<person>/*.nix` set for personal preferences (locale,
-     Stylix theme, login theme) — reuse `profiles/ftomi` or add a new one
+2. **Write `hosts/<name>/disko-config.nix`** describing the disk layout
+   (copy `hosts/ftomi-nixos/disko-config.nix` as a starting point).
+3. **Create `hosts/<name>/default.nix`**, modeled on
+   `hosts/ftomi-nixos/default.nix`:
+   - import the `hosts/base/*.nix` files you want (most hosts want all of
+     them)
+   - import a `profiles/<person>/*.nix` set for personal preferences (reuse
+     `profiles/ftomi` or add a new one)
    - import any `modules/*.nix` toggles this machine needs (e.g.
      `modules/nvidia.nix`) and set the corresponding `modules.<name>.enable`
    - import `./hardware-configuration.nix`, `./disko-config.nix`, plus any
      host-only files (kernel/boot tuning, networking hostname, etc.)
    - set `system.stateVersion` to whatever release was current when the host
      was first installed — **never change this retroactively**
-3. **Register it in `flake.nix`**, including its `diskDevice` (see
-   "Installing on new hardware" above for finding this):
+4. **Create `hosts/<name>/home.nix`** listing the `home/profiles/*` this
+   host should get (see any existing `hosts/*/home.nix` for the pattern).
+5. **Register it in `hosts.nix`**, including its `diskDevice` (see "First
+   install" above for finding this):
    ```nix
-   nixosConfigurations.<name> = mkHost {
+   <name> = mkHost {
      hostname = "<name>";
-     user = "<name>";
-     homeProfile = "<profile>";
+     user = "<user>";
      diskDevice = "/dev/disk/by-id/<this-host's-disk>";
    };
    ```
-4. Rebuild with `sudo nixos-rebuild switch --flake .#<name>`.
+6. Rebuild with `nh os switch --hostname <name>` (or `-H <name>`) — needed
+   the first time since `NH_FLAKE`'s default hostname resolution won't yet
+   match on a machine that isn't `<name>` itself.
 
-`hardware-configuration.nix`, `disko-config.nix`'s referenced `diskDevice`,
-and any other genuinely machine-specific file (hostname, etc.) should never
-be shared between hosts — everything else under `common/`, `profiles/`, and
+`hardware-configuration.nix`, `disko-config.nix`, `diskDevice`, and any other
+genuinely machine-specific file (hostname, etc.) should never be shared
+between hosts — everything under `hosts/base/`, `home/`, `profiles/`, and
 `modules/` is written to be reused.
