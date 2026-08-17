@@ -2,7 +2,18 @@
 # Not portable to other hardware — kept as an opt-in profile rather than in
 # home/ftomi/niri.nix so a host with different/no external monitors doesn't inherit it.
 { ... }:
+
+let
+  outputs = [
+    "DP-1"
+    "HDMI-A-1"
+  ];
+in
 {
+  _module.args = {
+    monitors = outputs;
+  };
+
   # wayland.windowManager.niri.settings is freeform/generic KDL, not
   # niri-flake's typed `outputs` schema — niri's `output` node is a repeated
   # top-level node (name as an argument, not an attrset key), so each
