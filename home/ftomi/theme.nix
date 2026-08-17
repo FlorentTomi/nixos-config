@@ -19,8 +19,7 @@ let
   # what niri.nix/waybar.nix/launcher.nix already expect.
   palette = lib.mapAttrs (_name: c: lib.removePrefix "#" c.hex) flavorColors;
   cssPaletteRgb = lib.mapAttrs' (name: _: lib.nameValuePair "${name}-rgb" (rgbOf name)) flavorColors;
-  cssPalette = (lib.mapAttrs (_name: hex: "#${hex}") palette) // cssPaletteRgb;
-
+  cssPalette = cssPaletteRgb // (lib.mapAttrs (_name: hex: "#${hex}") palette);
 
   # Decimal "r, g, b" for a color name, read directly from the same JSON
   # (it ships pre-computed decimal RGB, so no hex-parsing needed on our
@@ -48,6 +47,16 @@ in
         names = builtins.attrNames tokens;
       in
       builtins.replaceStrings (map (n: "@@${n}@@") names) (map (n: tokens.${n}) names) text;
+    catppuccinScss =
+      {
+        text,
+        extra ? { },
+      }:
+      let
+        tokens = cssPalette // extra;
+        names = builtins.attrNames tokens;
+      in
+      builtins.replaceStrings (map (n: "\$${n}") names) (map (n: tokens.${n}) names) text;
   };
 
   catppuccin = {

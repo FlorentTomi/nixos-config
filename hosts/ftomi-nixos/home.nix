@@ -17,5 +17,6 @@
     ../../home/profiles/hobbies
     ../../home/profiles/pasystray.nix
     ../../home/profiles/work.nix
+    ../../home/profiles/eww.nix
   ];
 }
