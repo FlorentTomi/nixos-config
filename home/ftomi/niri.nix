@@ -25,18 +25,6 @@
         };
       };
 
-      _children = [
-        {
-          spawn-at-startup._args = [
-            "waypaper"
-            "--restore"
-          ];
-        }
-        {
-          spawn-at-startup._args = [ "pasystray" ];
-        }
-      ];
-
       layout = {
         gaps = 0;
 
@@ -61,7 +49,7 @@
         focus-ring.off = { };
 
         border = {
-          active-color = "#${catppuccinPalette.blue}";
+          active-color = "#${catppuccinPalette.lavender}";
           inactive-color = "#${catppuccinPalette.overlay0}";
         };
       };
@@ -86,13 +74,6 @@
 
       binds = {
         "Mod+F1".show-hotkey-overlay = { };
-
-        "Mod+P".spawn = [
-          "ghostty"
-          "--confirm-close-surface=false"
-          "-e"
-          "nirimon"
-        ];
 
         "Mod+WheelScrollDown".focus-workspace-down = { };
         "Mod+WheelScrollUp".focus-workspace-up = { };
@@ -159,54 +140,6 @@
           close-window = { };
         };
 
-        "XF86AudioRaiseVolume".spawn = [
-          "swayosd-client"
-          "--output-volume"
-          "raise"
-        ];
-
-        "XF86AudioLowerVolume".spawn = [
-          "swayosd-client"
-          "--output-volume"
-          "lower"
-        ];
-
-        "XF86AudioMute".spawn = [
-          "swayosd-client"
-          "--output-volume"
-          "mute-toggle"
-        ];
-
-        "XF86AudioMicMute".spawn = [
-          "swayosd-client"
-          "--input-volume"
-          "mute-toggle"
-        ];
-
-        "XF86AudioPlay".spawn = [
-          "swayosd-client"
-          "--playerctl"
-          "play-pause"
-        ];
-
-        "XF86AudioStop".spawn = [
-          "swayosd-client"
-          "--playerctl"
-          "stop"
-        ];
-
-        "XF86AudioPrev".spawn = [
-          "swayosd-client"
-          "--playerctl"
-          "prev"
-        ];
-
-        "XF86AudioNext".spawn = [
-          "swayosd-client"
-          "--playerctl"
-          "next"
-        ];
-
         "Print".screenshot = { };
         "Ctrl+Print".screenshot-screen = {
           _props.write-to-disk = false;
@@ -226,6 +159,5 @@
 
   home.packages = [
     pkgs.xwayland-satellite
-    pkgs.nirimon
   ];
 }
