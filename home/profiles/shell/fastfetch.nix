@@ -12,19 +12,19 @@
         }
         {
           type = "os";
-          key = "   OS";
+          key = "   OS";
         }
         {
           type = "kernel";
-          key = "   Kernel";
+          key = "  󰌽 Kernel";
         }
         {
           type = "packages";
-          key = "  󰏗 Packages";
+          key = "  󰏓 Packages";
         }
         {
           type = "display";
-          key = "   Display";
+          key = "  󰍹 Display";
         }
         {
           type = "wm";
@@ -33,14 +33,18 @@
         }
         {
           type = "terminalfont";
-          key = "   Font";
+          key = "   Font";
         }
         {
           type = "terminal";
-          key = "   Terminal";
+          key = "   Terminal";
           format = "{1}";
         }
-
+        {
+          type = "shell";
+          format = "{1} {4}";
+          key = "   Shell";
+        }
         {
           type = "custom";
           format = "└─────────────────────────────────────────────────────────┘";
@@ -62,16 +66,11 @@
         {
           type = "gpu";
           format = "{1} {2} {12} Ghz";
-          key = "  󰋵 GPU";
-        }
-        {
-          type = "shell";
-          format = "{1} {4}";
-          key = "   Shell";
+          key = "  󱓞 GPU";
         }
         {
           type = "memory";
-          key = "  󰀚 Memory";
+          key = "   Memory";
         }
         {
           type = "command";

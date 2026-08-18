@@ -16,17 +16,17 @@
         :text {MEDIA.artist}{MEDIA.album != "" ? "  ·  ${MEDIA.album}" : ""})
       (box :class "media-controls" :orientation "h" :space-evenly false :spacing 6 :halign "start"
         (button :class "media-btn" :onclick "playerctl previous"
-          (box :width 20 :height 20 :halign "center" :valign "center" "⏮"))
+          (box :width 20 :height 20 :halign "center" :valign "center" ""))
         (button :class "media-btn media-btn-main" :onclick "playerctl play-pause"
           (overlay
             (box :width 20 :height 20 :halign "center" :valign "center"
               :class {MEDIA.status == "Playing" ? "media-icon-show" : "media-icon-hide"}
-              "⏸")
+              "")
             (box :width 20 :height 20 :halign "center" :valign "center"
               :class {MEDIA.status == "Playing" ? "media-icon-hide" : "media-icon-show"}
-              "▶")))
+              "")))
         (button :class "media-btn" :onclick "playerctl next"
-          (box :width 20 :height 20 :halign "center" :valign "center" "⏭"))))))
+          (box :width 20 :height 20 :halign "center" :valign "center" ""))))))
 
 (defwindow media
   :stacking "bg"

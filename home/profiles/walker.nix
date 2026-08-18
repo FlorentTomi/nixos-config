@@ -2,6 +2,7 @@
   inputs,
   catppuccinCss,
   pkgs,
+  lib,
   ...
 }:
 {
@@ -45,6 +46,16 @@
       };
     };
   };
+
+  # elephant's X-Restart-Triggers only fire on changes to its own Nix
+  # options (settings/providers/provider/debug) — installing or removing
+  # packages doesn't touch those, so its desktop-app index silently goes
+  # stale after every switch. try-restart is a no-op if elephant isn't
+  # running yet (e.g. first boot / headless rebuild over SSH), so this is
+  # safe to run unconditionally.
+  home.activation.restartElephant = lib.hm.dag.entryAfter [ "reloadSystemd" ] ''
+    run ${pkgs.systemd}/bin/systemctl --user try-restart elephant.service
+  '';
 
   wayland.windowManager.niri.settings.binds = {
     "Mod+Space".spawn = [ "walker" ];

@@ -8,7 +8,7 @@
 			(label :class "time-hour" :valign "start" :wrap "true" :limit-width 25 :text HOUR)
 			(label :class "time-min" :valign "end" :wrap "true" :limit-width 25 :text MIN))
 		(box :orientation "v" :spacing 0 :halign "end" :hexpand "true"
-			(label :class "time-day" :valign "start" :halign "end" :wrap "true" :limit-width 25 :text DAY))))
+			(label :class "time-day" :valign "start" :halign "end" :wrap "true" :text DAY))))
 
 (defwindow clock
     :stacking "bg"

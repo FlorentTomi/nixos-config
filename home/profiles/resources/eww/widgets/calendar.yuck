@@ -12,10 +12,10 @@
   (box :class "genwin calendar" :orientation "v" :space-evenly false :spacing 6
     (label :visible false :text "${CAL_YEAR}${CAL_MONTH}")
     (box :class "cal-header" :orientation "h" :space-evenly false
-      (button :class "cal-nav" :onclick "scripts/calendar-nav.sh prev &" "❮")
+      (button :class "cal-nav" :onclick "scripts/calendar-nav.sh prev &" "")
       (label :class "cal-title" :hexpand true :halign "center"
         :text "${CALENDAR.monthName} ${CALENDAR.year}")
-      (button :class "cal-nav" :onclick "scripts/calendar-nav.sh next &" "❯"))
+      (button :class "cal-nav" :onclick "scripts/calendar-nav.sh next &" ""))
     (box :class "cal-weekdays" :orientation "h" :space-evenly true
       (label :class "cal-weekday" :text "Mo")
       (label :class "cal-weekday" :text "Tu")
