@@ -1,0 +1,35 @@
+.sysmon {
+    padding: 14px;
+}
+
+.sysmon-row {
+    margin-bottom: 2px;
+}
+
+.sysmon-label {
+    color: $subtext1;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.sysmon-value {
+    color: $overlay1;
+    font-size: 11px;
+}
+
+// GTK progressbar node structure: progressbar > trough > progress
+.sysmon-progress {
+    min-height: 6px;
+}
+
+.sysmon-progress trough {
+    min-height: 6px;
+    background: $surface0;
+    border-radius: 1rem;
+}
+
+.sysmon-progress trough progress {
+    min-height: 6px;
+    background: $lavender;
+    border-radius: 1rem;
+}

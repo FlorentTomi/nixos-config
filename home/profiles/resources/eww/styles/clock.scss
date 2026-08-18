@@ -1,0 +1,21 @@
+.time-hour,
+.time-min {
+    color: $blue;
+    font-size: 70px;
+    font-weight: bold;
+}
+
+.time-hour {
+    margin: 15px 0px 0px 20px;
+}
+
+.time-min {
+    margin: 0px 0px 10px 0px;
+}
+
+.time-day {
+    color: $yellow;
+    font-size: 30px;
+    font-weight: normal;
+    margin: 10px 10px 0px -25px;
+}

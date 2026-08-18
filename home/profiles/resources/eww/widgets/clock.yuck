@@ -1,0 +1,22 @@
+(defpoll HOUR :interval "5s" `date +\"%H\"`)
+(defpoll MIN :interval "5s" `date +\"%M\"`)
+(defpoll DAY :interval "5s" `date +\"%A\"`)
+
+(defwidget clock-widget []
+    (box :class "genwin" :orientation "h" :space-evenly false :vexpand "false" :hexpand "false"
+        (box :orientation "h" :spacing 0
+			(label :class "time-hour" :valign "start" :wrap "true" :limit-width 25 :text HOUR)
+			(label :class "time-min" :valign "end" :wrap "true" :limit-width 25 :text MIN))
+		(box :orientation "v" :spacing 0 :halign "end" :hexpand "true"
+			(label :class "time-day" :valign "start" :halign "end" :wrap "true" :limit-width 25 :text DAY))))
+
+(defwindow clock
+    :stacking "bg"
+    :focusable "false"
+    :geometry (geometry
+        :x 8
+        :y 8
+        :width 350
+        :height 155
+        :anchor "top left")
+   	(clock-widget))

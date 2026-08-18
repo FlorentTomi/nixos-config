@@ -1,0 +1,45 @@
+;; Fully custom month grid (not the GTK (calendar) widget) so every cell,
+;; weekend, and "today" highlight is a plain box/label you can style.
+;; Backed by scripts/calendar.sh + scripts/calendar-nav.sh.
+
+(defvar CAL_YEAR "")
+(defvar CAL_MONTH "")
+
+(defpoll CALENDAR :interval "6h"
+  "scripts/calendar.sh")
+
+(defwidget calendar-widget []
+  (box :class "genwin calendar" :orientation "v" :space-evenly false :spacing 6
+    ;; eww only tracks a defvar's live state while it's referenced inside
+    ;; an open widget's tree - CAL_YEAR/CAL_MONTH are otherwise only ever
+    ;; touched via `eww get` inside the backing shell scripts, which isn't
+    ;; enough to register them. This zero-size label forces eww to treat
+    ;; them as live state for this window, so `eww update`/`eww get` from
+    ;; calendar-nav.sh actually work.
+    (label :visible false :text "${CAL_YEAR}${CAL_MONTH}")
+    (box :class "cal-header" :orientation "h" :space-evenly false
+      (button :class "cal-nav" :onclick "scripts/calendar-nav.sh prev &" "❮")
+      (label :class "cal-title" :hexpand true :halign "center"
+        :text "${CALENDAR.monthName} ${CALENDAR.year}")
+      (button :class "cal-nav" :onclick "scripts/calendar-nav.sh next &" "❯"))
+    (box :class "cal-weekdays" :orientation "h" :space-evenly true
+      (label :class "cal-weekday" :text "Mo")
+      (label :class "cal-weekday" :text "Tu")
+      (label :class "cal-weekday" :text "We")
+      (label :class "cal-weekday" :text "Th")
+      (label :class "cal-weekday" :text "Fr")
+      (label :class "cal-weekday weekend" :text "Sa")
+      (label :class "cal-weekday weekend" :text "Su"))
+    (box :orientation "v" :space-evenly true :vexpand true
+      (for week in {CALENDAR.weeks}
+        (box :orientation "h" :space-evenly true
+          (for day in week
+            (box :class "cal-day ${day.today ? "today" : day.muted ? "muted" : day.weekend ? "weekend" : ""}"
+              (label :text "${day.day}"))))))
+    (button :class "cal-today-btn" :onclick "scripts/calendar-nav.sh today &" "Today")))
+
+(defwindow calendar
+  :stacking "bg"
+  :focusable "false"
+  :geometry (geometry :x 8 :y 171 :width 350 :height 280 :anchor "top left")
+  (calendar-widget))

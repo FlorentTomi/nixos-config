@@ -1,0 +1,21 @@
+;; Current conditions from wttr.in, backed by scripts/weather.sh.
+
+(defpoll WEATHER :interval "15m" :initial "{\"ok\":false,\"temp\":\"--\",\"feels\":\"--\",\"desc\":\"Loading…\",\"humidity\":\"--\",\"wind\":\"--\",\"icon\":\"🌡️\"}"
+  "scripts/weather.sh")
+
+(defwidget weather-widget []
+  (box :class "genwin weather" :orientation "h" :space-evenly false :spacing 14
+    (label :class "weather-icon" :text {WEATHER.icon})
+    (box :orientation "v" :space-evenly false :valign "center"
+      (box :orientation "h" :space-evenly false :spacing 6
+        (label :class "weather-temp" :text "${WEATHER.temp}°")
+        (label :class "weather-feels" :text "feels ${WEATHER.feels}°"))
+      (label :class "weather-desc" :halign "start" :text {WEATHER.desc})
+      (label :class "weather-meta" :halign "start"
+        :text "💧 ${WEATHER.humidity}%   💨 ${WEATHER.wind} km/h"))))
+
+(defwindow weather
+  :stacking "bg"
+  :focusable "false"
+  :geometry (geometry :x 8 :y 567 :width 350 :height 110 :anchor "top left")
+  (weather-widget))
