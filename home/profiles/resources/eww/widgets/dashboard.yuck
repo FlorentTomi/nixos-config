@@ -1,0 +1,16 @@
+(defwidget dashboard-widget []
+    (box :orientation "v" :space-evenly false :vexpand "false" :hexpand "false" :spacing 8
+        (clock-widget)
+        (calendar-widget)
+        (media-widget)
+        (weather-widget)))
+
+(defwindow dashboard
+    :stacking "bg"
+    :focusable "false"
+    :geometry (geometry
+        :x 8
+        :y 8
+        :width 350
+        :anchor "top left")
+   	(dashboard-widget))

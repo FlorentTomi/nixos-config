@@ -10,12 +10,6 @@
 
 (defwidget calendar-widget []
   (box :class "genwin calendar" :orientation "v" :space-evenly false :spacing 6
-    ;; eww only tracks a defvar's live state while it's referenced inside
-    ;; an open widget's tree - CAL_YEAR/CAL_MONTH are otherwise only ever
-    ;; touched via `eww get` inside the backing shell scripts, which isn't
-    ;; enough to register them. This zero-size label forces eww to treat
-    ;; them as live state for this window, so `eww update`/`eww get` from
-    ;; calendar-nav.sh actually work.
     (label :visible false :text "${CAL_YEAR}${CAL_MONTH}")
     (box :class "cal-header" :orientation "h" :space-evenly false
       (button :class "cal-nav" :onclick "scripts/calendar-nav.sh prev &" "❮")

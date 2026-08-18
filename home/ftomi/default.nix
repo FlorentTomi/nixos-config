@@ -22,6 +22,7 @@
     ./niri.nix
     ./theme.nix
     ./neovim.nix
+    ./qalculate.nix
   ];
 
   home = {

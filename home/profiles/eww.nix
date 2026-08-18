@@ -50,10 +50,6 @@ in
   };
 
   wayland.windowManager.niri.settings._children = lib.concatMap widgetAutostart [
-    "clock"
-    "calendar"
-    "media"
-    "weather"
-    "sysmon"
+    "dashboard"
   ];
 }
