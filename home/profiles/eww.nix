@@ -7,13 +7,13 @@
 let
   widgetAutostart =
     wName:
-    lib.map (mName: {
+    lib.map (monitor: {
       spawn-at-startup._args = [
         "eww"
         "open"
         "${wName}"
         "--screen"
-        "${mName}"
+        "${monitor.connector}"
       ];
     }) monitors;
 in

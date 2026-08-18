@@ -1,17 +1,56 @@
 # This machine's specific monitor topology (4K primary + 144Hz secondary).
 # Not portable to other hardware — kept as an opt-in profile rather than in
 # home/ftomi/niri.nix so a host with different/no external monitors doesn't inherit it.
-{ ... }:
+{ lib, ... }:
 
 let
-  outputs = [
-    "DP-1"
-    "HDMI-A-1"
+  monitors = [
+    {
+      connector = "HDMI-A-1";
+      model = "Acer XZ271";
+      scale = 1.0;
+      mode = {
+        width = 1920;
+        height = 1080;
+        framerate = 144;
+      };
+      position = {
+        x = 3840;
+        y = 0;
+      };
+    }
+    {
+      connector = "DP-1";
+      model = "U32R59x";
+      scale = 1.0;
+      mode = {
+        width = 3840;
+        height = 2160;
+        framerate = 60;
+      };
+      position = {
+        x = 0;
+        y = 0;
+      };
+    }
   ];
+
+  niriOutputs = lib.map (monitor: {
+    output = {
+      _args = [ monitor.connector ];
+      scale = monitor.scale;
+      focus-at-startup = { };
+      position._props = {
+        x = monitor.position.x;
+        y = monitor.position.y;
+      };
+      mode = "${toString monitor.mode.width}x${toString monitor.mode.height}@${toString monitor.mode.framerate}";
+    };
+  }) monitors;
 in
 {
   _module.args = {
-    monitors = outputs;
+    monitors = monitors;
   };
 
   # wayland.windowManager.niri.settings is freeform/generic KDL, not
@@ -22,29 +61,5 @@ in
   # focus-at-startup is a flag node: present only for the output that
   # should have it (DP-1); omitted entirely for HDMI-A-1, since niri
   # defaults it to off.
-  wayland.windowManager.niri.settings._children = [
-    {
-      output = {
-        _args = [ "DP-1" ];
-        scale = 1.0;
-        focus-at-startup = { };
-        position._props = {
-          x = 0;
-          y = 0;
-        };
-        mode = "3840x2160@59.997";
-      };
-    }
-    {
-      output = {
-        _args = [ "HDMI-A-1" ];
-        scale = 1.0;
-        position._props = {
-          x = 3840;
-          y = 0;
-        };
-        mode = "1920x1080@144.001";
-      };
-    }
-  ];
+  wayland.windowManager.niri.settings._children = niriOutputs;
 }
