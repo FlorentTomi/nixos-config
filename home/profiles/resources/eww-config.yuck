@@ -32,7 +32,7 @@
             :valign "start" 
             :show-details true
             :active false
-            :width 350 
+            :width 348 
             :class "calendar" 
             :day CURRENT_DAY
             :month CURRENT_MONTH
