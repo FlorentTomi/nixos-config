@@ -7,6 +7,6 @@
     ./direnv.nix
     ./nodejs.nix
     ./claude-code.nix
-    ./neovim.nix
+    ./helix.nix
   ];
 }

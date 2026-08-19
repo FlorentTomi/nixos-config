@@ -146,7 +146,7 @@ nh os info
 
 ## Updates
 
-Update every flake input (nixpkgs, home-manager, niri, walker, nixvim, ...)
+Update every flake input (nixpkgs, home-manager, niri, walker, ...)
 and switch in one go:
 
 ```bash

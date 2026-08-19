@@ -14,5 +14,6 @@
     ./awww.nix
     ./playerctld.nix
     ./wl-clip-persist.nix
+    ./gnome-keyring.nix
   ];
 }

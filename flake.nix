@@ -36,9 +36,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.elephant.follows = "elephant";
     };
-    nixvim = {
-      url = "github:nix-community/nixvim";
-    };
   };
 
   outputs =

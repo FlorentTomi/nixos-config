@@ -4,6 +4,7 @@
 {
   imports = [
     ./discord.nix
+    ./matrix.nix
     ./android-tools.nix
     ./orca-slicer.nix
   ];
