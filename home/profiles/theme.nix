@@ -59,6 +59,11 @@ in
       builtins.replaceStrings (map (n: "\$${n}") names) (map (n: tokens.${n}) names) text;
   };
 
+  wayland.windowManager.niri.settings.layout.border = {
+    active-color = "#${palette.lavender}";
+    inactive-color = "#${palette.overlay0}";
+  };
+
   catppuccin = {
     autoEnable = true;
     enable = true;

@@ -18,7 +18,7 @@
     auto-optimise-store = true;
   };
 
-  # home/ftomi/theme.nix already sets this at the home-manager level, but
+  # home/profiles/theme.nix already sets this at the home-manager level, but
   # nix.settings written from home-manager scope isn't reliably picked up
   # by the system nix-daemon under NixOS integration — only NixOS-level
   # nix.settings is guaranteed to land in /etc/nix/nix.conf. Setting it

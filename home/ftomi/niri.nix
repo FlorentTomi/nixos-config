@@ -3,7 +3,6 @@
   pkgs,
   osConfig,
   lib,
-  catppuccinPalette,
   ...
 }:
 
@@ -47,11 +46,6 @@
         ];
 
         focus-ring.off = { };
-
-        border = {
-          active-color = "#${catppuccinPalette.lavender}";
-          inactive-color = "#${catppuccinPalette.overlay0}";
-        };
       };
 
       hotkey-overlay = {

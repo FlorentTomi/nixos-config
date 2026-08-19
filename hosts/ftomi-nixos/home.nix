@@ -4,6 +4,7 @@
 { ... }:
 {
   imports = [
+    ../../home/profiles/theme.nix
     ../../home/profiles/shell
     ../../home/profiles/dual-monitor.nix
     ../../home/profiles/waybar.nix
@@ -18,5 +19,12 @@
     ../../home/profiles/pasystray.nix
     ../../home/profiles/work.nix
     ../../home/profiles/eww.nix
+    ../../home/profiles/dev-tools
+    ../../home/profiles/design
+    ../../home/profiles/office
+    ../../home/profiles/qalculate.nix
+    ../../home/profiles/chromium.nix
+    ../../home/profiles/tailscale-systray.nix
+    ../../home/profiles/secrets-tools.nix
   ];
 }

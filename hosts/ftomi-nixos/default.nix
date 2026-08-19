@@ -26,6 +26,9 @@
     ../../modules/virtualisation.nix
     ../../modules/ollama.nix
 
+    # host archetype: this machine is a gaming desktop
+    ../profiles/gaming-desktop
+
     # this exact machine
     ../profiles/sddm.nix
     ./hardware-configuration.nix
@@ -35,13 +38,8 @@
     ./networking.nix
     ./fstrim.nix
     ./smartd.nix
-    ./coolercontrol.nix
-    ./via.nix
     ./bluetooth.nix
     ./openvpn-polkit.nix
-    ./steam.nix
-    ./gamemode.nix
-    ./sunshine.nix
   ];
 
   modules.nvidia.enable = true;

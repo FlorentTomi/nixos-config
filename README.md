@@ -6,20 +6,37 @@ Catppuccin theming, SDDM login, Steam/gaming.
 
 ## Layout
 
-- `home/<user>/` — home-manager **identity**: always on for that user,
-  regardless of host. One file per program (`git.nix`, `neovim.nix`,
-  `niri.nix`, ...).
+- `home/<user>/` — home-manager **identity**: the genuinely minimal, portable
+  base — always on for that user, regardless of host. Nix tooling (`nil.nix`,
+  `nixd.nix`), a minimal Niri setup (`niri.nix`, un-themed by default), a base
+  shell (`fish.nix`, `ghostty.nix`), one browser (`floorp.nix`), and the bare
+  minimum to edit this repo (`git.nix`, `zed.nix`).
 - `home/profiles/` — home-manager **opt-in** pieces a host can pick from.
-  Single-program profiles are a flat `program-name.nix`; anything that used
-  to bundle several programs is a directory (`shell/`, `session/`, `gaming/`,
-  `hobbies/`) with a `default.nix` that imports the split-out files, so it's
-  still one path to import.
+  Single-program profiles are a flat `program-name.nix`; anything that
+  bundles several programs sharing one intent is a directory (`shell/`,
+  `session/`, `gaming/`, `hobbies/`, `dev-tools/`, `design/`, `office/`) with
+  a `default.nix` that imports the split-out files, so it's still one path
+  to import. `theme.nix` lives here too (Catppuccin) — `niri.nix` in the base
+  identity works with or without it, so a host only gets themed once it
+  explicitly imports `home/profiles/theme.nix`.
 - `hosts/base/` — NixOS config shared by every host, one file per subsystem
   (`pipewire.nix`, `tailscale.nix`, `bootloader.nix`, ...).
-- `hosts/<name>/` — one machine. `default.nix` wires together `base/`,
-  `modules/`, this machine's own files (kernel tuning, hardware-specific
-  services...), and `disko-config.nix`. `home.nix` lists exactly the
-  `home/profiles/*` this host wants — the single home-manager entrypoint.
+- `hosts/profiles/` — NixOS **archetype** bundles a host opts into as a
+  whole, mirroring the home-manager base/profiles split at the system level.
+  `sddm.nix` is a flat single-choice profile (display manager); directories
+  like `gaming-desktop/` bundle every trait that only makes sense together
+  (Steam, gamemode, Sunshine streaming, fan/pump control, VIA keyboard
+  flashing, wifi tuned for a wired desktop) behind one `default.nix` import.
+  `laptop/` exists as a scaffold for the same pattern, filled in once a real
+  laptop host validates what it actually needs.
+- `hosts/<name>/` — one machine, kept thin: `default.nix` wires together
+  `base/`, `modules/`, whichever `hosts/profiles/*` archetype(s) this machine
+  is, this machine's own genuinely-unique files (hardware quirks like
+  `bluetooth.nix`/`smartd.nix`, `hardware-configuration.nix`,
+  `disko-config.nix`), and `users.nix`/`networking.nix` (hostname only —
+  archetype-level traits live in `hosts/profiles/`, not here). `home.nix`
+  lists exactly the `home/profiles/*` this host wants — the single
+  home-manager entrypoint.
 - `modules/` — toggleable NixOS subsystems with their own
   `options.modules.<name>.enable` (nvidia, niri, openvpn, virtualisation,
   console, ollama).
@@ -29,7 +46,9 @@ Catppuccin theming, SDDM login, Steam/gaming.
   in `hosts.nix`.
 
 Adding a program to this user's identity, or to an opt-in profile, is one new
-`program-name.nix` file plus one line in the relevant `default.nix`.
+`program-name.nix` file plus one line in the relevant `default.nix`. Adding a
+new host archetype trait works the same way one level up, in
+`hosts/profiles/`.
 
 ## First install (new machine)
 
@@ -187,10 +206,17 @@ nix shell nixpkgs#<name>
      them)
    - import a `profiles/<person>/*.nix` set for personal preferences (reuse
      `profiles/ftomi` or add a new one)
+   - import the `hosts/profiles/<archetype>` (e.g. `gaming-desktop/`,
+     `laptop/`) that matches what this machine is, plus a display-manager
+     choice (`hosts/profiles/sddm.nix` or similar) — this is what makes
+     adding a host mostly "pick bundles" instead of re-deriving config from
+     scratch
    - import any `modules/*.nix` toggles this machine needs (e.g.
      `modules/nvidia.nix`) and set the corresponding `modules.<name>.enable`
    - import `./hardware-configuration.nix`, `./disko-config.nix`, plus any
-     host-only files (kernel/boot tuning, networking hostname, etc.)
+     genuinely host-only files (kernel/boot tuning, networking hostname,
+     etc. — anything that's actually a trait of the archetype, not this one
+     machine, belongs in `hosts/profiles/` instead)
    - set `system.stateVersion` to whatever release was current when the host
      was first installed — **never change this retroactively**
 4. **Create `hosts/<name>/home.nix`** listing the `home/profiles/*` this
