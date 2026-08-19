@@ -38,6 +38,7 @@ in
   home.file.".config/eww/scripts" = {
     source = ./resources/eww/scripts;
     recursive = true;
+    executable = true;
   };
 
   programs.eww = {

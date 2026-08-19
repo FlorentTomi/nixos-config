@@ -25,6 +25,7 @@
     ../../modules/console.nix
     ../../modules/virtualisation.nix
     ../../modules/ollama.nix
+    ../../modules/khal.nix
 
     # host archetype: this machine is a gaming desktop
     ../profiles/gaming-desktop
@@ -69,6 +70,8 @@
       }
     ];
   };
+
+  modules.khal.enable = true;
 
   sops.defaultSopsFile = ./secrets.yaml;
 
