@@ -4,51 +4,62 @@ NixOS + Home Manager flake for `ftomi`'s desktop — AMD 5800X, RTX 3060 (open
 kernel module), Niri (structured config via niri-flake, not raw KDL),
 Catppuccin theming, SDDM login, Steam/gaming.
 
-## Layout
+## Layout — dendritic pattern
 
-- `home/<user>/` — home-manager **identity**: the genuinely minimal, portable
-  base — always on for that user, regardless of host. Nix tooling (`nil.nix`,
-  `nixd.nix`), a minimal Niri setup (`niri.nix`, un-themed by default), a base
-  shell (`fish.nix`, `ghostty.nix`), one browser (`floorp.nix`), and the bare
-  minimum to edit this repo (`git.nix`, `zed.nix`).
-- `home/profiles/` — home-manager **opt-in** pieces a host can pick from.
-  Single-program profiles are a flat `program-name.nix`; anything that
-  bundles several programs sharing one intent is a directory (`shell/`,
-  `session/`, `gaming/`, `hobbies/`, `dev-tools/`, `design/`, `office/`) with
-  a `default.nix` that imports the split-out files, so it's still one path
-  to import. `theme.nix` lives here too (Catppuccin) — `niri.nix` in the base
-  identity works with or without it, so a host only gets themed once it
-  explicitly imports `home/profiles/theme.nix`.
-- `hosts/base/` — NixOS config shared by every host, one file per subsystem
-  (`pipewire.nix`, `tailscale.nix`, `bootloader.nix`, ...).
-- `hosts/profiles/` — NixOS **archetype** bundles a host opts into as a
-  whole, mirroring the home-manager base/profiles split at the system level.
-  `sddm.nix` is a flat single-choice profile (display manager); directories
-  like `gaming-desktop/` bundle every trait that only makes sense together
-  (Steam, gamemode, Sunshine streaming, fan/pump control, VIA keyboard
-  flashing, wifi tuned for a wired desktop) behind one `default.nix` import.
-  `laptop/` exists as a scaffold for the same pattern, filled in once a real
-  laptop host validates what it actually needs.
-- `hosts/<name>/` — one machine, kept thin: `default.nix` wires together
-  `base/`, `modules/`, whichever `hosts/profiles/*` archetype(s) this machine
-  is, this machine's own genuinely-unique files (hardware quirks like
-  `bluetooth.nix`/`smartd.nix`, `hardware-configuration.nix`,
-  `disko-config.nix`), and `users.nix`/`networking.nix` (hostname only —
-  archetype-level traits live in `hosts/profiles/`, not here). `home.nix`
-  lists exactly the `home/profiles/*` this host wants — the single
-  home-manager entrypoint.
-- `modules/` — toggleable NixOS subsystems with their own
-  `options.modules.<name>.enable` (nvidia, niri, openvpn, virtualisation,
-  console, ollama).
-- `profiles/<person>/` — personal preferences that aren't host-specific
-  (locale, keyboard layout).
-- `lib/mk-host.nix` — builds one `nixosConfiguration` from a host definition
-  in `hosts.nix`.
+Every `.nix` file under `modules/` (except `modules/module-registry.nix`
+itself) is a [flake-parts](https://flake.parts) module, auto-discovered by
+[`import-tree`](https://github.com/vic/import-tree) — no manual
+`default.nix` bundlers, no import lists to keep in sync. One file
+implements one feature, across every configuration class (NixOS,
+home-manager) that feature touches — e.g. `modules/niri.nix` sets both
+`nixos.modules.niri` (compositor enable, portal, polkit agent) and
+`homeManager.modules.niri` (keybinds, layout) in the same file, instead of
+splitting across a `hosts/`/`home/` boundary.
 
-Adding a program to this user's identity, or to an opt-in profile, is one new
-`program-name.nix` file plus one line in the relevant `default.nix`. Adding a
-new host archetype trait works the same way one level up, in
-`hosts/profiles/`.
+- `modules/module-registry.nix` — declares the option namespace every other
+  module writes into:
+  - `nixos.modules.<name>` / `homeManager.modules.<name>` — each a
+    `lazyAttrsOf deferredModule`. **Importing a name is what enables it** —
+    there are no `enable` options on our own modules (unlike upstream
+    options like `programs.niri.enable`, which stay exactly as niri-flake
+    defines them).
+  - `hosts.<name>` — per-host data (`user`, `diskDevice`), read back by that
+    host's own module instead of threading `specialArgs` by hand.
+- `modules/<feature>.nix` — flat, one file per feature
+  (`waybar.nix`, `audio.nix`, `git.nix`, `nvidia.nix`, ...). Genuinely
+  parametrized per-host data (not just an on/off gate) lives under
+  `custom.<name>.*`, e.g. `custom.openvpn.configs`, `custom.console.backend`
+  — distinct from real nixpkgs options and from the old
+  `options.modules.<name>.enable` pattern this replaced.
+- `modules/roles/<name>.nix` — a role is a module whose body is *only*
+  `imports`, composing other named modules (e.g.
+  `roles/gaming-desktop.nix` = steam + gamemode + sunshine + ... on both the
+  nixos and home-manager sides). This is what makes adding a host cheap:
+  import 1-2 role names instead of re-deriving which of ~50 files apply.
+  `roles/base.nix` is what every host gets — core infra (disko/sops-nix/
+  nix-index-database/home-manager unlocks, dconf, networking, tailscale,
+  bootloader, ...).
+- `modules/hosts/<name>.nix` — the host-producing module. Sets
+  `hosts.<name>` (user, diskDevice) and `flake.nixosConfigurations.<name>`,
+  pulling in `config.nixos.modules.*`/`config.homeManager.modules.*` by
+  name plus this machine's raw hardware/identity files.
+- `hosts/<name>/` — **only** files that can't be anything but this exact
+  machine: `hardware-configuration.nix`, `disko-config.nix`,
+  `secrets.yaml`, and genuinely one-off hardware quirks
+  (`bluetooth.nix`, `smartd.nix`, `monitors.nix`, ...). Referenced by
+  direct path from `modules/hosts/<name>.nix`, never through the registry.
+- `resources/` — non-Nix assets (CSS, shell scripts, yuck widgets) consumed
+  by modules via `import`/`readFile`. Deliberately **outside** `modules/` —
+  `import-tree` scans every `.nix` file under `modules/` as a flake-parts
+  module, so plain data/helper `.nix` files (not modules) live here instead
+  to avoid being auto-imported and evaluated as one.
+- `lib/btrfs-disko-layout.nix` — reusable disko btrfs partition/subvolume
+  layout generator, unchanged in shape from before the migration.
+
+Adding a program is one new `modules/<name>.nix` file — no `default.nix` to
+edit, no import list to update. It becomes available the moment
+`import-tree` picks it up; a host (or role) opts in by naming it in its
+`imports`.
 
 ## First install (new machine)
 
@@ -78,10 +89,10 @@ manually `mkfs`, `btrfs subvolume create`, or hand-edit `fileSystems`.
 5. **After confirming it boots correctly**, update the default disk path so
    future `nixos-rebuild switch` runs (which don't go through
    `disko-install`, so don't get the `--disk` override) use the right device
-   too — edit `diskDevice` for this host in `hosts.nix`:
+   too — edit `diskDevice` for this host in `modules/hosts/<name>.nix`:
    ```nix
-   ftomi-nixos = mkHost {
-     # ...
+   hosts.ftomi-nixos = {
+     user = "ftomi";
      diskDevice = "/dev/disk/by-id/<the-disk-you-actually-installed-on>";
    };
    ```
@@ -104,14 +115,14 @@ Two things disko can't cover, still need doing by hand on first install of
 ## Subsequent builds / switches
 
 This config uses [`nh`](https://github.com/nix-community/nh) (`programs.nh`,
-`hosts/base/nix.nix`) instead of raw `nixos-rebuild` — nicer diff/output via
-`nix-output-monitor`, and `NH_FLAKE` is already pointed at this repo so no
-`--flake .#hostname` needed. `nh` finds `sudo` itself; don't prefix it.
+`modules/core-nix.nix`) instead of raw `nixos-rebuild` — nicer diff/output
+via `nix-output-monitor`, and `NH_FLAKE` is already pointed at this repo so
+no `--flake .#hostname` needed. `nh` finds `sudo` itself; don't prefix it.
 
 ```bash
 cd ~/nixos-config
 # edit whatever you need
-nh os switch                # or: ./nixos-switch.sh
+nh os switch
 ```
 
 No reboot needed *except* for: kernel changes, bootloader changes,
@@ -166,9 +177,9 @@ test`/`build` if you want to check before committing to a switch.
 
 ### Garbage collection
 
-`hosts/base/nix.nix` already runs `nh clean` daily (`--keep 5 --keep-since
-2d`), so old generations get pruned automatically. To do it manually right
-now instead:
+`modules/core-nix.nix` already runs `nh clean` daily (`--keep 5
+--keep-since 2d`), so old generations get pruned automatically. To do it
+manually right now instead:
 
 ```bash
 nh clean all --keep 5 --keep-since 2d
@@ -200,41 +211,29 @@ nix shell nixpkgs#<name>
    ```
 2. **Write `hosts/<name>/disko-config.nix`** describing the disk layout
    (copy `hosts/ftomi-nixos/disko-config.nix` as a starting point).
-3. **Create `hosts/<name>/default.nix`**, modeled on
-   `hosts/ftomi-nixos/default.nix`:
-   - import the `hosts/base/*.nix` files you want (most hosts want all of
-     them)
-   - import a `profiles/<person>/*.nix` set for personal preferences (reuse
-     `profiles/ftomi` or add a new one)
-   - import the `hosts/profiles/<archetype>` (e.g. `gaming-desktop/`,
-     `laptop/`) that matches what this machine is, plus a display-manager
-     choice (`hosts/profiles/sddm.nix` or similar) — this is what makes
-     adding a host mostly "pick bundles" instead of re-deriving config from
-     scratch
-   - import any `modules/*.nix` toggles this machine needs (e.g.
-     `modules/nvidia.nix`) and set the corresponding `modules.<name>.enable`
-   - import `./hardware-configuration.nix`, `./disko-config.nix`, plus any
-     genuinely host-only files (kernel/boot tuning, networking hostname,
-     etc. — anything that's actually a trait of the archetype, not this one
-     machine, belongs in `hosts/profiles/` instead)
-   - set `system.stateVersion` to whatever release was current when the host
-     was first installed — **never change this retroactively**
-4. **Create `hosts/<name>/home.nix`** listing the `home/profiles/*` this
-   host should get (see any existing `hosts/*/home.nix` for the pattern).
-5. **Register it in `hosts.nix`**, including its `diskDevice` (see "First
-   install" above for finding this):
-   ```nix
-   <name> = mkHost {
-     hostname = "<name>";
-     user = "<user>";
-     diskDevice = "/dev/disk/by-id/<this-host's-disk>";
-   };
-   ```
-6. Rebuild with `nh os switch --hostname <name>` (or `-H <name>`) — needed
+3. **Create `modules/hosts/<name>.nix`**, modeled on
+   `modules/hosts/ftomi-nixos.nix`:
+   - set `hosts.<name> = { user = "..."; diskDevice = "..."; };`
+   - build `flake.nixosConfigurations.<name>` via `nixpkgs.lib.nixosSystem`,
+     pulling in `config.nixos.modules.base` plus whichever role(s)
+     (`config.nixos.modules.gaming-desktop`, or a new
+     `modules/roles/laptop.nix` once one exists) and any individual
+     `config.nixos.modules.<name>` toggles this machine needs
+   - list `./hardware-configuration.nix`, `./disko-config.nix`, and any
+     genuinely host-only raw files (kernel/boot tuning, networking
+     hostname, monitor topology, etc. — anything that's actually a trait of
+     a role rather than this one machine belongs in `modules/roles/`
+     instead)
+   - set `system.stateVersion` to whatever release was current when the
+     host was first installed — **never change this retroactively**
+   - list the home-manager modules this host/user wants under
+     `home-manager.users.<user>.imports`, pulling from
+     `config.homeManager.modules.*` the same way
+4. Rebuild with `nh os switch --hostname <name>` (or `-H <name>`) — needed
    the first time since `NH_FLAKE`'s default hostname resolution won't yet
    match on a machine that isn't `<name>` itself.
 
-`hardware-configuration.nix`, `disko-config.nix`, `diskDevice`, and any other
-genuinely machine-specific file (hostname, etc.) should never be shared
-between hosts — everything under `hosts/base/`, `home/`, `profiles/`, and
-`modules/` is written to be reused.
+`hardware-configuration.nix`, `disko-config.nix`, `diskDevice`, and any
+other genuinely machine-specific file should never be shared between
+hosts — everything under `modules/` (leaf features and roles alike) is
+written to be reused.

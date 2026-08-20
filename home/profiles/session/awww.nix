@@ -1,5 +1,0 @@
-{ ... }:
-
-{
-  services.awww.enable = true;
-}

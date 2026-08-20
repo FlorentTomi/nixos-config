@@ -1,0 +1,29 @@
+{
+  homeManager.modules.wleave = {
+    programs.wleave = {
+      enable = true;
+      settings = {
+        buttons = [
+          {
+            label = "shutdown";
+            action = "systemctl poweroff";
+            text = "Shutdown";
+            keybind = "s";
+          }
+          {
+            label = "reboot";
+            action = "systemctl reboot";
+            text = "Reboot";
+            keybind = "r";
+          }
+          {
+            label = "lock";
+            action = "hyprlock";
+            text = "Lock";
+            keybind = "l";
+          }
+        ];
+      };
+    };
+  };
+}

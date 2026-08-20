@@ -1,9 +1,0 @@
-# Host definitions, fed to lib/mk-host.nix. One attrset per nixosConfiguration.
-{ mkHost }:
-{
-  ftomi-nixos = mkHost {
-    hostname = "ftomi-nixos";
-    user = "ftomi";
-    diskDevice = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_M.2_250GB_S33CNX0H801497R";
-  };
-}

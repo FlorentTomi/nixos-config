@@ -1,0 +1,13 @@
+{
+  homeManager.modules.mangohud = {
+    programs.mangohud = {
+      enable = true;
+      settings = {
+        fps_limit = 0;
+        gpu_stats = true;
+        cpu_stats = true;
+        frame_timing = true;
+      };
+    };
+  };
+}
