@@ -14,6 +14,7 @@
     ../base/nix-ld.nix
     ../base/envfs.nix
     ../base/btrbk.nix
+    ../base/oomd.nix
 
     # personal preferences, same across any host you'd use
     ../../profiles/ftomi/locale.nix

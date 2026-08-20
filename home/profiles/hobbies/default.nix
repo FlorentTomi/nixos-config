@@ -7,5 +7,6 @@
     ./matrix.nix
     ./android-tools.nix
     ./orca-slicer.nix
+    ./qobuz.nix
   ];
 }
