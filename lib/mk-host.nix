@@ -14,6 +14,12 @@
   home-manager,
   sops-nix,
   nix-index-database,
+  # Attrset of dendritic flake modules: { nixos.<name> = ...; homeManager.<name> = ...; }
+  # Threaded through as a specialArg so host/home files can pull in a named
+  # dendrite (e.g. `flakeModules.nixos.khal`) instead of a hand-written
+  # relative path — this is the bridge between the old modules/ and home/
+  # trees and the new ./flake tree during migration.
+  flakeModules,
 }:
 {
   hostname,
@@ -27,7 +33,7 @@
 }:
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
-  specialArgs = { inherit inputs diskDevice user; };
+  specialArgs = { inherit inputs diskDevice user flakeModules; };
   modules = [
     ../hosts/${hostname}
     inputs.disko.nixosModules.disko

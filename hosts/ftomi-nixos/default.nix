@@ -1,4 +1,4 @@
-{ ... }:
+{ flakeModules, ... }:
 {
   imports = [
     # shared across any host
@@ -26,7 +26,7 @@
     ../../modules/console.nix
     ../../modules/virtualisation.nix
     ../../modules/ollama.nix
-    ../../modules/khal.nix
+    flakeModules.nixos.khal
 
     # host archetype: this machine is a gaming desktop
     ../profiles/gaming-desktop
