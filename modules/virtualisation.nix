@@ -32,9 +32,6 @@ in
 
     hardware.nvidia-container-toolkit.enable = cfg.nvidia;
     systemd.services.nvidia-container-toolkit-cdi-generator = {
-      # Only meaningful right after boot; a live restart during
-      # activation races the new userspace libs against the
-      # still-loaded old kernel module.
       restartIfChanged = false;
     };
 
