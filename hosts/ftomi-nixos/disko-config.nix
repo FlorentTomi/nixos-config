@@ -8,4 +8,12 @@ import ../../lib/btrfs-disko-layout.nix {
       "noatime"
     ];
   };
+
+  extraSubvolumes."@dev" = {
+    mountpoint = "/development";
+    mountOptions = [
+      "compress=zstd"
+      "noatime"
+    ];
+  };
 }

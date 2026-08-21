@@ -112,6 +112,33 @@ Two things disko can't cover, still need doing by hand on first install of
   decrypt (`/var/lib/sops-nix/key.txt`); copy it over or generate a new one
   and re-encrypt secrets for this host's key.
 
+## Adding a subvolume to an already-installed host
+
+`disko-config.nix` is only applied at install time by `disko-install` — on
+an existing machine, adding an entry to `extraSubvolumes` teaches the disko
+NixOS module to generate a `fileSystems` mount for it, but the subvolume
+itself must exist on disk already, or the mount fails. Create it by hand
+first:
+
+1. Add the entry to `hosts/<name>/disko-config.nix`, e.g.:
+   ```nix
+   extraSubvolumes."@dev" = {
+     mountpoint = "/development";
+     mountOptions = [ "compress=zstd" "noatime" ];
+   };
+   ```
+2. Find the root btrfs partition (`findmnt -no SOURCE /`, e.g. `/dev/sda2`).
+3. Mount the top-level subvolume (id 5) and create the new one under it:
+   ```bash
+   sudo mount -o subvolid=5 /dev/sda2 /mnt
+   sudo btrfs subvolume create /mnt/@dev
+   sudo umount /mnt
+   ```
+4. Rebuild — this generates and mounts the new `fileSystems` entry:
+   ```bash
+   nh os switch
+   ```
+
 ## Subsequent builds / switches
 
 This config uses [`nh`](https://github.com/nix-community/nh) (`programs.nh`,
