@@ -1,5 +1,5 @@
 (defwidget dashboard-widget []
-    (box :orientation "v" :space-evenly false :vexpand "false" :hexpand "false" :spacing 8
+    (box :orientation "v" :class "dashboard-bg" :space-evenly false :vexpand "false" :hexpand "false" :spacing 8
         (clock-widget)
         (calendar-widget)
         (media-widget)
@@ -8,6 +8,7 @@
 (defwindow dashboard
     :stacking "bg"
     :focusable "false"
+    :namespace "eww-dashboard"
     :geometry (geometry
         :x 8
         :y 8

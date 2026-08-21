@@ -52,8 +52,26 @@
         yuckConfig = concatDir ../../resources/eww/widgets ".yuck";
       };
 
-      wayland.windowManager.niri.settings._children = lib.concatMap widgetAutostart [
-        "dashboard"
-      ];
+      wayland.windowManager.niri.settings._children =
+        lib.concatMap widgetAutostart [
+          "dashboard"
+        ]
+        ++ [
+          {
+            layer-rule._children = [
+              {
+                match._props = {
+                  namespace = "^eww-dashboard$";
+                };
+              }
+              {
+                # background-effect = {
+                #   blur = true;
+                #   xray = true;
+                # };
+              }
+            ];
+          }
+        ];
     };
 }
