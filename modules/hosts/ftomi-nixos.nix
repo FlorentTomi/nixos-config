@@ -24,6 +24,7 @@ in
       config.nixos.modules.virtualisation
       config.nixos.modules.khal
       config.nixos.modules.display-manager
+      config.nixos.modules.automount
 
       ../../hosts/ftomi-nixos/hardware-configuration.nix
       ../../hosts/ftomi-nixos/disko-config.nix
@@ -94,6 +95,7 @@ in
             config.homeManager.modules.colorscheme
             config.homeManager.modules.waybar
             config.homeManager.modules.eww
+            config.homeManager.modules.automount
           ];
         };
 
