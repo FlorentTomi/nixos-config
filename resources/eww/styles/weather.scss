@@ -7,24 +7,24 @@
 }
 
 .weather-temp {
-    color: $lavender;
+    color: $accent;
     font-size: 26px;
     font-weight: bold;
 }
 
 .weather-feels {
-    color: $overlay1;
+    color: $foreground;
     font-size: 12px;
 }
 
 .weather-desc {
-    color: $text;
+    color: $foreground;
     font-size: 13px;
     margin-top: 2px;
 }
 
 .weather-meta {
-    color: $subtext0;
+    color: $foreground;
     font-size: 11px;
     margin-top: 4px;
 }

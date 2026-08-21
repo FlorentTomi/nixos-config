@@ -11,13 +11,32 @@
 
       home.packages = [ pkgs.nirimon ];
 
+      wayland.windowManager.niri.settings._children = [
+        {
+          window-rule._children = [
+            {
+              match._props = {
+                app-id = "ghostty$";
+              };
+            }
+            {
+              background-effect = {
+                blur = true;
+              };
+            }
+          ];
+        }
+      ];
+
       wayland.windowManager.niri.settings.binds."Mod+Return".spawn = [ "ghostty" ];
+
       wayland.windowManager.niri.settings.binds."Mod+Escape".spawn = [
         "ghostty"
         "--confirm-close-surface=false"
         "-e"
         "btop"
       ];
+
       wayland.windowManager.niri.settings.binds."Mod+P".spawn = [
         "ghostty"
         "--confirm-close-surface=false"

@@ -1,30 +1,22 @@
-/* These aliases exist so the rest of this file can keep its original
-   role-based names (@background, @cpu, @vpn-connected, ...) without
-   caring which real Catppuccin color backs each one. The right-hand side
-   names (@base, @mauve, @overlay0, ...) come from the actual
-   catppuccin/waybar stylesheet, prepended automatically ahead of this
-   file by catppuccin.waybar.enable (home/ftomi/theme.nix) — see also
-   @accent, which catppuccin/nix defines for us, tied to whatever
-   catppuccin.accent is set to (currently mauve). */
-@define-color background @base;
-@define-color background-alt @surface0;
-@define-color lightbg @mantle;
-@define-color lightfg @subtext1;
-@define-color foreground @text;
-@define-color orange @peach;
-@define-color cyan @teal;
-@define-color selected @accent;
-@define-color active @accent;
-@define-color urgent @red;
+@define-color background @@background@@;
+@define-color background-alt @@backgroundPanel@@;
+@define-color lightbg @@backgroundPanel@@;
+@define-color lightfg @@foregroundDim@@;
+@define-color foreground @@foreground@@;
+@define-color orange @@orange@@;
+@define-color cyan @@cyan@@;
+@define-color selected @@accent@@;
+@define-color active @@accent@@;
+@define-color urgent @@red@@;
 
-@define-color power @red;
-@define-color cpu @orange;
-@define-color temperature @yellow;
-@define-color gpu @green;
-@define-color memory @cyan;
-@define-color disk @blue;
-@define-color vpn-connected @green;
-@define-color vpn-disconnected @red;
+@define-color power @@red@@;
+@define-color cpu @@orange@@;
+@define-color temperature @@yellow@@;
+@define-color gpu @@green@@;
+@define-color memory @@cyan@@;
+@define-color disk @@blue@@;
+@define-color vpn-connected @@green@@;
+@define-color vpn-disconnected @@red@@;
 
 * {
   font-family: "JetBrainsMono Nerd Font";

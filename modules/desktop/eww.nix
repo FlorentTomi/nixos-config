@@ -1,7 +1,7 @@
 {
   homeManager.modules.eww =
     {
-      catppuccinScss,
+      themeScss,
       monitors,
       lib,
       pkgs,
@@ -46,7 +46,7 @@
       programs.eww = {
         enable = true;
         systemd.enable = true;
-        scssConfig = catppuccinScss {
+        scssConfig = themeScss {
           text = concatDir ../../resources/eww/styles ".scss";
         };
         yuckConfig = concatDir ../../resources/eww/widgets ".yuck";

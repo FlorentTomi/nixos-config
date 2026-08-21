@@ -2,7 +2,7 @@
   homeManager.modules.walker =
     {
       inputs,
-      catppuccinCss,
+      themeCss,
       pkgs,
       lib,
       ...
@@ -40,7 +40,7 @@
         };
 
         themes.custom = {
-          style = catppuccinCss {
+          style = themeCss {
             text = builtins.readFile ../../resources/walker-style.css;
             extra = {
               background-image = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";

@@ -4,7 +4,7 @@
     all: unset;
     font-family: "JetBrainsMono Nerd Font", monospace;
     font-size: 18px;
-    color: @@text@@;
+    color: @@foreground@@;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -23,28 +23,28 @@ scrollbar {
 .box-wrapper {
     background-image:
         linear-gradient(
-            rgba(@@base-rgb@@, 0.9),
-            rgba(@@surface0-rgb@@, 0.95)
+            rgba(@@background-rgb@@, 0.9),
+            rgba(@@backgroundPanel-rgb@@, 0.95)
         ),
         url(@@background-image@@);
     background-size: cover;
     background-position: center;
     padding: 16px;
-    border: 2px solid @@surface2@@;
+    border: 2px solid @@selection@@;
     border-radius: 12px;
-    box-shadow: 0 0 20px rgba(@@mauve-rgb@@, 0.2);
+    box-shadow: 0 0 20px rgba(@@accent-rgb@@, 0.2);
 }
 
 .search-container {
-    background: rgba(@@base-rgb@@, 0.8);
+    background: rgba(@@background-rgb@@, 0.8);
     padding: 12px;
     border-radius: 8px;
     margin-bottom: 12px;
-    border-bottom: 2px solid @@lavender@@;
+    border-bottom: 2px solid @@accent@@;
 }
 
 .input {
-    color: @@mauve@@;
+    color: @@accent@@;
     font-weight: bold;
     font-size: 20px;
 }
@@ -55,23 +55,26 @@ child .item-box {
 }
 
 child:hover .item-box {
-    background: rgba(@@mauve-rgb@@, 0.15);
-    border: 1px solid rgba(@@mauve-rgb@@, 0.4);
+    background: rgba(@@accent-rgb@@, 0.15);
+    border: 1px solid rgba(@@accent-rgb@@, 0.4);
 }
 
 child:selected .item-box {
     background: linear-gradient(
         90deg,
-        rgba(@@lavender-rgb@@, 0.4) 0%,
-        rgba(@@base-rgb@@, 0) 100%
+        rgba(@@accent-rgb@@, 0.4) 0%,
+        rgba(@@background-rgb@@, 0) 100%
     );
-    border-left: 4px solid @@mauve@@;
+    border-left: 4px solid @@accent@@;
     border-radius: 8px;
 }
 
 child:selected .item-box * {
-    color: @@rosewater@@;
-    text-shadow: 0 0 8px rgba(@@mauve-rgb@@, 0.6);
+    /* rosewater had no real base16 counterpart — foregroundBright
+       (base06) is the closest approximation; re-check contrast after
+       switching to a scheme with a dark base06. */
+    color: @@foregroundBright@@;
+    text-shadow: 0 0 8px rgba(@@accent-rgb@@, 0.6);
     font-weight: bold;
 }
 

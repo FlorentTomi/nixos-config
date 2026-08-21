@@ -91,6 +91,7 @@ in
             config.homeManager.modules.work
             config.homeManager.modules.yazi
             config.homeManager.modules.theme
+            config.homeManager.modules.colorscheme
             config.homeManager.modules.waybar
             config.homeManager.modules.eww
           ];

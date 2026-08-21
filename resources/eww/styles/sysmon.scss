@@ -7,13 +7,13 @@
 }
 
 .sysmon-label {
-    color: $subtext1;
+    color: $foregroundDim;
     font-size: 12px;
     font-weight: bold;
 }
 
 .sysmon-value {
-    color: $overlay1;
+    color: $muted;
     font-size: 11px;
 }
 
@@ -24,12 +24,12 @@
 
 .sysmon-progress trough {
     min-height: 6px;
-    background: $surface0;
+    background: $backgroundPanel;
     border-radius: 1rem;
 }
 
 .sysmon-progress trough progress {
     min-height: 6px;
-    background: $lavender;
+    background: $accent;
     border-radius: 1rem;
 }

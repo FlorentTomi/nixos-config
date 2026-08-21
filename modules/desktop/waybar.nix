@@ -4,7 +4,7 @@
       osConfig,
       lib,
       pkgs,
-      catppuccinPalette,
+      themeCss,
       ...
     }:
     let
@@ -37,9 +37,9 @@
       programs.waybar = {
         enable = true;
         systemd.enable = true;
-        style = lib.mkAfter ''
-          ${builtins.readFile ../../resources/waybar-style.css}
-        '';
+        style = lib.mkAfter (themeCss {
+          text = builtins.readFile ../../resources/waybar-style.css;
+        });
 
         settings.mainBar = {
           layer = "bottom";
@@ -177,27 +177,8 @@
           clock = {
             interval = 60;
             format = " {:%Y/%m/%d  %H:%M}";
-            tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
             max-length = 25;
-            calendar = {
-              mode = "month";
-              mode-mon-col = 3;
-              weeks-pos = "right";
-              on-scroll = 1;
-              format = {
-                months = "<span color='#${catppuccinPalette.blue}'><b>{}</b></span>";
-                days = "<span color='#${catppuccinPalette.text}'><b>{}</b></span>";
-                weeks = "<span color='#${catppuccinPalette.teal}'><b>W{}</b></span>";
-                weekdays = "<span color='#${catppuccinPalette.yellow}'><b>{}</b></span>";
-                today = "<span color='#${catppuccinPalette.red}'><b><u>{}</u></b></span>";
-              };
-            };
-            actions = {
-              on-click-right = "mode";
-              on-scroll-up = "shift_up";
-              on-scroll-down = "shift_down";
-              on-click-middle = "shift_reset";
-            };
+            tooltip = false;
           };
         };
       };
