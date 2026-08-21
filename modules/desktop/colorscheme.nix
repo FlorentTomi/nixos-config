@@ -4,6 +4,7 @@
       inputs,
       lib,
       config,
+      pkgs,
       ...
     }:
     let
@@ -37,7 +38,7 @@
           toString (hexByte (lib.substring 4 2 hex))
         }";
 
-      p = config.colorScheme.palette;
+      p = config.lib.stylix.colors;
 
       themePalette = {
         background = p.base00;
@@ -72,9 +73,11 @@
         builtins.replaceStrings (map pattern names) (map (n: tokens.${n}) names) text;
     in
     {
-      imports = [ inputs.nix-colors.homeManagerModules.default ];
+      imports = [ inputs.stylix.homeModules.stylix ];
 
-      colorScheme = inputs.nix-colors.colorSchemes.catppuccin-macchiato;      
+      stylix.autoEnable = false;
+
+      stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
 
       _module.args = {
         inherit themePalette;
