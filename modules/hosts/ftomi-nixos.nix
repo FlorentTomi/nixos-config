@@ -71,8 +71,7 @@ in
             config.homeManager.modules.playerctld
             config.homeManager.modules.wl-clip-persist
             config.homeManager.modules.gnome-keyring
-            config.homeManager.modules.waypaper
-            config.homeManager.modules.awww
+            config.homeManager.modules.wallpaper
             config.homeManager.modules.vscode
             config.homeManager.modules.direnv
             config.homeManager.modules.nodejs
