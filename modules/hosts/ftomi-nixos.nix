@@ -63,6 +63,7 @@ in
             config.homeManager.modules.wleave
             config.homeManager.modules.bat
             config.homeManager.modules.btop
+            config.homeManager.modules.nirimon
             config.homeManager.modules.nix-index
             config.homeManager.modules.starship
             config.homeManager.modules.fastfetch
