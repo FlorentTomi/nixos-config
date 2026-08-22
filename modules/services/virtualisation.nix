@@ -1,6 +1,11 @@
 {
   nixos.modules.virtualisation =
-    { config, lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       cfg = config.custom.virtualisation;
     in
@@ -27,6 +32,8 @@
             dates = "weekly";
           };
         };
+
+        virtualisation.oci-containers.backend = "docker";
 
         hardware.nvidia-container-toolkit.enable = cfg.nvidiaContainerToolkit;
         systemd.services.nvidia-container-toolkit-cdi-generator = {

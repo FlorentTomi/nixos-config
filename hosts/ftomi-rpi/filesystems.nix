@@ -43,6 +43,7 @@
       "/var/lib/tailscale"
       "/var/lib/nixos"
       "/var/lib/docker"
+      "/var/lib/docker-data"
     ];
   };
 }

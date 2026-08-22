@@ -264,3 +264,116 @@ nix shell nixpkgs#<name>
 other genuinely machine-specific file should never be shared between
 hosts — everything under `modules/` (leaf features and roles alike) is
 written to be reused.
+
+## ftomi-rpi (Raspberry Pi 3B+)
+
+Headless Docker host, deliberately unlike `ftomi-nixos` in almost every
+way: `aarch64-linux` instead of `x86_64-linux`, cross-built from the
+desktop via `boot.binfmt.emulatedSystems` (`hosts/ftomi-nixos/binfmt.nix`)
+rather than installed natively, no disko (disk layout comes from nixpkgs'
+own `sd-image-aarch64.nix`), no home-manager (bare `users.users.ftomi`, no
+desktop environment). Registered via `hosts.ftomi-rpi` +
+`modules/hosts/ftomi-rpi.nix` the same way any host is, importing
+`config.nixos.modules.headless-arm` (a minimal role — no limine/EFI
+bootloader, no audio/dconf/xdg-portal, see `modules/roles/headless-arm.nix`)
+instead of `base`/`gaming-desktop`.
+
+### Impermanent root
+
+The point of this host: an unclean shutdown (no UPS, SD cards corrupt
+easily) can't leave a broken OS, because there's nothing on `/` for a dirty
+power-cut to corrupt in the first place. `hosts/ftomi-rpi/filesystems.nix`
+makes `/` tmpfs, wiped on every boot. The one real partition (built by
+`sd-image.nix`, ext4, label `NIXOS_SD`) is mounted at `/state` instead of
+`/`, with `/nix` and `/boot` bind-mounted out of it (both baked in at
+image-build time), and `environment.persistence."/state/persist"`
+(nix-community's [impermanence](https://github.com/nix-community/impermanence))
+bind-mounting back in whatever specific files/directories need to survive
+a reboot — machine-id, SSH host keys, the sops age key, Tailscale state,
+`/var/lib/docker`, `/var/lib/docker-data`.
+
+`hosts/ftomi-rpi/sd-image.nix` reuses nixpkgs' own single-partition
+`sd-image-aarch64.nix` pipeline as-is (firmware/DTB/U-Boot handling, the
+whole `system.build.sdImage` assembly) rather than hand-rolling a custom
+multi-partition layout — a from-scratch 3-partition scheme (separate `/nix`
+and `/persist` partitions) was tried first and failed to boot on real
+hardware; reusing nixpkgs' proven pipeline and just overriding
+`fileSystems."/"` to tmpfs turned out both simpler and more reliable.
+
+### Building and flashing the image
+
+```bash
+nix build .#packages.aarch64-linux.sdImage-ftomi-rpi
+```
+
+Needs `aarch64-linux` binfmt emulation registered on the building machine
+(already set up on `ftomi-nixos`). Flash the resulting `.img.zst` with
+[Raspberry Pi Imager](https://www.raspberrypi.com/software/) in "custom
+image" mode — more reliable in practice here than raw `dd`.
+
+### First boot and SSH access
+
+Access is key-only (`services.openssh.settings.PasswordAuthentication =
+false;`) via a dedicated keypair — not any one desktop's local `~/.ssh`,
+which wouldn't survive that machine being reformatted. The private half is
+sops-encrypted on `ftomi-nixos` as `ssh-key-ftomi-rpi`
+(`hosts/ftomi-nixos/secrets.yaml` + `sops.secrets` in
+`hosts/ftomi-nixos/users.nix`), decrypted on whatever desktop needs it; the
+SSH client config lives in `modules/cli/ssh-ftomi-rpi.nix`. `ssh ftomi-rpi`
+should just work from any machine with that secret decrypted.
+
+`initialPassword` still exists on the account for local console access
+only — note that it (and any interactive `passwd` change over SSH, back
+when password auth was still enabled) gets reset every single boot,
+since `/etc/shadow` lives on the ephemeral tmpfs root and isn't in the
+persistence list.
+
+The `/state` partition starts small (sized to fit the image at build time)
+and grows to fill the SD card via a one-shot `expand-root-partition`
+service on first boot (adapted from nixpkgs' own version — see
+`sd-image.nix`'s comments for a real MMC-specific `lsblk` quirk hit while
+debugging this). If a card gets reflashed/booted multiple times during
+testing, that service's one-shot marker file can get consumed by an
+earlier failed attempt before it ever succeeds — if `df -h /state` looks
+suspiciously small, grow it by hand once:
+
+```bash
+rootPart=$(findmnt -n -o SOURCE /state)
+bootDevice=$(lsblk -npo PKNAME $rootPart)
+partNum=$(echo "$rootPart" | grep -oE '[0-9]+$')
+echo ",+," | sudo sfdisk -N$partNum --no-reread $bootDevice
+sudo partprobe
+sudo resize2fs $rootPart
+```
+
+### Deploying changes
+
+```bash
+nh os switch --target-host ftomi-rpi
+```
+
+Builds locally on the desktop (cross-compiled via binfmt) and pushes over
+SSH — no SD card involved for routine changes. Only reflash from scratch
+(rebuild the `sdImage` and reflash) if the boot chain itself changes
+(kernel, bootloader, `sd-image.nix`).
+
+### Adding a Docker service
+
+`modules/docker/<name>.nix` — e.g. `modules/docker/bambuddy.nix` — using
+`virtualisation.oci-containers.containers.<name>`, registered under
+`nixos.modules.<name>` like any other feature module and imported in
+`modules/hosts/ftomi-rpi.nix`'s module list. Volumes go under
+`/var/lib/docker-data/<name>/...`; add that path to
+`environment.persistence."/state/persist".directories` in
+`hosts/ftomi-rpi/filesystems.nix` or it won't survive a reboot.
+
+### Known trade-offs
+
+- No automatic snapshots: `/state` is ext4, not btrfs, so the repo's usual
+  `btrbk` pattern (`modules/system/btrbk.nix`) doesn't apply here. Revisit
+  if Docker data on this host ever needs backup coverage.
+- `sops-nix` is wired in (via `headless-arm`'s `secrets` module) but
+  nothing declares `sops.secrets.*` on this host yet — add a
+  `hosts/ftomi-rpi/secrets.yaml` + `.sops.yaml` recipient +
+  `sops.defaultSopsFile` when a real secret (Docker Compose credentials, a
+  Tailscale auth key) shows up.

@@ -17,6 +17,7 @@ in
     modules = [
       config.nixos.modules.headless-arm
       config.nixos.modules.virtualisation
+      config.nixos.modules.bambuddy
 
       ../../hosts/ftomi-rpi/hardware-configuration.nix
       ../../hosts/ftomi-rpi/sd-image.nix
