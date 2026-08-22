@@ -18,4 +18,9 @@
     owner = "ftomi";
     mode = "0400";
   };
+
+  sops.secrets."ssh-key-ftomi-rpi" = {
+    owner = "ftomi";
+    mode = "0400";
+  };
 }

@@ -91,6 +91,7 @@ in
             config.homeManager.modules.chromium
             config.homeManager.modules.qalculate
             config.homeManager.modules.work
+            config.homeManager.modules.ssh-ftomi-rpi
             config.homeManager.modules.yazi
             config.homeManager.modules.theme
             config.homeManager.modules.colorscheme

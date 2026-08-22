@@ -19,11 +19,11 @@ in
       config.nixos.modules.virtualisation
 
       ../../hosts/ftomi-rpi/hardware-configuration.nix
+      ../../hosts/ftomi-rpi/sd-image.nix
       ../../hosts/ftomi-rpi/filesystems.nix
       ../../hosts/ftomi-rpi/boot.nix
       ../../hosts/ftomi-rpi/networking.nix
       ../../hosts/ftomi-rpi/users.nix
-      ../../hosts/ftomi-rpi/btrbk.nix
 
       {
         custom.virtualisation.nvidiaContainerToolkit = false;
@@ -32,4 +32,8 @@ in
       }
     ];
   };
+
+  # `nix build .#sdImage-ftomi-rpi` — same config that runs on the device.
+  flake.packages.aarch64-linux.sdImage-ftomi-rpi =
+    config.flake.nixosConfigurations.ftomi-rpi.config.system.build.sdImage;
 }

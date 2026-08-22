@@ -1,47 +1,35 @@
-# Impermanent root + persisted state, validated against the throwaway
-# x86_64 VM prototype (modules/hosts/vm-impermanence-test.nix, since
-# deleted) before being ported here. Labels (FIRMWARE/NIX/PERSIST) match
-# what Phase 8's sd-image build partitions the SD card into.
+# Impermanence, single-real-partition style: one persistent partition
+# (built by sd-image.nix, labeled NIXOS_SD, mounted at /state) holds
+# /nix and /boot — baked in at image-build time — plus whatever
+# accumulates under /state/persist at runtime. "/" itself is tmpfs, wiped
+# every boot; only paths explicitly bind-mounted or listed below survive.
 { inputs, ... }:
 {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
-  fileSystems."/" = {
-    fsType = "tmpfs";
-    device = "tmpfs";
-    options = [ "size=512M" "mode=755" ];
-  };
-
-  fileSystems."/boot/firmware" = {
-    device = "/dev/disk/by-label/FIRMWARE";
-    fsType = "vfat";
-  };
-
-  fileSystems."/nix" = {
-    device = "/dev/disk/by-label/NIX";
+  fileSystems."/state" = {
+    device = "/dev/disk/by-label/NIXOS_SD";
     fsType = "ext4";
-  };
-
-  # @persist subvolume — everything else needed across a reboot lives here.
-  fileSystems."/persist" = {
-    device = "/dev/disk/by-label/PERSIST";
-    fsType = "btrfs";
-    options = [ "subvol=@persist" "compress=zstd:1" "noatime" ];
     neededForBoot = true;
   };
 
-  # @docker subvolume — kept separate from @persist so Docker's own
-  # snapshots/wear don't get bundled with the rest of persisted state.
-  fileSystems."/var/lib/docker" = {
-    device = "/dev/disk/by-label/PERSIST";
-    fsType = "btrfs";
-    options = [ "subvol=@docker" "compress=zstd:1" "noatime" ];
+  fileSystems."/nix" = {
+    device = "/state/nix";
+    fsType = "none";
+    options = [ "bind" ];
+    neededForBoot = true;
+  };
+
+  fileSystems."/boot" = {
+    device = "/state/boot";
+    fsType = "none";
+    options = [ "bind" ];
     neededForBoot = true;
   };
 
   services.journald.storage = "volatile";
 
-  environment.persistence."/persist" = {
+  environment.persistence."/state/persist" = {
     hideMounts = true;
     files = [
       "/etc/machine-id"
@@ -54,6 +42,7 @@
     directories = [
       "/var/lib/tailscale"
       "/var/lib/nixos"
+      "/var/lib/docker"
     ];
   };
 }
