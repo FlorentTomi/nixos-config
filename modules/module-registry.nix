@@ -16,7 +16,14 @@
       lib.types.submodule {
         options = {
           user = lib.mkOption { type = lib.types.str; };
-          diskDevice = lib.mkOption { type = lib.types.str; };
+          system = lib.mkOption {
+            type = lib.types.str;
+            default = "x86_64-linux";
+          };
+          diskDevice = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+          };
         };
       }
     );

@@ -9,7 +9,7 @@ in
   };
 
   flake.nixosConfigurations.ftomi-nixos = inputs.nixpkgs.lib.nixosSystem {
-    system = "x86_64-linux";
+    system = hostCfg.system;
     specialArgs = {
       inherit inputs;
       inherit (hostCfg) user diskDevice;
@@ -34,6 +34,7 @@ in
       ../../hosts/ftomi-nixos/fstrim.nix
       ../../hosts/ftomi-nixos/smartd.nix
       ../../hosts/ftomi-nixos/bluetooth.nix
+      ../../hosts/ftomi-nixos/binfmt.nix
 
       {
         home-manager.users.${hostCfg.user} = {

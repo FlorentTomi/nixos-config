@@ -28,6 +28,10 @@ let
   # identical hash-pinned store path already on disk and never re-fetches.
   inputSources = map (i: i.outPath) (lib.attrValues inputs);
 
+  # This whole ISO/disko-install/EFI flow is x86-specific; other-arch hosts
+  # (e.g. an aarch64 Pi) opt out and use a different deploy path entirely.
+  x86Hosts = lib.filterAttrs (_: v: v.system == "x86_64-linux") config.hosts;
+
   mkBaseHost =
     hostName:
     let
@@ -132,13 +136,13 @@ let
 in
 {
   flake.nixosConfigurations = lib.mkMerge [
-    (lib.mapAttrs' (h: _: lib.nameValuePair "${h}-base" (mkBaseHost h)) config.hosts)
-    (lib.mapAttrs' (h: _: lib.nameValuePair "installer-${h}" (mkInstaller h)) config.hosts)
+    (lib.mapAttrs' (h: _: lib.nameValuePair "${h}-base" (mkBaseHost h)) x86Hosts)
+    (lib.mapAttrs' (h: _: lib.nameValuePair "installer-${h}" (mkInstaller h)) x86Hosts)
   ];
 
   flake.packages.x86_64-linux = lib.mapAttrs' (
     h: _:
     lib.nameValuePair "iso-${h}"
       config.flake.nixosConfigurations."installer-${h}".config.system.build.isoImage
-  ) config.hosts;
+  ) x86Hosts;
 }
