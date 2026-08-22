@@ -45,6 +45,9 @@
           layer = "bottom";
           position = "top";
           exclusive = true;
+          margin-top = 8;
+          margin-left = 8;
+          margin-right = 8;
 
           modules-left = [
             "custom/power"
