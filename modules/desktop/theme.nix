@@ -15,6 +15,10 @@
         enable = true;
         gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
         gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+        iconTheme = {
+          package = pkgs.papirus-icon-theme;
+          name = "Papirus-Dark";
+        };
       };
 
       dconf.settings."org/gnome/desktop/interface" = {
