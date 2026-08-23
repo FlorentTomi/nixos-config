@@ -1,89 +1,42 @@
-@define-color background @@background@@;
-@define-color background-alt @@backgroundPanel@@;
-@define-color lightbg @@backgroundPanel@@;
-@define-color lightfg @@foregroundDim@@;
-@define-color foreground @@foreground@@;
-@define-color orange @@orange@@;
-@define-color cyan @@cyan@@;
-@define-color selected @@accent@@;
-@define-color active @@accent@@;
-@define-color urgent @@red@@;
-
-@define-color power @@red@@;
-@define-color cpu @@orange@@;
-@define-color temperature @@yellow@@;
-@define-color gpu @@green@@;
-@define-color memory @@cyan@@;
-@define-color disk @@blue@@;
-@define-color vpn-connected @@green@@;
-@define-color vpn-disconnected @@red@@;
-
 * {
     font-family: "JetBrainsMono Nerd Font";
-    font-size: 13px;
-    color: @foreground;
-}
-
-window#waybar {
-    background-color: alpha(#000000, 0);
+    font-size: 12px;
     font-weight: bold;
 }
 
+window#waybar {
+    background-color: transparent;
+}
+
 /* Left */
-
 #custom-power {
-    background-color: @power;
-    color: @background;
-    border: 1px solid @power;
     font-size: 20px;
+    border-width: 1px;
+    border-style: solid;
 }
 
-#cpu {
-    background-color: @background;
-    color: @cpu;
-    border-top: 1px solid @background-alt;
-    border-bottom: 1px solid @background-alt;
-    min-width: 4rem;
-}
-
-#temperature {
-    background-color: @background;
-    color: @temperature;
-    border-top: 1px solid @background-alt;
-    border-bottom: 1px solid @background-alt;
-    min-width: 4rem;
-}
-
-#custom-gpu {
-    background-color: @background;
-    color: @gpu;
-    border-top: 1px solid @background-alt;
-    border-bottom: 1px solid @background-alt;
-    min-width: 3rem;
-}
-
-#memory {
-    background-color: @background;
-    color: @memory;
-    border-top: 1px solid @background-alt;
-    border-bottom: 1px solid @background-alt;
-    min-width: 5rem;
+#cpu,
+#temperature,
+#custom-gpu,
+#memory,
+#disk {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
 }
 
 #disk {
-    background-color: @background;
-    color: @disk;
-    border-top: 1px solid @background-alt;
-    border-bottom: 1px solid @background-alt;
-    border-right: 1px solid @background-alt;
-    padding-right: 0.5rem;
+    border-right-width: 1px;
+    border-right-style: solid;
+    padding-left: 0.5rem;
+    padding-right: 1rem;
 }
 
 /* Center */
-
 #window {
-    background-color: @background;
-    border: 1px solid @background-alt;
+    border-width: 1px;
+    border-style: solid;
     padding: 0 0.5rem;
 }
 
@@ -96,34 +49,36 @@ window#waybar.empty #window {
 }
 
 /* Right */
+#pulseaudio,
+#tray,
+#clock {
+    border-width: 1px;
+    border-style: solid;
+}
 
 #vpn-drawer {
-    background-color: @background;
-    border: 1px solid @background-alt;
-    padding: 0 0.5rem;
+    padding-right: 4px;
 }
 
 #custom-vpn {
-    padding: 0 0.5rem;
-    color: @vpn-disconnected;
-}
-
-#custom-vpn.connected {
-    color: @vpn-connected;
-}
-
-#volume {
-    background-color: @background;
-    border: 1px solid @background-alt;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-style: solid;
 }
 
 #pulseaudio {
-    min-width: 4rem;
-    padding: 0 0.5rem;
+    padding-right: 4px;
+}
+
+#pulseaudio-slider {
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-style: solid;
 }
 
 #pulseaudio-slider slider {
-    background-color: @selected;
     min-height: 0px;
     min-width: 0px;
     opacity: 0;
@@ -133,34 +88,20 @@ window#waybar.empty #window {
 }
 
 #pulseaudio-slider trough {
-    background: @lightbg;
     min-width: 6rem;
 }
 
 #pulseaudio-slider highlight {
-    background: @foreground;
     min-width: 10px;
     border-radius: 5px;
 }
 
-#pulseaudio-slider.muted trough {
-    background-color: @lightbg;
-}
-
 #tray {
-    background-color: @background;
-    border: 1px solid @background-alt;
     padding: 0.5rem;
+    margin-left: 4px;
+    margin-right: 4px;
 }
 
 #clock {
-    background-color: @background;
-    border: 1px solid @background-alt;
     padding: 0.5rem;
-}
-
-tooltip {
-    background: @background;
-    color: @foreground;
-    border: 1px solid @background-alt;
 }

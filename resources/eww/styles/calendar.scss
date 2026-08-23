@@ -7,35 +7,35 @@
 }
 
 .cal-title {
-    color: $foreground;
+    color: $text;
     font-weight: bold;
     font-size: 14px;
 }
 
 .cal-nav {
-    color: $foreground;
+    color: $text;
     font-size: 13px;
     padding: 0px 8px;
     border-radius: 0.3rem;
 }
 
 .cal-nav:hover {
-    background: $backgroundPanel;
-    color: $accent;
+    background: $background-alt;
+    color: $dark/background-item-on;
 }
 
 .cal-weekday {
-    color: $foreground;
+    color: $text;
     font-size: 11px;
     font-weight: bold;
 }
 
 .cal-weekday.weekend {
-    color: $red;
+    color: $image/red;
 }
 
 .cal-day {
-    color: $foreground;
+    color: $text;
     font-size: 12px;
     min-width: 26px;
     min-height: 26px;
@@ -43,11 +43,11 @@
 }
 
 .cal-day.muted {
-    color: $selection;
+    color: $background-alt;
 }
 
 .cal-day.weekend {
-    color: $red;
+    color: $image/red;
 }
 
 .cal-day.today {
@@ -57,12 +57,12 @@
 }
 
 .cal-today-btn {
-    color: $foreground;
+    color: $text;
     font-size: 11px;
     margin-top: 6px;
     padding: 3px;
     border-radius: 0.3rem;
-    border: 1px solid $foreground;
+    border: 1px solid $background-selection;
 }
 
 .cal-today-btn:hover {
@@ -71,6 +71,6 @@
 }
 
 .cal-next-event {
-    color: $green;
+    color: $image/green;
     font-size: 13px;
 }

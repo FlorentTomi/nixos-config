@@ -7,8 +7,8 @@
     }:
     {
       wayland.windowManager.niri.settings.layout.border = {
-        active-color = "#${themePalette.accent}";
-        inactive-color = "#${themePalette.muted}";
+        active-color = "#${themePalette.window-manager.window-border-focused}";
+        inactive-color = "#${themePalette.window-manager.window-border-unfocused}";
       };
 
       gtk = {

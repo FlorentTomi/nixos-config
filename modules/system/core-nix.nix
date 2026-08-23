@@ -1,8 +1,7 @@
 {
   nixos.modules.core-nix =
-    { pkgs, user, inputs, ... }:
+    { pkgs, user, ... }:
     {
-      # nixpkgs.config.allowUnfree = true;
       nixpkgs.config.allowUnfreePredicate = pkg: builtins.trace "UNFREE: ${pkg.name or pkg.pname or "unknown"}" true;
 
       nix.settings = {

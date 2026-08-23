@@ -1,5 +1,5 @@
 (defwidget dashboard-widget []
-    (box :orientation "v" :class "dashboard-bg" :space-evenly false :vexpand "false" :hexpand "false" :spacing 8
+    (box :orientation "v" :class "dashboard-bg" :space-evenly false :vexpand "false" :hexpand "false" :spacing 4
         (clock-widget)
         (calendar-widget)
         (media-widget)

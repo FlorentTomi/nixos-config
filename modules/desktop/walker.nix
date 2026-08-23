@@ -2,7 +2,7 @@
   homeManager.modules.walker =
     {
       inputs,
-      themeCss,
+      themePalette,
       pkgs,
       lib,
       ...
@@ -40,12 +40,48 @@
         };
 
         themes.custom = {
-          style = themeCss {
-            text = builtins.readFile ../../resources/walker-style.css;
-            extra = {
-              background-image = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-            };
-          };
+          style = ''
+            ${builtins.readFile ../../resources/walker-style.css}
+            .box-wrapper {
+              background-image:
+                linear-gradient(
+                  alpha(#${themePalette.background}, 0.9),
+                  alpha(#${themePalette.background-alt}, 0.95)
+                ),
+                url(${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg);
+            }
+
+            * {
+              color: #${themePalette.text};
+            }
+
+            .box-wrapper {
+                border: 2px solid #${themePalette.background-alt};
+            }
+
+            .search-container {
+                background: alpha(#${themePalette.background-alt}, 0.8);
+                border-bottom: 2px solid #${themePalette.accent};
+            }
+
+            .input {
+                color: #${themePalette.text};
+            }
+
+            child:hover .item-box,
+            child:selected .item-box {
+                background: linear-gradient(
+                    90deg,
+                    alpha(#${themePalette.dark.background-list-selected}, 0.4) 0%,
+                    alpha(#${themePalette.background}, 0) 100%
+                );
+                border-left: 2px solid #${themePalette.accent};
+            }
+
+            child:selected .item-box * {
+                color: #${themePalette.text};
+            }
+          '';
         };
       };
 

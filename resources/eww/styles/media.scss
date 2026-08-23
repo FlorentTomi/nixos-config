@@ -6,7 +6,7 @@
     min-width: 72px;
     min-height: 72px;
     border-radius: 0.4rem;
-    background: $backgroundPanel;
+    background: $background;
 }
 
 .media-art image {
@@ -14,7 +14,7 @@
 }
 
 .media-art-placeholder {
-    color: $foreground;
+    color: $background-alt;
     font-size: 28px;
 }
 
@@ -25,7 +25,7 @@
 }
 
 .media-artist {
-    color: $foreground;
+    color: $accent-alt;
     font-size: 12px;
     margin-top: 2px;
 }
@@ -35,14 +35,14 @@
 }
 
 .media-btn {
-    color: $foreground;
+    color: $text-alt;
     font-size: 15px;
     padding: 2px 8px;
     border-radius: 0.3rem;
 }
 
 .media-btn:hover {
-    background: $backgroundPanel;
+    background: $background;
     color: $accent;
 }
 

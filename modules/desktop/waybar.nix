@@ -4,7 +4,7 @@
       osConfig,
       lib,
       pkgs,
-      themeCss,
+      themePalette,
       ...
     }:
     let
@@ -37,9 +37,73 @@
       programs.waybar = {
         enable = true;
         systemd.enable = true;
-        style = lib.mkAfter (themeCss {
-          text = builtins.readFile ../../resources/waybar-style.css;
-        });
+        style = ''
+          ${builtins.readFile ../../resources/waybar-style.css}
+
+          * {
+            color: #${themePalette.text};
+          }
+
+          tooltip {
+              background: alpha(#${themePalette.popup.background}, 0.5);
+              color: #${themePalette.popup.text};
+          }
+
+          .module {
+            background-color: #${themePalette.background};
+            border-color: #${themePalette.background-alt};
+          }
+
+          #custom-power {
+            background-color: #${themePalette.image.red};
+            color: #${themePalette.dark.text};
+            border-color: #${themePalette.image.red};
+          }
+
+          #cpu {
+            color: #${themePalette.image.orange};
+          }
+          
+          #temperature {
+            color: #${themePalette.image.yellow};
+          }
+          
+          #custom-gpu {
+            color: #${themePalette.image.green};
+          }
+          
+          #memory {
+            color: #${themePalette.image.cyan};
+          }
+          
+          #disk {
+            color: #${themePalette.image.blue};
+          }
+
+          #custom-vpn {
+            color: #${themePalette.warning};
+          }
+
+          #custom-vpn.connected {
+            color: #${themePalette.image.green};
+          }
+
+          #pulseaudio-slider slider {
+            background-color: #${themePalette.background-selection};
+          }
+
+          #pulseaudio-slider trough {
+            background-color: #${themePalette.popup.progressbar-incomplete};
+          }
+
+          #pulseaudio-slider highlight {
+            background-color: #${themePalette.popup.progressbar-complete};
+          }
+
+          #pulseaudio-slider.muted trough {
+            background-color: #${themePalette.popup.progressbar-incomplete};
+          }
+        '';
 
         settings.mainBar = {
           layer = "bottom";
@@ -65,12 +129,14 @@
           };
           cpu = {
             interval = 5;
+            min-length = 8;
             format = " {usage}%";
             on-click = "ghostty --confirm-close-surface=false -e btop";
             align = 0.5;
           };
           temperature = {
             interval = 5;
+            min-length = 8;
             critical-threshold = 100;
             format = " {temperatureC}°C";
             # k10temp's PCI device path is fixed to this board; hwmon1's number
@@ -81,6 +147,7 @@
           };
           "custom/gpu" = {
             interval = 5;
+            min-length = 8;
             format = "󱓞 {}";
             tooltip = false;
             exec = "nvtop -s | jq -r '.[].gpu_util'";
@@ -89,6 +156,7 @@
           };
           memory = {
             interval = 5;
+            min-length = 9;
             format = "  {percentage}%";
             on-click = "ghostty --confirm-close-surface=false -e btop";
             align = 0.5;
@@ -112,14 +180,14 @@
 
           modules-right = [
             "group/vpn-drawer"
-            "group/volume"
+            "group/volume-drawer"
             "tray"
             "clock"
           ];
           tray = {
             spacing = 4;
           };
-          "group/volume" = {
+          "group/volume-drawer" = {
             orientation = "inherit";
             drawer = {
               transition-duration = 500;
@@ -132,6 +200,8 @@
             ];
           };
           pulseaudio = {
+            min-length = 8;
+            justify = "center";
             format = "{icon} {volume}%";
             format-muted = "";
             format-icons = {
@@ -164,6 +234,7 @@
             return-type = "json";
             interval = 1;
             format = "{icon}";
+            min-length = 5;
             format-icons = {
               connected = "󰌾";
               disconnected = "󰌿";
@@ -174,7 +245,7 @@
             exec = "${vpnStatus}/bin/waybar-vpn-status";
             return-type = "json";
             interval = 1;
-            format = "{}";
+            format = " {} ";
             on-click = "rofi -show vpn";
           };
           clock = {

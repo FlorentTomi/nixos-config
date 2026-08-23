@@ -1,10 +1,9 @@
 * {
     all: unset;
     font-family: "JetBrainsMono Nerd Font";
-    // font-size: 13px;
 }
 
 .genwin {
     background: $background;
-    border: 1px solid $selection;
+    border: 1px solid $background-alt;
 }
