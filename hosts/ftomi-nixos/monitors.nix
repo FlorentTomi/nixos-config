@@ -14,6 +14,7 @@ let
         height = 1080;
         framerate = 144;
       };
+      primary = false;
       position = {
         x = 3840;
         y = 0;
@@ -28,6 +29,7 @@ let
         height = 2160;
         framerate = 60;
       };
+      primary = true;
       position = {
         x = 0;
         y = 0;
@@ -39,7 +41,7 @@ let
     output = {
       _args = [ monitor.connector ];
       scale = monitor.scale;
-      focus-at-startup = { };
+      ${if monitor.primary then "focus-at-startup" else null} = {};
       position._props = {
         x = monitor.position.x;
         y = monitor.position.y;
