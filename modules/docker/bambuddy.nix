@@ -21,6 +21,13 @@
         };
       };
 
+      services.caddy.virtualHosts."bambuddy.ftomi-rpi.net" = {
+        extraConfig = ''
+          tls internal
+          reverse_proxy localhost:8000
+        '';
+      };
+
       systemd.tmpfiles.rules = [
         "d /var/lib/docker-data/bambuddy/data 0755 1000 1000 -"
         "d /var/lib/docker-data/bambuddy/logs 0755 1000 1000 -"
