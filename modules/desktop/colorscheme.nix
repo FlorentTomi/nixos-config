@@ -70,7 +70,12 @@
     {
       imports = [ inputs.stylix.homeModules.stylix ];
 
-      stylix.autoEnable = false;
+      stylix.enable = true;
+      stylix.autoEnable = true;
+      stylix.polarity = "dark";
+      
+      stylix.targets.starship.enable = false;
+      
       stylix.fonts = {
         serif = {
           package = pkgs.nerd-fonts.jetbrains-mono;

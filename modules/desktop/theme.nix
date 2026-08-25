@@ -21,11 +21,6 @@
         };
       };
 
-      dconf.settings."org/gnome/desktop/interface" = {
-        color-scheme = "prefer-dark";
-        accent-color = "purple";
-      };
-
       home.pointerCursor = {
         package = pkgs.bibata-cursors;
         name = "Bibata-Modern-Classic";
