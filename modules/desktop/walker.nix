@@ -3,10 +3,14 @@
     {
       inputs,
       themePalette,
+      osConfig,
       pkgs,
       lib,
       ...
     }:
+    let
+      vpnNames = import ../../resources/vpn-names.nix { inherit osConfig; };
+    in
     {
       imports = [ inputs.walker.homeManagerModules.default ];
 
@@ -35,6 +39,10 @@
             {
               provider = "providerlist";
               prefix = ";";
+            }
+            {
+              provider = "menus:vpn";
+              prefix = "&";
             }
           ];
         };
@@ -83,6 +91,10 @@
             }
           '';
         };
+      };
+
+      xdg.configFile."elephant/menus/vpn.lua".text = import ../../resources/vpn-menu.nix {
+        inherit lib vpnNames;
       };
 
       home.activation.restartElephant = lib.hm.dag.entryAfter [ "reloadSystemd" ] ''

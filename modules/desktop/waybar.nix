@@ -203,6 +203,7 @@
               active = "󰝤";
               default = "";
               urgent = "󱈸";
+              empty = "󰐕";
             };
           };
 
@@ -284,7 +285,7 @@
               connected = "󰌾";
               disconnected = "󰌿";
             };
-            on-click = "rofi -show vpn";
+            on-click = "walker -m menus:vpn";
           };
 
           "custom/vpn#full" = {
@@ -292,7 +293,7 @@
             return-type = "json";
             interval = 1;
             format = " {} ";
-            on-click = "rofi -show vpn";
+            on-click = "walker -m menus:vpn";
           };
 
           clock = {
