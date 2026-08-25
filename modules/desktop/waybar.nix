@@ -41,6 +41,7 @@
           ${builtins.readFile ../../resources/waybar-style.css}
 
           * {
+            font-family: "JetBrainsMono Nerd Font";
             color: #${themePalette.text};
           }
 
@@ -63,21 +64,41 @@
           #cpu {
             color: #${themePalette.image.orange};
           }
-          
+
           #temperature {
             color: #${themePalette.image.yellow};
           }
-          
+
           #custom-gpu {
             color: #${themePalette.image.green};
           }
-          
+
           #memory {
             color: #${themePalette.image.cyan};
           }
-          
+
           #disk {
             color: #${themePalette.image.blue};
+          }
+
+          #workspaces button label {
+              font-family: "JetBrainsMono Nerd Font Mono";
+          }
+
+          #workspaces button.focused {
+            border-bottom-color: #${themePalette.accent};
+          }
+
+          #workspaces button.focused label {
+            color: #${themePalette.accent};
+          }
+
+          #workspaces button.urgent {
+            border-bottom-color: #${themePalette.image.orange};
+          }
+
+          #workspaces button.urgent label {
+            color: #${themePalette.image.orange};
           }
 
           #custom-vpn {
@@ -106,7 +127,7 @@
         '';
 
         settings.mainBar = {
-          layer = "bottom";
+          layer = "top";
           position = "top";
           exclusive = true;
           margin-top = 8;
@@ -120,40 +141,46 @@
             "custom/gpu"
             "memory"
             "disk"
+            "niri/workspaces"
           ];
+
           "custom/power" = {
             format = "󰍃";
             tooltip = false;
             on-click = "wleave";
             min-length = 4;
           };
+
           cpu = {
             interval = 5;
             min-length = 8;
-            format = " {usage}%";
+            format = "󰍛 {usage}%";
             on-click = "ghostty --confirm-close-surface=false -e btop";
             align = 0.5;
           };
+
           temperature = {
             interval = 5;
             min-length = 8;
             critical-threshold = 100;
-            format = " {temperatureC}°C";
+            format = " {temperatureC}°C";
             # k10temp's PCI device path is fixed to this board; hwmon1's number
             # isn't (probe order can shift it on kernel/driver updates).
             hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
             input-filename = "temp1_input";
             align = 0.5;
           };
+
           "custom/gpu" = {
             interval = 5;
             min-length = 8;
-            format = "󱓞 {}";
+            format = "󰾲 {}";
             tooltip = false;
             exec = "nvtop -s | jq -r '.[].gpu_util'";
             on-click = "ghostty --confirm-close-surface=false -e nvtop";
             align = 0.5;
           };
+
           memory = {
             interval = 5;
             min-length = 9;
@@ -161,14 +188,26 @@
             on-click = "ghostty --confirm-close-surface=false -e btop";
             align = 0.5;
           };
+
           disk = {
             interval = 10;
-            format = "󰋊 {percentage_used}% (Free: {free})";
+            format = "󱑛 {percentage_used}% (Free: {free})";
             on-click = "ghostty --confirm-close-surface=false -e diskonaut /home";
             on-click-right = "ghostty --confirm-close-surface=false -e diskonaut /";
           };
 
+          "niri/workspaces" = {
+            format = "{icon}";
+            hide-empty = true;
+            format-icons = {
+              active = "󰝤";
+              default = "";
+              urgent = "󱈸";
+            };
+          };
+
           modules-center = [ "niri/window" ];
+
           "niri/window" = {
             separate-outputs = true;
             icon = true;
@@ -184,9 +223,11 @@
             "tray"
             "clock"
           ];
+
           tray = {
             spacing = 4;
           };
+
           "group/volume-drawer" = {
             orientation = "inherit";
             drawer = {
@@ -199,6 +240,7 @@
               "pulseaudio/slider#out"
             ];
           };
+
           pulseaudio = {
             min-length = 8;
             justify = "center";
@@ -210,6 +252,7 @@
             on-click = "swayosd-client --output-volume mute-toggle";
             on-click-right = "pavucontrol";
           };
+
           "pulseaudio/slider#out" = {
             min = 0;
             max = 100;
@@ -217,6 +260,7 @@
             zero-on-mute = true;
             unmute-on-volume-change = true;
           };
+
           "group/vpn-drawer" = {
             orientation = "inherit";
             drawer = {
@@ -229,6 +273,7 @@
               "custom/vpn#full"
             ];
           };
+
           "custom/vpn#compact" = {
             exec = "${vpnStatus}/bin/waybar-vpn-status";
             return-type = "json";
@@ -241,6 +286,7 @@
             };
             on-click = "rofi -show vpn";
           };
+
           "custom/vpn#full" = {
             exec = "${vpnStatus}/bin/waybar-vpn-status";
             return-type = "json";
@@ -248,6 +294,7 @@
             format = " {} ";
             on-click = "rofi -show vpn";
           };
+
           clock = {
             interval = 60;
             format = " {:%Y/%m/%d  %H:%M}";
