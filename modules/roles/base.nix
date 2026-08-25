@@ -18,7 +18,7 @@
       };
 
       nixpkgs.overlays = [
-        (final: prev: {
+        (final: _: {
           dashlane-cli = final.callPackage ../../pkgs/dashlane-cli.nix { };
         })
       ];
