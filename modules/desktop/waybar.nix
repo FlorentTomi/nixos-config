@@ -1,5 +1,5 @@
 {
-  homeManager.modules.waybar =
+  flake.modules.homeManager.waybar =
     {
       osConfig,
       lib,

@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  nixos.modules.gaming-desktop.imports = with config.nixos.modules; [
+  flake.modules.nixos.gaming-desktop.imports = with config.flake.modules.nixos; [
     steam
     gamemode
     sunshine
@@ -9,7 +9,7 @@
     wifi-performance
   ];
 
-  homeManager.modules.gaming-desktop.imports = with config.homeManager.modules; [
+  flake.modules.homeManager.gaming-desktop.imports = with config.flake.modules.homeManager; [
     steam
     lutris
     prismlauncher

@@ -15,11 +15,11 @@ in
       inherit (hostCfg) user diskDevice;
     };
     modules = [
-      config.nixos.modules.headless-arm
-      config.nixos.modules.virtualisation
-      config.nixos.modules.caddy
-      config.nixos.modules.dnsmasq
-      config.nixos.modules.bambuddy
+      config.flake.modules.nixos.headless-arm
+      config.flake.modules.nixos.virtualisation
+      config.flake.modules.nixos.caddy
+      config.flake.modules.nixos.dnsmasq
+      config.flake.modules.nixos.bambuddy
 
       ../../hosts/ftomi-rpi/hardware-configuration.nix
       ../../hosts/ftomi-rpi/sd-image.nix

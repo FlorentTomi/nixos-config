@@ -1,5 +1,5 @@
 {
-  nixos.modules.bootloader = {
+  flake.modules.nixos.bootloader = {
     boot.loader.systemd-boot.enable = false;
     boot.loader.limine.enable = true;
     boot.loader.limine.maxGenerations = 10;

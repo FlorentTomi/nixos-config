@@ -1,10 +1,10 @@
 { ... }:
 {
-  nixos.modules.automount = {
+  flake.modules.nixos.automount = {
     services.udisks2.enable = true;
   };
 
-  homeManager.modules.automount =
+  flake.modules.homeManager.automount =
     { ... }:
     {
       services.udiskie = {

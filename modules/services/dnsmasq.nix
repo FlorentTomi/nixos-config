@@ -1,5 +1,5 @@
 {
-  nixos.modules.dnsmasq =
+  flake.modules.nixos.dnsmasq =
     { ... }:
     {
       services.dnsmasq = {

@@ -1,5 +1,5 @@
 {
-  nixos.modules.core-nix =
+  flake.modules.nixos.core-nix =
     { pkgs, user, ... }:
     {
       nixpkgs.config.allowUnfreePredicate = pkg: builtins.trace "UNFREE: ${pkg.name or pkg.pname or "unknown"}" true;

@@ -1,5 +1,5 @@
 {
-  homeManager.modules.floorp =
+  flake.modules.homeManager.floorp =
     { pkgs, ... }:
     {
       home.packages = [ pkgs.floorp-bin ];

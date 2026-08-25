@@ -1,5 +1,5 @@
 {
-  nixos.modules.via =
+  flake.modules.nixos.via =
     { pkgs, ... }:
     {
       environment.systemPackages = [ pkgs.via ];

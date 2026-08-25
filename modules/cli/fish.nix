@@ -1,5 +1,5 @@
 {
-  homeManager.modules.fish = {
+  flake.modules.homeManager.fish = {
     programs.fish.enable = true;
   };
 }

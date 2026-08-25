@@ -1,5 +1,5 @@
 {
-  homeManager.modules.qobuz =
+  flake.modules.homeManager.qobuz =
     { pkgs, ... }:
     {
       home.packages = [

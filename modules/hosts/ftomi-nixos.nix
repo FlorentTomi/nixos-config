@@ -15,16 +15,16 @@ in
       inherit (hostCfg) user diskDevice;
     };
     modules = [
-      config.nixos.modules.base
-      config.nixos.modules.gaming-desktop
-      config.nixos.modules.niri
-      config.nixos.modules.nvidia
-      config.nixos.modules.openvpn
-      config.nixos.modules.console
-      config.nixos.modules.virtualisation
-      config.nixos.modules.khal
-      config.nixos.modules.display-manager
-      config.nixos.modules.automount
+      config.flake.modules.nixos.base
+      config.flake.modules.nixos.gaming-desktop
+      config.flake.modules.nixos.niri
+      config.flake.modules.nixos.nvidia
+      config.flake.modules.nixos.openvpn
+      config.flake.modules.nixos.console
+      config.flake.modules.nixos.virtualisation
+      config.flake.modules.nixos.khal
+      config.flake.modules.nixos.display-manager
+      config.flake.modules.nixos.automount
 
       ../../hosts/ftomi-nixos/hardware-configuration.nix
       ../../hosts/ftomi-nixos/disko-config.nix
@@ -45,60 +45,60 @@ in
 
           imports = [
             ../../hosts/ftomi-nixos/monitors.nix
-            config.homeManager.modules.niri
-            config.homeManager.modules.git
-            config.homeManager.modules.nix-lang-tooling
-            config.homeManager.modules.gaming-desktop
-            config.homeManager.modules.audio
-            config.homeManager.modules.networking
-            config.homeManager.modules.tailscale
-            config.homeManager.modules.secrets
-            config.homeManager.modules.khal
-            config.homeManager.modules.lock-idle
-            config.homeManager.modules.fish
-            config.homeManager.modules.ghostty
-            config.homeManager.modules.floorp
-            config.homeManager.modules.zed
-            config.homeManager.modules.walker
-            config.homeManager.modules.wleave
-            config.homeManager.modules.bat
-            config.homeManager.modules.btop
-            config.homeManager.modules.nirimon
-            config.homeManager.modules.nix-index
-            config.homeManager.modules.starship
-            config.homeManager.modules.fastfetch
-            config.homeManager.modules.diskonaut
-            config.homeManager.modules.sops-env
-            config.homeManager.modules.mako
-            config.homeManager.modules.swayosd
-            config.homeManager.modules.playerctld
-            config.homeManager.modules.wl-clip-persist
-            config.homeManager.modules.gnome-keyring
-            config.homeManager.modules.wallpaper
-            config.homeManager.modules.vscode
-            config.homeManager.modules.direnv
-            config.homeManager.modules.nodejs
-            config.homeManager.modules.claude-code
-            config.homeManager.modules.helix
-            config.homeManager.modules.gimp
-            config.homeManager.modules.inkscape
-            config.homeManager.modules.onlyoffice
-            config.homeManager.modules.joplin
-            config.homeManager.modules.android-tools
-            config.homeManager.modules.discord
-            config.homeManager.modules.matrix
-            config.homeManager.modules.orca-slicer
-            config.homeManager.modules.qobuz
-            config.homeManager.modules.chromium
-            config.homeManager.modules.qalculate
-            config.homeManager.modules.work
-            config.homeManager.modules.ssh-ftomi-rpi
-            config.homeManager.modules.yazi
-            config.homeManager.modules.theme
-            config.homeManager.modules.colorscheme
-            config.homeManager.modules.waybar
-            config.homeManager.modules.eww
-            config.homeManager.modules.automount
+            config.flake.modules.homeManager.niri
+            config.flake.modules.homeManager.git
+            config.flake.modules.homeManager.nix-lang-tooling
+            config.flake.modules.homeManager.gaming-desktop
+            config.flake.modules.homeManager.audio
+            config.flake.modules.homeManager.networking
+            config.flake.modules.homeManager.tailscale
+            config.flake.modules.homeManager.secrets
+            config.flake.modules.homeManager.khal
+            config.flake.modules.homeManager.lock-idle
+            config.flake.modules.homeManager.fish
+            config.flake.modules.homeManager.ghostty
+            config.flake.modules.homeManager.floorp
+            config.flake.modules.homeManager.zed
+            config.flake.modules.homeManager.walker
+            config.flake.modules.homeManager.wleave
+            config.flake.modules.homeManager.bat
+            config.flake.modules.homeManager.btop
+            config.flake.modules.homeManager.nirimon
+            config.flake.modules.homeManager.nix-index
+            config.flake.modules.homeManager.starship
+            config.flake.modules.homeManager.fastfetch
+            config.flake.modules.homeManager.diskonaut
+            config.flake.modules.homeManager.sops-env
+            config.flake.modules.homeManager.mako
+            config.flake.modules.homeManager.swayosd
+            config.flake.modules.homeManager.playerctld
+            config.flake.modules.homeManager.wl-clip-persist
+            config.flake.modules.homeManager.gnome-keyring
+            config.flake.modules.homeManager.wallpaper
+            config.flake.modules.homeManager.vscode
+            config.flake.modules.homeManager.direnv
+            config.flake.modules.homeManager.nodejs
+            config.flake.modules.homeManager.claude-code
+            config.flake.modules.homeManager.helix
+            config.flake.modules.homeManager.gimp
+            config.flake.modules.homeManager.inkscape
+            config.flake.modules.homeManager.onlyoffice
+            config.flake.modules.homeManager.joplin
+            config.flake.modules.homeManager.android-tools
+            config.flake.modules.homeManager.discord
+            config.flake.modules.homeManager.matrix
+            config.flake.modules.homeManager.orca-slicer
+            config.flake.modules.homeManager.qobuz
+            config.flake.modules.homeManager.chromium
+            config.flake.modules.homeManager.qalculate
+            config.flake.modules.homeManager.work
+            config.flake.modules.homeManager.ssh-ftomi-rpi
+            config.flake.modules.homeManager.yazi
+            config.flake.modules.homeManager.theme
+            config.flake.modules.homeManager.colorscheme
+            config.flake.modules.homeManager.waybar
+            config.flake.modules.homeManager.eww
+            config.flake.modules.homeManager.automount
           ];
         };
 

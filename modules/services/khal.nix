@@ -1,5 +1,5 @@
 {
-  nixos.modules.khal =
+  flake.modules.nixos.khal =
     { config, ... }:
     {
       sops.secrets."gcal-client-id" = {
@@ -57,7 +57,7 @@
       };
     };
 
-  homeManager.modules.khal =
+  flake.modules.homeManager.khal =
     {
       config,
       osConfig,

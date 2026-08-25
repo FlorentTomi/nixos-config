@@ -1,5 +1,5 @@
 {
-  nixos.modules.dconf = {
+  flake.modules.nixos.dconf = {
     programs.dconf = {
       enable = true;
       profiles.user.databases = [

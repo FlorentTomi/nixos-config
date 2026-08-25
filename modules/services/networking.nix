@@ -1,12 +1,12 @@
 {
-  nixos.modules.networking = {
+  flake.modules.nixos.networking = {
     networking.networkmanager.enable = true;
     networking.networkmanager.dns = "systemd-resolved";
 
     services.resolved.enable = true;
   };
 
-  homeManager.modules.networking = {
+  flake.modules.homeManager.networking = {
     services.network-manager-applet.enable = true;
   };
 }

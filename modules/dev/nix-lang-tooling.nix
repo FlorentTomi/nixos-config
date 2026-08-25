@@ -1,5 +1,5 @@
 {
-  homeManager.modules.nix-lang-tooling =
+  flake.modules.homeManager.nix-lang-tooling =
     { pkgs, ... }:
     {
       home.packages = [

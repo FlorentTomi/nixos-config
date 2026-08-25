@@ -1,5 +1,5 @@
 {
-  nixos.modules.bambuddy =
+  flake.modules.nixos.bambuddy =
     { ... }:
     {
       virtualisation.oci-containers.containers.bambuddy = {

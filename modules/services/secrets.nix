@@ -1,10 +1,10 @@
 {
-  nixos.modules.secrets = {
+  flake.modules.nixos.secrets = {
     sops.age.keyFile = "/var/lib/sops-nix/key.txt";
     sops.age.generateKey = false;
   };
 
-  homeManager.modules.secrets =
+  flake.modules.homeManager.secrets =
     { pkgs, ... }:
     {
       home.packages = [

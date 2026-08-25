@@ -1,5 +1,5 @@
 {
-  nixos.modules.oomd = {
+  flake.modules.nixos.oomd = {
     systemd.oomd = {
       enable = true;
       enableRootSlice = true;

@@ -1,5 +1,5 @@
 {
-  homeManager.modules.eww =
+  flake.modules.homeManager.eww =
     {
       themePalette,
       monitors,

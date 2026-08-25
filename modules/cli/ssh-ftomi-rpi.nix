@@ -2,7 +2,7 @@
 # wouldn't survive a reformat) — private half is sops-encrypted on
 # ftomi-nixos, see hosts/ftomi-nixos/secrets.yaml and users.nix.
 {
-  homeManager.modules.ssh-ftomi-rpi =
+  flake.modules.homeManager.ssh-ftomi-rpi =
     { osConfig, ... }:
     {
       programs.ssh.settings."ftomi-rpi" = {

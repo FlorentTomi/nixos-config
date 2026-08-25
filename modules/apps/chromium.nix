@@ -1,5 +1,5 @@
 {
-  homeManager.modules.chromium =
+  flake.modules.homeManager.chromium =
     { pkgs, ... }:
     {
       home.packages = [ pkgs.ungoogled-chromium ];

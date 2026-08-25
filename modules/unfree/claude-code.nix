@@ -1,5 +1,5 @@
 {
-  homeManager.modules.claude-code =
+  flake.modules.homeManager.claude-code =
     { pkgs, ... }:
     {
       programs.claude-code = {

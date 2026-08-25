@@ -1,16 +1,11 @@
 { lib, ... }:
 {
-  # Each key below must be defined by exactly one file — lazyAttrsOf merges
-  # same-name definitions instead of erroring, so duplicate names would
-  # silently combine rather than fail.
-  options.nixos.modules = lib.mkOption {
-    type = lib.types.lazyAttrsOf lib.types.deferredModule;
-    default = { };
-  };
-  options.homeManager.modules = lib.mkOption {
-    type = lib.types.lazyAttrsOf lib.types.deferredModule;
-    default = { };
-  };
+  # flake.modules.nixos.<name> / flake.modules.homeManager.<name> are no
+  # longer declared here — they come from flake-parts' own `modules`
+  # extension (see flake.nix), which is the same
+  # lazyAttrsOf-deferredModule shape as before: same-name definitions
+  # still merge instead of erroring, so the duplicate-name caveat is
+  # unchanged, we just no longer maintain the option ourselves.
   options.hosts = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule {

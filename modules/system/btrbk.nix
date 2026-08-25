@@ -1,5 +1,5 @@
 {
-  nixos.modules.btrbk = {
+  flake.modules.nixos.btrbk = {
     services.btrbk.instances.local = {
       onCalendar = "daily";
       settings = {

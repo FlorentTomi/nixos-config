@@ -1,5 +1,5 @@
 {
-  homeManager.modules.swayosd = {
+  flake.modules.homeManager.swayosd = {
     services.swayosd.enable = true;
 
     wayland.windowManager.niri.settings.binds = {

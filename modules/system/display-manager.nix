@@ -1,5 +1,5 @@
 {
-  nixos.modules.display-manager =
+  flake.modules.nixos.display-manager =
     { pkgs, ... }:
     let
       sddm-astronaut = (

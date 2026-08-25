@@ -3,7 +3,7 @@
 # module-registry.nix's lazyAttrsOf merges same-named keys silently instead
 # of erroring, so reusing that name would silently combine both configs.
 {
-  nixos.modules.bootloader-extlinux = {
+  flake.modules.nixos.bootloader-extlinux = {
     boot.loader.grub.enable = false;
     boot.loader.generic-extlinux-compatible.enable = true;
   };

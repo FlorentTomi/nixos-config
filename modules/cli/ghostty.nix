@@ -1,5 +1,5 @@
 {
-  homeManager.modules.ghostty =
+  flake.modules.homeManager.ghostty =
     { pkgs, ... }:
     {
       programs.ghostty = {

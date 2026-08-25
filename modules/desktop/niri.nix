@@ -1,5 +1,5 @@
 {
-  nixos.modules.niri =
+  flake.modules.nixos.niri =
     { lib, pkgs, ... }:
     {
       programs.niri.enable = true;
@@ -29,7 +29,7 @@
       };
     };
 
-  homeManager.modules.niri =
+  flake.modules.homeManager.niri =
     {
       config,
       pkgs,

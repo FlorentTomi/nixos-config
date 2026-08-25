@@ -1,5 +1,5 @@
 {
-  nixos.modules.caddy =
+  flake.modules.nixos.caddy =
     { ... }:
     {
       services.caddy = {

@@ -1,5 +1,5 @@
 {
-  homeManager.modules.btop = {
+  flake.modules.homeManager.btop = {
     programs.btop.enable = true;
     
     wayland.windowManager.niri.settings.binds."Mod+Escape".spawn = [

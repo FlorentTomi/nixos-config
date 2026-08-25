@@ -1,5 +1,5 @@
 {
-  homeManager.modules.wleave = 
+  flake.modules.homeManager.wleave = 
   {pkgs, ...}:
   {
     programs.wleave = {

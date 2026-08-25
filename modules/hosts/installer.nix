@@ -44,7 +44,7 @@ let
         inherit (hostCfg) user diskDevice;
       };
       modules = [
-        config.nixos.modules.base
+        config.flake.modules.nixos.base
         ../../hosts/${hostName}/hardware-configuration.nix
         ../../hosts/${hostName}/disko-config.nix
         ../../hosts/${hostName}/users.nix
@@ -53,7 +53,7 @@ let
         (
           { pkgs, ... }:
           {
-            # config.nixos.modules.base declares sops secrets (e.g. the
+            # config.flake.modules.nixos.base declares sops secrets (e.g. the
             # gitlab ssh key) unconditionally, so -base needs the same
             # defaultSopsFile the full host config sets, or eval fails
             # with "sops.defaultSopsFile was accessed but has no value".

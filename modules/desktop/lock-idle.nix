@@ -1,5 +1,5 @@
 {
-  homeManager.modules.lock-idle = {
+  flake.modules.homeManager.lock-idle = {
     programs.hyprlock = {
       enable = true;
       extraConfig = builtins.readFile ../../resources/hyprlock-config.conf;

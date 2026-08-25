@@ -1,5 +1,5 @@
 {
-  homeManager.modules.nirimon =
+  flake.modules.homeManager.nirimon =
     { pkgs, ... }:
     {
       home.packages = [ pkgs.nirimon ];

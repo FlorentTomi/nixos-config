@@ -12,19 +12,21 @@ itself) is a [flake-parts](https://flake.parts) module, auto-discovered by
 `default.nix` bundlers, no import lists to keep in sync. One file
 implements one feature, across every configuration class (NixOS,
 home-manager) that feature touches — e.g. `modules/niri.nix` sets both
-`nixos.modules.niri` (compositor enable, portal, polkit agent) and
-`homeManager.modules.niri` (keybinds, layout) in the same file, instead of
+`flake.modules.nixos.niri` (compositor enable, portal, polkit agent) and
+`flake.modules.homeManager.niri` (keybinds, layout) in the same file, instead of
 splitting across a `hosts/`/`home/` boundary.
 
-- `modules/module-registry.nix` — declares the option namespace every other
-  module writes into:
-  - `nixos.modules.<name>` / `homeManager.modules.<name>` — each a
-    `lazyAttrsOf deferredModule`. **Importing a name is what enables it** —
-    there are no `enable` options on our own modules (unlike upstream
-    options like `programs.niri.enable`, which stay exactly as niri-flake
-    defines them).
-  - `hosts.<name>` — per-host data (`user`, `diskDevice`), read back by that
-    host's own module instead of threading `specialArgs` by hand.
+- `flake.modules.nixos.<name>` / `flake.modules.homeManager.<name>` — the
+  namespace every feature module writes into, provided by flake-parts' own
+  `modules` extension (`inputs.flake-parts.flakeModules.modules`, wired in
+  `flake.nix`). Each is a `lazyAttrsOf deferredModule` — same shape as
+  before, so same-name definitions still merge instead of erroring.
+  **Importing a name is what enables it** — there are no `enable` options
+  on our own modules (unlike upstream options like `programs.niri.enable`,
+  which stay exactly as niri-flake defines them).
+- `modules/module-registry.nix` — now declares only `hosts.<name>`
+  (per-host data: `user`, `diskDevice`), read back by that host's own
+  module instead of threading `specialArgs` by hand.
 - `modules/<feature>.nix` — flat, one file per feature
   (`waybar.nix`, `audio.nix`, `git.nix`, `nvidia.nix`, ...). Genuinely
   parametrized per-host data (not just an on/off gate) lives under
@@ -41,7 +43,7 @@ splitting across a `hosts/`/`home/` boundary.
   bootloader, ...).
 - `modules/hosts/<name>.nix` — the host-producing module. Sets
   `hosts.<name>` (user, diskDevice) and `flake.nixosConfigurations.<name>`,
-  pulling in `config.nixos.modules.*`/`config.homeManager.modules.*` by
+  pulling in `config.flake.modules.nixos.*`/`config.flake.modules.homeManager.*` by
   name plus this machine's raw hardware/identity files.
 - `hosts/<name>/` — **only** files that can't be anything but this exact
   machine: `hardware-configuration.nix`, `disko-config.nix`,
@@ -242,10 +244,10 @@ nix shell nixpkgs#<name>
    `modules/hosts/ftomi-nixos.nix`:
    - set `hosts.<name> = { user = "..."; diskDevice = "..."; };`
    - build `flake.nixosConfigurations.<name>` via `nixpkgs.lib.nixosSystem`,
-     pulling in `config.nixos.modules.base` plus whichever role(s)
-     (`config.nixos.modules.gaming-desktop`, or a new
+     pulling in `config.flake.modules.nixos.base` plus whichever role(s)
+     (`config.flake.modules.nixos.gaming-desktop`, or a new
      `modules/roles/laptop.nix` once one exists) and any individual
-     `config.nixos.modules.<name>` toggles this machine needs
+     `config.flake.modules.nixos.<name>` toggles this machine needs
    - list `./hardware-configuration.nix`, `./disko-config.nix`, and any
      genuinely host-only raw files (kernel/boot tuning, networking
      hostname, monitor topology, etc. — anything that's actually a trait of
@@ -255,7 +257,7 @@ nix shell nixpkgs#<name>
      host was first installed — **never change this retroactively**
    - list the home-manager modules this host/user wants under
      `home-manager.users.<user>.imports`, pulling from
-     `config.homeManager.modules.*` the same way
+     `config.flake.modules.homeManager.*` the same way
 4. Rebuild with `nh os switch --hostname <name>` (or `-H <name>`) — needed
    the first time since `NH_FLAKE`'s default hostname resolution won't yet
    match on a machine that isn't `<name>` itself.
@@ -274,7 +276,7 @@ rather than installed natively, no disko (disk layout comes from nixpkgs'
 own `sd-image-aarch64.nix`), no home-manager (bare `users.users.ftomi`, no
 desktop environment). Registered via `hosts.ftomi-rpi` +
 `modules/hosts/ftomi-rpi.nix` the same way any host is, importing
-`config.nixos.modules.headless-arm` (a minimal role — no limine/EFI
+`config.flake.modules.nixos.headless-arm` (a minimal role — no limine/EFI
 bootloader, no audio/dconf/xdg-portal, see `modules/roles/headless-arm.nix`)
 instead of `base`/`gaming-desktop`.
 
@@ -361,7 +363,7 @@ SSH — no SD card involved for routine changes. Only reflash from scratch
 
 `modules/docker/<name>.nix` — e.g. `modules/docker/bambuddy.nix` — using
 `virtualisation.oci-containers.containers.<name>`, registered under
-`nixos.modules.<name>` like any other feature module and imported in
+`flake.modules.nixos.<name>` like any other feature module and imported in
 `modules/hosts/ftomi-rpi.nix`'s module list. Volumes go under
 `/var/lib/docker-data/<name>/...`; add that path to
 `environment.persistence."/state/persist".directories` in

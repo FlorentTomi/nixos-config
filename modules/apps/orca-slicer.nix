@@ -1,5 +1,5 @@
 {
-  homeManager.modules.orca-slicer =
+  flake.modules.homeManager.orca-slicer =
     { pkgs, ... }:
     {
       home.packages = [ pkgs.orca-slicer ];

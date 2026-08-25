@@ -1,5 +1,5 @@
 {
-  nixos.modules.xdg-portal =
+  flake.modules.nixos.xdg-portal =
     { pkgs, ... }:
     {
       environment.systemPackages = [

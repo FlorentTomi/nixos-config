@@ -1,5 +1,5 @@
 {
-  homeManager.modules.colorscheme =
+  flake.modules.homeManager.colorscheme =
     {
       inputs,
       config,

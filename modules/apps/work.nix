@@ -4,7 +4,7 @@
   # points at pytheasnavigation.com — so committing there always uses the
   # work name/email regardless of where the repo lives on disk, with no
   # manual switching required.
-  homeManager.modules.work =
+  flake.modules.homeManager.work =
     { lib, osConfig, ... }:
     let
       vpnNames = import ../../resources/vpn-names.nix { inherit osConfig; };

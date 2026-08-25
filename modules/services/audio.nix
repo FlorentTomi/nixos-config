@@ -1,5 +1,5 @@
 {
-  nixos.modules.audio = {
+  flake.modules.nixos.audio = {
     security.rtkit.enable = true;
 
     services.pipewire = {
@@ -10,7 +10,7 @@
     };
   };
 
-  homeManager.modules.audio =
+  flake.modules.homeManager.audio =
     { pkgs, ... }:
     {
       services.pasystray.enable = true;

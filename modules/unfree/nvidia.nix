@@ -1,5 +1,5 @@
 {
-  nixos.modules.nvidia =
+  flake.modules.nixos.nvidia =
     { config, pkgs, ... }:
     {
       boot.kernelParams = [

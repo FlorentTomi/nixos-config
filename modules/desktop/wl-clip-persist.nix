@@ -1,5 +1,5 @@
 {
-  homeManager.modules.wl-clip-persist = {
+  flake.modules.homeManager.wl-clip-persist = {
     services.wl-clip-persist = {
       enable = true;
       clipboardType = "both";

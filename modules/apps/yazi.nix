@@ -1,5 +1,5 @@
 {
-  homeManager.modules.yazi =
+  flake.modules.homeManager.yazi =
     { inputs, pkgs, ... }:
     {
       programs.yazi = {

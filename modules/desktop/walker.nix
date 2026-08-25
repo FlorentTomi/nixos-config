@@ -1,5 +1,5 @@
 {
-  homeManager.modules.walker =
+  flake.modules.homeManager.walker =
     {
       inputs,
       themePalette,

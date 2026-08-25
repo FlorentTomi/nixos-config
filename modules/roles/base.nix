@@ -2,7 +2,7 @@
 # previously lived in lib/mk-host.nix and hosts/base/*.
 { config, inputs, ... }:
 {
-  nixos.modules.base.imports = [
+  flake.modules.nixos.base.imports = [
     inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.default
@@ -22,7 +22,7 @@
     }
   ]
   ++ (
-    with config.nixos.modules;
+    with config.flake.modules.nixos;
     [
       core-nix
       audio

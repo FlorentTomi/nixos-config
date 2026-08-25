@@ -1,5 +1,5 @@
 {
-  homeManager.modules.fastfetch = {
+  flake.modules.homeManager.fastfetch = {
     programs.fish.interactiveShellInit = ''
       fastfetch
     '';

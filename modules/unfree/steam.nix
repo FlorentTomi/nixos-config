@@ -1,5 +1,5 @@
 {
-  nixos.modules.steam = {
+  flake.modules.nixos.steam = {
     # Keep /games owned by ftomi even if root-owned files ever land there
     # (e.g. an installer step run via sudo/pkexec).
     systemd.tmpfiles.rules = [
@@ -14,7 +14,7 @@
     };
   };
 
-  homeManager.modules.steam = {
+  flake.modules.homeManager.steam = {
     wayland.windowManager.niri.settings._children = [
       {
         window-rule._children = [

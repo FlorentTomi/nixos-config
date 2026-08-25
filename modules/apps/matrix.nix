@@ -1,5 +1,5 @@
 {
-  homeManager.modules.matrix =
+  flake.modules.homeManager.matrix =
     { pkgs, ... }:
     {
       programs.element-desktop = {

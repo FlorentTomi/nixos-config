@@ -6,7 +6,7 @@
   # nothing in this config touches; the `up`/`down` script below has always
   # referenced the plain nixpkgs package directly, so removing the input
   # changes nothing.
-  nixos.modules.openvpn =
+  flake.modules.nixos.openvpn =
     { config, lib, pkgs, ... }:
     let
       cfg = config.custom.openvpn;
