@@ -5,6 +5,8 @@
       home.packages = [
         pkgs.nil
         pkgs.nixd
+        pkgs.nixfmt
+        pkgs.statix
       ];
     };
 }

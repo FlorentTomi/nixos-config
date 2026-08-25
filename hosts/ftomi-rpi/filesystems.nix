@@ -7,24 +7,26 @@
 {
   imports = [ inputs.impermanence.nixosModules.impermanence ];
 
-  fileSystems."/state" = {
-    device = "/dev/disk/by-label/NIXOS_SD";
-    fsType = "ext4";
-    neededForBoot = true;
-  };
+  fileSystems = {
+    "/state" = {
+      device = "/dev/disk/by-label/NIXOS_SD";
+      fsType = "ext4";
+      neededForBoot = true;
+    };
 
-  fileSystems."/nix" = {
-    device = "/state/nix";
-    fsType = "none";
-    options = [ "bind" ];
-    neededForBoot = true;
-  };
+    "/nix" = {
+      device = "/state/nix";
+      fsType = "none";
+      options = [ "bind" ];
+      neededForBoot = true;
+    };
 
-  fileSystems."/boot" = {
-    device = "/state/boot";
-    fsType = "none";
-    options = [ "bind" ];
-    neededForBoot = true;
+    "/boot" = {
+      device = "/state/boot";
+      fsType = "none";
+      options = [ "bind" ];
+      neededForBoot = true;
+    };
   };
 
   services.journald.storage = "volatile";

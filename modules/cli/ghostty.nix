@@ -4,9 +4,11 @@
     {
       programs.ghostty = {
         enable = true;
-        settings.font-family = "JetBrainsMono Nerd Font";
-        settings.background-opacity = 0.9;
-        settings.copy-on-select = true;
+        settings = {
+          font-family = "JetBrainsMono Nerd Font";
+          background-opacity = 0.9;
+          copy-on-select = true;
+        };
       };
 
       home.packages = [ pkgs.nirimon ];

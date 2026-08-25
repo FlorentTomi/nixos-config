@@ -8,10 +8,12 @@
 {
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 
-  boot.initrd.availableKernelModules = [ ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
+  boot = {
+    initrd.availableKernelModules = [ ];
+    initrd.kernelModules = [ ];
+    kernelModules = [ ];
+    extraModulePackages = [ ];
+  };
 
   swapDevices = [ ];
 }

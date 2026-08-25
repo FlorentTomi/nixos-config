@@ -9,7 +9,7 @@ in
   };
 
   flake.nixosConfigurations.ftomi-rpi = inputs.nixpkgs.lib.nixosSystem {
-    system = hostCfg.system;
+    inherit (hostCfg) system;
     specialArgs = {
       inherit inputs;
       inherit (hostCfg) user diskDevice;

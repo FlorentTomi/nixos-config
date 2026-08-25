@@ -1,8 +1,10 @@
 {
   flake.modules.nixos.bootloader = {
-    boot.loader.systemd-boot.enable = false;
-    boot.loader.limine.enable = true;
-    boot.loader.limine.maxGenerations = 10;
-    boot.loader.efi.canTouchEfiVariables = true;
+    boot.loader = {
+      systemd-boot.enable = false;
+      limine.enable = true;
+      limine.maxGenerations = 10;
+      efi.canTouchEfiVariables = true;
+    };
   };
 }

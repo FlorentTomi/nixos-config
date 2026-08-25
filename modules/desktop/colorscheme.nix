@@ -70,35 +70,37 @@
     {
       imports = [ inputs.stylix.homeModules.stylix ];
 
-      stylix.enable = true;
-      stylix.autoEnable = true;
-      stylix.polarity = "dark";
+      stylix = {
+        enable = true;
+        autoEnable = true;
+        polarity = "dark";
 
-      stylix.targets.starship.enable = false;
+        targets.starship.enable = false;
 
-      stylix.fonts = {
-        serif = {
-          package = pkgs.nerd-fonts.jetbrains-mono;
-          name = "JetBrainsMono Nerd Font";
+        fonts = {
+          serif = {
+            package = pkgs.nerd-fonts.jetbrains-mono;
+            name = "JetBrainsMono Nerd Font";
+          };
+
+          sansSerif = {
+            package = pkgs.nerd-fonts.jetbrains-mono;
+            name = "JetBrainsMono Nerd Font";
+          };
+
+          monospace = {
+            package = pkgs.nerd-fonts.jetbrains-mono;
+            name = "JetBrainsMono Nerd Font";
+          };
+
+          emoji = {
+            package = pkgs.nerd-fonts.jetbrains-mono;
+            name = "JetBrainsMono Nerd Font";
+          };
         };
 
-        sansSerif = {
-          package = pkgs.nerd-fonts.jetbrains-mono;
-          name = "JetBrainsMono Nerd Font";
-        };
-
-        monospace = {
-          package = pkgs.nerd-fonts.jetbrains-mono;
-          name = "JetBrainsMono Nerd Font";
-        };
-
-        emoji = {
-          package = pkgs.nerd-fonts.jetbrains-mono;
-          name = "JetBrainsMono Nerd Font";
-        };
+        base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
       };
-
-      stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
 
       _module.args = {
         inherit themePalette;

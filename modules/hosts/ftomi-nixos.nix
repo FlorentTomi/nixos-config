@@ -9,7 +9,7 @@ in
   };
 
   flake.nixosConfigurations.ftomi-nixos = inputs.nixpkgs.lib.nixosSystem {
-    system = hostCfg.system;
+    inherit (hostCfg) system;
     specialArgs = {
       inherit inputs;
       inherit (hostCfg) user diskDevice;
@@ -38,9 +38,12 @@ in
 
       {
         home-manager.users.${hostCfg.user} = {
-          home.username = hostCfg.user;
-          home.homeDirectory = "/home/${hostCfg.user}";
-          home.stateVersion = "26.05";
+          home = {
+            username = hostCfg.user;
+            homeDirectory = "/home/${hostCfg.user}";
+            stateVersion = "26.05";
+          };
+
           programs.home-manager.enable = true;
 
           imports = [

@@ -8,12 +8,15 @@
     inputs.nix-index-database.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     {
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      home-manager.backupFileExtension = "bak";
-      home-manager.extraSpecialArgs = {
-        inherit inputs;
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        backupFileExtension = "bak";
+        extraSpecialArgs = {
+          inherit inputs;
+        };
       };
+
       nixpkgs.overlays = [
         (final: prev: {
           dashlane-cli = final.callPackage ../../pkgs/dashlane-cli.nix { };

@@ -40,7 +40,7 @@ let
   niriOutputs = lib.map (monitor: {
     output = {
       _args = [ monitor.connector ];
-      scale = monitor.scale;
+      inherit (monitor) scale;
       ${if monitor.primary then "focus-at-startup" else null} = { };
       position._props = {
         x = monitor.position.x;
@@ -52,7 +52,7 @@ let
 in
 {
   _module.args = {
-    monitors = monitors;
+    inherit monitors;
   };
 
   # wayland.windowManager.niri.settings is freeform/generic KDL, not

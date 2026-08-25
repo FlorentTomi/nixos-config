@@ -1,6 +1,6 @@
 {
   flake.modules.nixos.dnsmasq =
-    { ... }:
+    _:
     {
       services.dnsmasq = {
         enable = true;

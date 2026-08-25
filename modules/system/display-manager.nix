@@ -2,11 +2,9 @@
   flake.modules.nixos.display-manager =
     { pkgs, ... }:
     let
-      sddm-astronaut = (
-        pkgs.sddm-astronaut.override {
+      sddm-astronaut = pkgs.sddm-astronaut.override {
           embeddedTheme = "jake_the_dog";
-        }
-      );
+        };
     in
     {
       services.xserver.enable = true;

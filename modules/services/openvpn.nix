@@ -81,7 +81,7 @@
 
         services.openvpn.servers = lib.listToAttrs (
           map (c: {
-            name = c.name;
+            inherit (c) name;
             value = {
               config = ''
                 config ${config.sops.secrets."vpn-${c.name}".path}
