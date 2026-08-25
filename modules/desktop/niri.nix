@@ -179,6 +179,13 @@
           prefer-no-csd = { };
           animations = { };
           gestures.hot-corners.off = { };
+
+          window-rule = {
+            match._props.app-id = "^xdg-desktop-portal-gtk$";
+            open-floating = true;
+            default-column-width.proportion = 0.4;
+            default-window-height.proportion = 0.6;
+          };
         };
       };
 

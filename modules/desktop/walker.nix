@@ -101,6 +101,15 @@
         run ${pkgs.systemd}/bin/systemctl --user try-restart elephant.service
       '';
 
+      wayland.windowManager.niri.settings._children = [
+        {
+          spawn-at-startup._args = [
+            "walker"
+            "--gapplication-service"
+          ];
+        }
+      ];
+
       wayland.windowManager.niri.settings.binds = {
         "Mod+Space".spawn = [ "walker" ];
       };
