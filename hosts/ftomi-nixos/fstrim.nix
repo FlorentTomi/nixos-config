@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # Periodic TRIM instead of inline `discard` mount option — batches the
   # work rather than doing it on every delete, easier on this machine's
   # aging SATA SSD controller than continuous discard would be.
