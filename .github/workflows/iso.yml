@@ -1,0 +1,34 @@
+name: iso
+
+# The installer ISO only actually gets exercised at install time —
+# rarely, and exactly when a broken build is least convenient (a dead
+# disk, mid-reinstall). Building it on a schedule instead of every push
+# catches rot without paying its cost (large closure, cold cache) on
+# every commit.
+on:
+  schedule:
+    - cron: "0 6 * * 1" # every Monday
+  workflow_dispatch: {} # or trigger by hand from the Actions tab
+
+jobs:
+  iso:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      # x86_64, native build — this is the ISO you'd actually boot from
+      # a USB stick to reinstall ftomi-nixos.
+      - name: build iso-ftomi-nixos
+        run: nix build --print-build-logs .#packages.x86_64-linux.iso-ftomi-nixos
+
+      # sdImage-ftomi-rpi is aarch64 — same emulated-cross-build cost
+      # tradeoff as the rpi host build in check.yml. Eval-only here too;
+      # this at least confirms the sd-image module composition itself
+      # hasn't broken (a very plausible failure mode, since sd-image
+      # config is touched far less often than the rest of the repo).
+      - name: eval sdImage-ftomi-rpi
+        run: |
+          nix eval \
+            .#packages.aarch64-linux.sdImage-ftomi-rpi.drvPath

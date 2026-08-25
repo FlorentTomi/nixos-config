@@ -1,0 +1,100 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel a superseded run if you push again before the first one finishes.
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  flake-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      # Catches a stale flake.lock, deprecated inputs, and known-bad
+      # GitHub-ratelimit-prone patterns before anything else runs.
+      - uses: DeterminateSystems/flake-checker-action@main
+
+      # Evaluates every flake output (nixosConfigurations, packages,
+      # checks, ...). Cheap, and catches most module/type mistakes —
+      # this is the check that would have caught a bad rename like the
+      # nixos.modules -> flake.modules.nixos migration if it had typo'd
+      # a reference anywhere.
+      - name: nix flake check
+        run: nix flake check --all-systems
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      # No flake-parts formatter/git-hooks module wired in yet, so these
+      # run standalone via `nix run`. If you later add
+      # git-hooks.nix/treefmt as a flake-parts module, replace this
+      # whole job with `nix flake check` picking up the same hook set
+      # pre-commit already runs locally — one source of truth instead
+      # of two configs to keep in sync.
+      - name: nixfmt (check only, no write)
+        run: |
+          nix run nixpkgs#nixfmt-rfc-style -- --check \
+            $(find . -name '*.nix' -not -path './.git/*')
+
+      - name: statix (anti-pattern lint)
+        run: nix run nixpkgs#statix -- check .
+
+      - name: deadnix (dead code)
+        run: nix run nixpkgs#deadnix -- --fail .
+
+  build:
+    needs: flake-check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Native x86_64 build — this is your desktop's actual closure,
+          # not just an eval. Catches build failures (bad overrides,
+          # packages that fail to compile) that flake-check's
+          # evaluation-only pass misses.
+          - host: ftomi-nixos
+            mode: build
+
+          # ftomi-rpi is aarch64-linux. GitHub-hosted runners are
+          # x86_64; a real build here means QEMU-emulated cross-
+          # compilation, which is slow enough for a full desktop-ish
+          # closure that it's not worth it in a per-push gate. Eval-only
+          # still catches every module/option/type error — it just
+          # can't catch a package failing to actually compile for arm.
+          # Swap to `mode: build` (plus qemu-user-static setup) later if
+          # you want that coverage, or move it to a self-hosted runner
+          # on the Pi itself.
+          - host: ftomi-rpi
+            mode: eval
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: build ${{ matrix.host }}
+        if: matrix.mode == 'build'
+        run: |
+          nix build --print-build-logs \
+            .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+
+      - name: eval ${{ matrix.host }}
+        if: matrix.mode == 'eval'
+        run: |
+          nix eval \
+            .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel.drvPath
