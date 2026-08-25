@@ -65,7 +65,8 @@
                     "noatime"
                   ];
                 };
-              } // extraSubvolumes;
+              }
+              // extraSubvolumes;
             };
           };
         };

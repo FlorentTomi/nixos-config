@@ -41,7 +41,7 @@ let
     output = {
       _args = [ monitor.connector ];
       scale = monitor.scale;
-      ${if monitor.primary then "focus-at-startup" else null} = {};
+      ${if monitor.primary then "focus-at-startup" else null} = { };
       position._props = {
         x = monitor.position.x;
         y = monitor.position.y;

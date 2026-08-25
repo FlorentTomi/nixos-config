@@ -20,7 +20,9 @@ stdenvNoCC.mkDerivation rec {
   meta = {
     description = "Dashlane CLI";
     homepage = "https://github.com/Dashlane/dashlane-cli";
-    license = { free = true; };
+    license = {
+      free = true;
+    };
     mainProgram = "dcli";
   };
 }

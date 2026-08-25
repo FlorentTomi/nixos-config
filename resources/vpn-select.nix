@@ -1,4 +1,8 @@
-{ lib, pkgs, vpnNames }:
+{
+  lib,
+  pkgs,
+  vpnNames,
+}:
 # Shared backend: no-arg call lists VPNs with their state (used by both
 # rofi's script-mode and dmenu-style pickers). Called again with a selected
 # "name (on|off)" line as $1, it toggles that VPN's systemd unit, then

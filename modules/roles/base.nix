@@ -21,23 +21,20 @@
       ];
     }
   ]
-  ++ (
-    with config.flake.modules.nixos;
-    [
-      core-nix
-      audio
-      dconf
-      xdg-portal
-      bootloader
-      zram
-      networking
-      tailscale
-      secrets
-      nix-ld
-      envfs
-      btrbk
-      oomd
-      locale
-    ]
-  );
+  ++ (with config.flake.modules.nixos; [
+    core-nix
+    audio
+    dconf
+    xdg-portal
+    bootloader
+    zram
+    networking
+    tailscale
+    secrets
+    nix-ld
+    envfs
+    btrbk
+    oomd
+    locale
+  ]);
 }

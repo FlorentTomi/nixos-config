@@ -10,7 +10,10 @@
 {
   users.users.ftomi = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ];
+    extraGroups = [
+      "wheel"
+      "docker"
+    ];
     shell = pkgs.fish;
     initialPassword = "changeme";
     openssh.authorizedKeys.keys = [

@@ -1,6 +1,11 @@
 {
   flake.modules.nixos.console =
-    { config, lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       cfg = config.custom.console;
     in

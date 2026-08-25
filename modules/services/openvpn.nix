@@ -7,7 +7,12 @@
   # referenced the plain nixpkgs package directly, so removing the input
   # changes nothing.
   flake.modules.nixos.openvpn =
-    { config, lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       cfg = config.custom.openvpn;
     in
@@ -78,19 +83,18 @@
           map (c: {
             name = c.name;
             value = {
-              config =
-                ''
-                  config ${config.sops.secrets."vpn-${c.name}".path}
-                ''
-                + lib.optionalString c.hasAuth ''
-                  auth-user-pass ${config.sops.secrets."vpn-${c.name}-auth".path}
-                ''
-                + ''
-                  up ${pkgs.update-systemd-resolved}/libexec/openvpn/update-systemd-resolved
-                  down ${pkgs.update-systemd-resolved}/libexec/openvpn/update-systemd-resolved
-                  down-pre
-                  script-security 2
-                '';
+              config = ''
+                config ${config.sops.secrets."vpn-${c.name}".path}
+              ''
+              + lib.optionalString c.hasAuth ''
+                auth-user-pass ${config.sops.secrets."vpn-${c.name}-auth".path}
+              ''
+              + ''
+                up ${pkgs.update-systemd-resolved}/libexec/openvpn/update-systemd-resolved
+                down ${pkgs.update-systemd-resolved}/libexec/openvpn/update-systemd-resolved
+                down-pre
+                script-security 2
+              '';
               autoStart = false;
               updateResolvConf = false;
             };

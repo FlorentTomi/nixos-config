@@ -14,16 +14,13 @@
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.default
   ]
-  ++ (
-    with config.flake.modules.nixos;
-    [
-      core-nix
-      zram
-      tailscale
-      secrets
-      bootloader-extlinux
-      oomd
-      locale
-    ]
-  );
+  ++ (with config.flake.modules.nixos; [
+    core-nix
+    zram
+    tailscale
+    secrets
+    bootloader-extlinux
+    oomd
+    locale
+  ]);
 }

@@ -5,7 +5,12 @@
 # fileSystems."/" is forced to tmpfs (see filesystems.nix for the rest of
 # the impermanence wiring, which repoints stock's single "root" partition
 # at /state instead of /).
-{ lib, pkgs, inputs, ... }:
+{
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 {
   imports = [ "${inputs.nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix" ];
 

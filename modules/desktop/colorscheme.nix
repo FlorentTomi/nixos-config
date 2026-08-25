@@ -8,7 +8,7 @@
     }:
     let
       p = config.lib.stylix.colors;
-      
+
       themePalette = {
         background = p.base00;
         background-alt = p.base01;
@@ -73,9 +73,9 @@
       stylix.enable = true;
       stylix.autoEnable = true;
       stylix.polarity = "dark";
-      
+
       stylix.targets.starship.enable = false;
-      
+
       stylix.fonts = {
         serif = {
           package = pkgs.nerd-fonts.jetbrains-mono;
