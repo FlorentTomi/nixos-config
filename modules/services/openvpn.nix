@@ -1,16 +1,10 @@
 {
-  # pkgs.update-systemd-resolved is nixpkgs' own package
-  # (pkgs/tools/networking/openvpn/update-systemd-resolved.nix) — the
-  # jonathanio/update-systemd-resolved flake input previously imported here
-  # only added options under programs.update-systemd-resolved.*, which
-  # nothing in this config touches; the `up`/`down` script below has always
-  # referenced the plain nixpkgs package directly, so removing the input
-  # changes nothing.
   flake.modules.nixos.openvpn =
     {
       config,
       lib,
       pkgs,
+      user,
       ...
     }:
     let
@@ -23,7 +17,7 @@
             options = {
               name = lib.mkOption {
                 type = lib.types.str;
-                description = "VPN identifier. Expects a `vpn-<name>` secret, and a `vpn-<name>-auth` secret if `hasAuth` is set.";
+                description = "VPN identifier. Fetched from Proton Pass at start time as note item \"<name>\", plus a login item \"<name>-auth\" (in VPN vault) if `hasAuth` is set.";
               };
               hasAuth = lib.mkOption {
                 type = lib.types.bool;
@@ -55,39 +49,23 @@
           }
         ];
 
-        sops.secrets = lib.listToAttrs (
-          lib.flatten (
-            map (
-              c:
-              [
-                {
-                  name = "vpn-${c.name}";
-                  value = {
-                    owner = "root";
-                    mode = "0400";
-                  };
-                }
-              ]
-              ++ lib.optional c.hasAuth {
-                name = "vpn-${c.name}-auth";
-                value = {
-                  owner = "root";
-                  mode = "0400";
-                };
-              }
-            ) cfg.configs
-          )
-        );
+        # Owned by the desktop user (not root) — vpn-pass-fetch runs as
+        # that user, since it's the one with the Proton Pass session. Root
+        # (openvpn) can still read these regardless of the 0700/0600 bits,
+        # since root bypasses standard file permission checks.
+        systemd.tmpfiles.rules = [
+          "d /run/openvpn-secrets 0700 ${user} ${config.users.users.${user}.group} -"
+        ];
 
         services.openvpn.servers = lib.listToAttrs (
           map (c: {
-            inherit (c) name;
+            name = c.name;
             value = {
               config = ''
-                config ${config.sops.secrets."vpn-${c.name}".path}
+                config /run/openvpn-secrets/${c.name}
               ''
               + lib.optionalString c.hasAuth ''
-                auth-user-pass ${config.sops.secrets."vpn-${c.name}-auth".path}
+                auth-user-pass /run/openvpn-secrets/${c.name}-auth
               ''
               + ''
                 up ${pkgs.update-systemd-resolved}/libexec/openvpn/update-systemd-resolved
@@ -101,8 +79,6 @@
           }) cfg.configs
         );
 
-        # Importing openvpn already implies wanting self-service management
-        # of its units — no separate option needed.
         security.polkit.extraConfig = ''
           polkit.addRule(function(action, subject) {
             if (action.id == "org.freedesktop.systemd1.manage-units" &&

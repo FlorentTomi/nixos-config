@@ -93,7 +93,7 @@ in
             config.flake.modules.homeManager.qobuz
             config.flake.modules.homeManager.chromium
             config.flake.modules.homeManager.qalculate
-            config.flake.modules.homeManager.work
+            config.flake.modules.homeManager.pytheas
             config.flake.modules.homeManager.ssh-ftomi-rpi
             config.flake.modules.homeManager.yazi
             config.flake.modules.homeManager.theme
@@ -107,11 +107,11 @@ in
 
         custom.openvpn.configs = [
           {
-            name = "pytheas_prod";
+            name = "pytheas-prod";
             hasAuth = true;
           }
           {
-            name = "pytheas_infra";
+            name = "pytheas-infra";
             hasAuth = true;
           }
         ];
