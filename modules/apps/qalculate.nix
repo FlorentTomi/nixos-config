@@ -7,11 +7,9 @@
         {
           window-rule._children = [
             {
-              match._props = {
-                app-id = "^qalculate";
-              };
+              match._props.app-id = "^qalculate";
+              open-floating = true;
             }
-            { open-floating = true; }
           ];
         }
       ];

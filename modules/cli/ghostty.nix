@@ -8,6 +8,7 @@
           font-family = "JetBrainsMono Nerd Font";
           background-opacity = 0.9;
           copy-on-select = true;
+          notify-on-command-finish = "unfocused";
         };
       };
 
@@ -17,11 +18,7 @@
         {
           window-rule._children = [
             {
-              match._props = {
-                app-id = "ghostty$";
-              };
-            }
-            {
+              match._props.app-id = "ghostty$";
               background-effect = {
                 blur = true;
               };

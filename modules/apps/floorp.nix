@@ -30,8 +30,9 @@
                 app-id = "floorp$";
                 title = "^Picture-in-Picture$";
               };
+              
+              open-floating = true;
             }
-            { open-floating = true; }
           ];
         }
       ];
