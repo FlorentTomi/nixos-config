@@ -45,11 +45,6 @@
             controlPath = "~/.ssh/master-%r@%n:%p";
             controlPersist = "no";
           };
-
-          settings."git.pytheasnavigation.com" = {
-            identityFile = osConfig.sops.secrets."ssh-key-pytheas_gitlab".path;
-            identitiesOnly = true;
-          };
         };
 
         git.includes = [

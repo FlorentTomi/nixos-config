@@ -76,7 +76,6 @@ in
             config.flake.modules.homeManager.swayosd
             config.flake.modules.homeManager.playerctld
             config.flake.modules.homeManager.wl-clip-persist
-            config.flake.modules.homeManager.gnome-keyring
             config.flake.modules.homeManager.wallpaper
             config.flake.modules.homeManager.vscode
             config.flake.modules.homeManager.direnv
@@ -102,6 +101,7 @@ in
             config.flake.modules.homeManager.waybar
             config.flake.modules.homeManager.eww
             config.flake.modules.homeManager.automount
+            config.flake.modules.homeManager.keyring
           ];
         };
 
