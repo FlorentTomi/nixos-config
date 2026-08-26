@@ -102,6 +102,7 @@ in
             config.flake.modules.homeManager.eww
             config.flake.modules.homeManager.automount
             config.flake.modules.homeManager.keyring
+            config.flake.modules.homeManager.proton
           ];
         };
 
