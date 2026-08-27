@@ -10,6 +10,7 @@
     }:
     let
       vpnNames = import ../../resources/vpn-names.nix { inherit osConfig; };
+      audioMixerSelect = import ../../resources/audio-mixer-select.nix { inherit pkgs; };
     in
     {
       imports = [ inputs.walker.homeManagerModules.default ];
@@ -43,6 +44,29 @@
             {
               provider = "menus:vpn";
               prefix = "&";
+            }
+            {
+              provider = "menus:audio-mixer";
+              prefix = "%";
+            }
+          ];
+
+          providers.actions."menus:audio-mixer" = [
+            {
+              action = "raise";
+              default = true;
+              bind = "Return";
+              after = "AsyncReload";
+            }
+            {
+              action = "lower";
+              bind = "ctrl minus";
+              after = "AsyncReload";
+            }
+            {
+              action = "mute";
+              bind = "ctrl m";
+              after = "AsyncReload";
             }
           ];
         };
@@ -93,8 +117,14 @@
         };
       };
 
-      xdg.configFile."elephant/menus/vpn.lua".text = import ../../resources/vpn-menu.nix {
-        inherit lib vpnNames;
+      xdg.configFile = {
+        "elephant/menus/vpn.lua".text = import ../../resources/vpn-menu.nix {
+          inherit lib vpnNames;
+        };
+
+        "elephant/menus/audio-mixer.lua".text = import ../../resources/audio-mixer-menu.nix {
+          select = audioMixerSelect;
+        };
       };
 
       home.activation.restartElephant = lib.hm.dag.entryAfter [ "reloadSystemd" ] ''
@@ -112,6 +142,11 @@
 
       wayland.windowManager.niri.settings.binds = {
         "Mod+Space".spawn = [ "walker" ];
+        "Mod+Shift+A".spawn = [
+          "walker"
+          "-m"
+          "menus:audio-mixer"
+        ];
       };
     };
 }

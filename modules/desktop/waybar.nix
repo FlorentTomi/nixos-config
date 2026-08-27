@@ -252,6 +252,7 @@
             };
             on-click = "swayosd-client --output-volume mute-toggle";
             on-click-right = "pavucontrol";
+            on-click-middle = "walker -m menus:audio-mixer";
           };
 
           "pulseaudio/slider#out" = {
