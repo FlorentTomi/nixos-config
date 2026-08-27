@@ -9,13 +9,164 @@
       ...
     }:
     let
-      vpnNames = import ../../resources/vpn-names.nix { inherit osConfig; };
-      audioMixerSelect = import ../../resources/audio-mixer-select.nix { inherit pkgs; };
+      vpnNames = import ../../lib/vpn-names.nix { inherit osConfig; };
+
+      # Shared backend for the "menus:audio-mixer" walker/elephant menu: a
+      # no-arg call lists current playback streams (sink-inputs) as
+      # tab-separated "<index>\t<app-name>\t<volume%>\t<mute>" lines; called
+      # again as `raise|lower|mute <sink-input-index>` it adjusts that one
+      # stream via pactl, then the menu re-lists to reflect the change.
+      audioMixerSelect = pkgs.writeShellApplication {
+        name = "audio-mixer-select";
+        runtimeInputs = [
+          pkgs.pulseaudio
+          pkgs.jq
+        ];
+        text = ''
+          list() {
+            pactl -f json list sink-inputs | jq -r '
+              .[] | [
+                .index,
+                (.properties["application.name"] // .properties["media.name"] // "Unknown"),
+                (.volume | to_entries[0].value.value_percent),
+                .mute
+              ] | @tsv
+            '
+          }
+
+          case "''${1-}" in
+            raise) pactl set-sink-input-volume "$2" +5% ;;
+            lower) pactl set-sink-input-volume "$2" -5% ;;
+            mute) pactl set-sink-input-mute "$2" toggle ;;
+            "") ;;
+            *)
+              echo "usage: audio-mixer-select [raise|lower|mute] <sink-input-index>" >&2
+              exit 1
+              ;;
+          esac
+
+          list
+        '';
+      };
+
+      # elephant's protonpass provider (internal/providers/protonpass/protonpass.go)
+      # has two mismatches against Proton Pass CLI 2.3.1:
+      #
+      # 1. checkAvailable() blocks forever on `pass-cli test` to check auth before
+      #    listing items. That subcommand doesn't exist at all in 2.3.1, so the
+      #    check never succeeds and the provider never loads.
+      # 2. initItems() runs `pass-cli item list --output json` and expects each
+      #    item to carry a `content.content.Login` payload. But 2.3.1 only includes
+      #    that payload when `--show-secrets` is passed; without it every item is
+      #    silently classified as "not a login" and dropped, so results stay empty
+      #    even once (1) is fixed.
+      #
+      # This shim intercepts both calls and leaves everything else untouched.
+      protonpassCliShim = pkgs.writeShellApplication {
+        name = "pass-cli";
+        text = ''
+          real=${pkgs.proton-pass-cli}/bin/pass-cli
+
+          if [ "$#" -eq 1 ] && [ "$1" = "test" ]; then
+            exec "$real" info >/dev/null 2>&1
+          fi
+
+          if [ "''${1-}" = "item" ] && [ "''${2-}" = "list" ]; then
+            exec "$real" "$@" --show-secrets
+          fi
+
+          exec "$real" "$@"
+        '';
+      };
+
+      vpnToggle = import ../../lib/vpn-toggle.nix { inherit pkgs; };
+
+      # elephant menu definition (~/.config/elephant/menus/vpn.lua): lists VPNs
+      # with live on/off state and toggles the matching openvpn-<name> unit on
+      # select, via vpn-toggle.nix (same start/stop + Proton Pass secret
+      # fetch/cleanup used by the `vpn` fish function in pytheas.nix). Registers
+      # as walker/elephant provider "menus:vpn".
+      vpnMenu = ''
+        Name = "vpn"
+        NamePretty = "VPN"
+        Icon = "network-vpn"
+        Cache = false
+
+        function GetEntries()
+            local entries = {}
+            local vpns = {${lib.concatMapStringsSep ", " (n: "\"${n}\"") vpnNames}}
+
+            for _, name in ipairs(vpns) do
+                local handle = io.popen("systemctl is-active --quiet openvpn-" .. name .. " && echo on || echo off")
+                local state = handle:read("*l")
+                handle:close()
+
+                table.insert(entries, {
+                    Text = name,
+                    Subtext = state == "on" and "connected" or "disconnected",
+                    Icon = state == "on" and "network-vpn" or "network-vpn-disconnected",
+                    Actions = {
+                        toggle = "${vpnToggle}/bin/vpn-toggle " .. name .. " " .. (state == "on" and "stop" or "start"),
+                    },
+                })
+            end
+
+            return entries
+        end
+      '';
+
+      # elephant menu definition (~/.config/elephant/menus/audio-mixer.lua): lists
+      # every app currently playing audio with its volume/mute state, and exposes
+      # raise/lower/mute actions per entry (bound to keys in
+      # programs.walker.config.providers.actions."menus:audio-mixer" below).
+      # Registers as walker/elephant provider "menus:audio-mixer".
+      audioMixerMenu = ''
+        Name = "audio-mixer"
+        NamePretty = "Audio Mixer"
+        Icon = "audio-volume-high"
+        Cache = false
+
+        function GetEntries()
+            local entries = {}
+            local handle = io.popen("${audioMixerSelect}/bin/audio-mixer-select")
+
+            if handle then
+                for line in handle:lines() do
+                    local id, name, vol, mute = line:match("([^\t]*)\t([^\t]*)\t([^\t]*)\t([^\t]*)")
+
+                    if id then
+                        table.insert(entries, {
+                            Text = name,
+                            Subtext = (mute == "true") and (vol .. " (muted)") or vol,
+                            Icon = (mute == "true") and "audio-volume-muted" or "audio-volume-high",
+                            Actions = {
+                                raise = "${audioMixerSelect}/bin/audio-mixer-select raise " .. id,
+                                lower = "${audioMixerSelect}/bin/audio-mixer-select lower " .. id,
+                                mute = "${audioMixerSelect}/bin/audio-mixer-select mute " .. id,
+                            },
+                        })
+                    end
+                end
+                handle:close()
+            end
+
+            if #entries == 0 then
+                table.insert(entries, {
+                    Text = "Nothing playing audio right now",
+                    Subtext = "",
+                })
+            end
+
+            return entries
+        end
+      '';
     in
     {
       services.elephant = {
         enable = true;
       };
+
+      home.packages = [ (lib.hiPrio protonpassCliShim) ];
 
       services.walker = {
         enable = true;
@@ -53,6 +204,22 @@
               default = true;
               bind = "Return";
               after = "AsyncReload";
+            }
+          ];
+
+          providers.actions.protonpass = [
+            {
+              action = "copy_password";
+              default = true;
+              bind = "Return";
+            }
+            {
+              action = "copy_username";
+              bind = "shift Return";
+            }
+            {
+              action = "copy_2fa";
+              bind = "ctrl Return";
             }
           ];
 
@@ -124,13 +291,8 @@
       };
 
       xdg.configFile = {
-        "elephant/menus/vpn.lua".text = import ../../resources/vpn-menu.nix {
-          inherit lib pkgs vpnNames;
-        };
-
-        "elephant/menus/audio-mixer.lua".text = import ../../resources/audio-mixer-menu.nix {
-          select = audioMixerSelect;
-        };
+        "elephant/menus/vpn.lua".text = vpnMenu;
+        "elephant/menus/audio-mixer.lua".text = audioMixerMenu;
       };
 
       home.activation.restartElephant = lib.hm.dag.entryAfter [ "reloadSystemd" ] ''

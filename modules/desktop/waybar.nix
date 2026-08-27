@@ -8,7 +8,7 @@
       ...
     }:
     let
-      vpnNames = import ../../resources/vpn-names.nix { inherit osConfig; };
+      vpnNames = import ../../lib/vpn-names.nix { inherit osConfig; };
       vpnStatus = pkgs.writeShellApplication {
         name = "waybar-vpn-status";
         runtimeInputs = [

@@ -7,8 +7,8 @@
       ...
     }:
     let
-      vpnNames = import ../../resources/vpn-names.nix { inherit osConfig; };
-      vpnToggle = import ../../resources/vpn-toggle.nix { inherit pkgs; };
+      vpnNames = import ../../lib/vpn-names.nix { inherit osConfig; };
+      vpnToggle = import ../../lib/vpn-toggle.nix { inherit pkgs; };
     in
     {
       home.packages = [
