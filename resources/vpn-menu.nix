@@ -1,7 +1,12 @@
-{ lib, vpnNames }:
+{ lib, pkgs, vpnNames }:
 # elephant menu definition (~/.config/elephant/menus/vpn.lua): lists VPNs
 # with live on/off state and toggles the matching openvpn-<name> unit on
-# select. Registers as walker/elephant provider "menus:vpn".
+# select, via vpn-toggle.nix (same start/stop + Proton Pass secret
+# fetch/cleanup used by the `vpn` fish function in pytheas.nix). Registers
+# as walker/elephant provider "menus:vpn".
+let
+  vpnToggle = import ./vpn-toggle.nix { inherit pkgs; };
+in
 ''
   Name = "vpn"
   NamePretty = "VPN"
@@ -22,7 +27,7 @@
               Subtext = state == "on" and "connected" or "disconnected",
               Icon = state == "on" and "network-vpn" or "network-vpn-disconnected",
               Actions = {
-                  toggle = "sh -c 'systemctl is-active --quiet openvpn-" .. name .. " && systemctl stop openvpn-" .. name .. " || systemctl start openvpn-" .. name .. "'",
+                  toggle = "${vpnToggle}/bin/vpn-toggle " .. name .. " " .. (state == "on" and "stop" or "start"),
               },
           })
       end

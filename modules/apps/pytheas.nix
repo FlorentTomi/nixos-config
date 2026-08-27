@@ -8,13 +8,11 @@
     }:
     let
       vpnNames = import ../../resources/vpn-names.nix { inherit osConfig; };
-      vpnPassFetch = import ../../resources/vpn-pass-fetch.nix { inherit pkgs; };
-      vpnPassCleanup = import ../../resources/vpn-pass-cleanup.nix { inherit pkgs; };
+      vpnToggle = import ../../resources/vpn-toggle.nix { inherit pkgs; };
     in
     {
       home.packages = [
-        vpnPassFetch
-        vpnPassCleanup
+        vpnToggle
       ];
 
       programs.fish = {
@@ -24,11 +22,9 @@
 
           switch $action
             case on start
-              vpn-pass-fetch $name
-              systemctl start openvpn-$name
+              vpn-toggle $name start
             case off stop
-              systemctl stop openvpn-$name
-              vpn-pass-cleanup $name
+              vpn-toggle $name stop
             case status
               systemctl status openvpn-$name --no-pager
             case '*'

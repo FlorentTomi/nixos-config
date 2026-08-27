@@ -13,21 +13,21 @@
       audioMixerSelect = import ../../resources/audio-mixer-select.nix { inherit pkgs; };
     in
     {
-      imports = [ inputs.walker.homeManagerModules.default ];
-
-      programs.walker = {
+      services.elephant = {
         enable = true;
-        runAsService = true;
+      };
 
-        config = {
-          theme = "custom";
+      services.walker = {
+        enable = true;
+        systemd.enable = true;
+        settings = {
           force_keyboard_focus = true;
           close_when_open = true;
           click_to_close = true;
           hide_quick_activation = true;
           hide_action_hints = true;
 
-          placeholders."default" = {
+          placeholders.default = {
             input = "Search";
             list = "No results";
           };
@@ -45,9 +45,14 @@
               provider = "menus:vpn";
               prefix = "&";
             }
+          ];
+
+          providers.actions."menus:vpn" = [
             {
-              provider = "menus:audio-mixer";
-              prefix = "%";
+              action = "toggle";
+              default = true;
+              bind = "Return";
+              after = "AsyncReload";
             }
           ];
 
@@ -60,7 +65,7 @@
             }
             {
               action = "lower";
-              bind = "ctrl minus";
+              bind = "ctrl Return";
               after = "AsyncReload";
             }
             {
@@ -71,7 +76,8 @@
           ];
         };
 
-        themes.custom = {
+        theme = {
+          name = "custom";
           style = ''
             ${builtins.readFile ../../resources/walker-style.css}
             .box-wrapper {
@@ -119,7 +125,7 @@
 
       xdg.configFile = {
         "elephant/menus/vpn.lua".text = import ../../resources/vpn-menu.nix {
-          inherit lib vpnNames;
+          inherit lib pkgs vpnNames;
         };
 
         "elephant/menus/audio-mixer.lua".text = import ../../resources/audio-mixer-menu.nix {
@@ -130,15 +136,6 @@
       home.activation.restartElephant = lib.hm.dag.entryAfter [ "reloadSystemd" ] ''
         run ${pkgs.systemd}/bin/systemctl --user try-restart elephant.service
       '';
-
-      wayland.windowManager.niri.settings._children = [
-        {
-          spawn-at-startup._args = [
-            "walker"
-            "--gapplication-service"
-          ];
-        }
-      ];
 
       wayland.windowManager.niri.settings.binds = {
         "Mod+Space".spawn = [ "walker" ];

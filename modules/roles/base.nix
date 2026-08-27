@@ -16,12 +16,6 @@
           inherit inputs;
         };
       };
-
-      nixpkgs.overlays = [
-        (final: _: {
-          dashlane-cli = final.callPackage ../../pkgs/dashlane-cli.nix { };
-        })
-      ];
     }
   ]
   ++ (with config.flake.modules.nixos; [
