@@ -104,6 +104,7 @@ in
             config.flake.modules.homeManager.keyring
             config.flake.modules.homeManager.proton
             config.flake.modules.homeManager.attic
+            config.flake.modules.homeManager.proton-ssh
           ];
         };
 
