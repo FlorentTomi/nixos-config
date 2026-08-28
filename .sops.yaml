@@ -1,10 +1,12 @@
 keys:
   - &me age1n62xyamp34k22yefjgv4v375rran2zxs967a7lv53qdw8ks3wclsph385c
   - &host_ftomi_nixos age16f2stz48nj5eh9ll98q3gxsua4prqucf6zvye3e0xd08xlkwl3tq8cmneh
-
+  - &host_ftomi_rpi age1gafa00km3n5cnc505tqwh7vcd8cxxa9kejep4l68k0eq8y0pgd3szjfu8r
+  - 
 creation_rules:
   - path_regex: hosts/ftomi-nixos/secrets\.yaml$
     key_groups:
-      - age:
-          - *me
-          - *host_ftomi_nixos
+      - age: [*me, *host_ftomi_nixos]
+  - path_regex: hosts/ftomi-rpi/secrets\.yaml$
+    key_groups:
+      - age: [*me, *host_ftomi_rpi]

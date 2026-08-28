@@ -20,6 +20,7 @@ in
       config.flake.modules.nixos.caddy
       config.flake.modules.nixos.dnsmasq
       config.flake.modules.nixos.bambuddy
+      config.flake.modules.nixos.attic-cache
 
       ../../hosts/ftomi-rpi/hardware-configuration.nix
       ../../hosts/ftomi-rpi/sd-image.nix
@@ -28,11 +29,17 @@ in
       ../../hosts/ftomi-rpi/networking.nix
       ../../hosts/ftomi-rpi/users.nix
 
-      {
-        custom.virtualisation.nvidiaContainerToolkit = false;
-        custom.virtualisation.dockerUsers = [ hostCfg.user ];
-        system.stateVersion = "26.05";
-      }
+      (
+        { pkgs, ... }:
+        {
+          custom.virtualisation.nvidiaContainerToolkit = false;
+          custom.virtualisation.dockerUsers = [ hostCfg.user ];
+          sops.defaultSopsFile = ../../hosts/ftomi-rpi/secrets.yaml;
+          system.stateVersion = "26.05";
+
+          environment.systemPackages = [ pkgs.ghostty.terminfo ];
+        }
+      )
     ];
   };
 

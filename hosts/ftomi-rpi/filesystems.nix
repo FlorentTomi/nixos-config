@@ -46,6 +46,8 @@
       "/var/lib/nixos"
       "/var/lib/docker"
       "/var/lib/docker-data"
+      "/var/lib/postgresql"
+      "/var/lib/atticd"
     ];
   };
 }

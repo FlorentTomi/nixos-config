@@ -103,6 +103,7 @@ in
             config.flake.modules.homeManager.automount
             config.flake.modules.homeManager.keyring
             config.flake.modules.homeManager.proton
+            config.flake.modules.homeManager.attic
           ];
         };
 

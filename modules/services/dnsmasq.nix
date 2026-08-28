@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.dnsmasq = _: {
+  flake.modules.nixos.dnsmasq = {
     services.dnsmasq = {
       enable = true;
       settings = {
@@ -7,9 +7,11 @@
         no-hosts = true;
         interface = "tailscale0";
         bind-interfaces = true;
-        # Tailscale IP of this node; used as Split DNS target for *.ftomi-rpi.net
-        # in the Tailscale admin console (DNS settings).
         address = "/ftomi-rpi.net/100.112.219.126";
+        server = [
+          "1.1.1.1"
+          "9.9.9.9"
+        ];
       };
     };
   };
