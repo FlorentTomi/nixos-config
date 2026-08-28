@@ -75,7 +75,7 @@ in
             config.flake.modules.homeManager.mako
             config.flake.modules.homeManager.swayosd
             config.flake.modules.homeManager.playerctld
-            config.flake.modules.homeManager.wl-clip-persist
+            config.flake.modules.homeManager.wl-clipboard
             config.flake.modules.homeManager.wallpaper
             config.flake.modules.homeManager.vscode
             config.flake.modules.homeManager.direnv
