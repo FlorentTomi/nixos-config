@@ -76,6 +76,7 @@
         polarity = "dark";
 
         targets.starship.enable = false;
+        overlays.enable = false;
 
         fonts = {
           serif = {

@@ -323,6 +323,7 @@
         "nixpkgs": "nixpkgs",
         "sops-nix": "sops-nix",
         "stylix": "stylix",
+        "vm-curator": "vm-curator",
         "yazi-plugins": "yazi-plugins"
       }
     },
@@ -456,6 +457,26 @@
       "original": {
         "owner": "tinted-theming",
         "repo": "base16-zed",
+        "type": "github"
+      }
+    },
+    "vm-curator": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786476083,
+        "narHash": "sha256-W0UsPEsUQfAfnQ6rkgBX1L23Fr2iPQ1Z7la9yzKl1ZA=",
+        "owner": "mroboff",
+        "repo": "vm-curator",
+        "rev": "cdcf2acc2027a4db07e9f65b046d4e3119ee8a08",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mroboff",
+        "repo": "vm-curator",
         "type": "github"
       }
     },

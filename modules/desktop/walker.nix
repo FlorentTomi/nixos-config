@@ -166,6 +166,15 @@
         enable = true;
       };
 
+      # GTK4/GSK picks Vulkan by default. Walker's daemon creates its window
+      # hidden at startup and only realizes the Wayland surface on first
+      # `set_visible(true)` (triggered by the first Mod+Space invocation),
+      # which races niri's initial surface configure and forces a swapchain
+      # recreation (vkAcquireNextImageKHR VK_ERROR_OUT_OF_DATE_KHR), costing
+      # a dropped frame on that first open only. Forcing the GL renderer
+      # avoids the Vulkan swapchain path entirely.
+      systemd.user.services.walker.Service.Environment = [ "GSK_RENDERER=gl" ];
+
       home.packages = [ (lib.hiPrio protonpassCliShim) ];
 
       services.walker = {

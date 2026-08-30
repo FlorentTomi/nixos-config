@@ -25,6 +25,7 @@ in
       config.flake.modules.nixos.khal
       config.flake.modules.nixos.display-manager
       config.flake.modules.nixos.automount
+      config.flake.modules.nixos.vm-curator
 
       ../../hosts/ftomi-nixos/hardware-configuration.nix
       ../../hosts/ftomi-nixos/disko-config.nix

@@ -23,7 +23,7 @@ let
     {
       connector = "DP-1";
       model = "U32R59x";
-      scale = 1.0;
+      scale = 2.0;
       mode = {
         width = 3840;
         height = 2160;

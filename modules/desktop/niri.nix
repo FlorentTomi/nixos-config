@@ -56,7 +56,7 @@
           };
 
           layout = {
-            gaps = 8;
+            gaps = 4;
 
             preset-column-widths._children = [
               { proportion = 1. / 3.; }
