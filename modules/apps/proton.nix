@@ -9,6 +9,7 @@
       ];
 
       services.proton-pass-agent.enable = true;
+      programs.ssh.settings."*".identityAgent = "/run/user/%i/proton-pass-agent";
 
       home.sessionVariables.PROTON_PASS_LINUX_KEYRING = "dbus";
 

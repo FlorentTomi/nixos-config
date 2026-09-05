@@ -16,14 +16,14 @@ let
       };
       primary = false;
       position = {
-        x = 3840;
+        x = 2560;
         y = 0;
       };
     }
     {
       connector = "DP-1";
       model = "U32R59x";
-      scale = 2.0;
+      scale = 1.5;
       mode = {
         width = 3840;
         height = 2160;

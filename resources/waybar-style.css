@@ -23,6 +23,10 @@ window#waybar {
 #custom-gpu,
 #memory,
 #disk {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
 }
@@ -36,8 +40,6 @@ window#waybar {
 
 #workspaces {
     margin-left: 4px;
-    margin-top: -1px;
-    margin-bottom: -1px;
     border-width: 1px;
     border-style: solid;
 }
@@ -49,8 +51,7 @@ window#waybar {
 
 /* Center */
 #window {
-    border-left-width: 1px;
-    border-right-width: 1px;
+    border-width: 1px;
     border-style: solid;
     padding: 0 0.5rem;
 }
@@ -64,11 +65,12 @@ window#waybar.empty #window {
 }
 
 /* Right */
+#custom-vpn,
 #pulseaudio,
+#pulseaudio-slider,
 #tray,
 #clock {
-    border-left-width: 1px;
-    border-right-width: 1px;
+    border-width: 1px;
     border-style: solid;
 }
 
@@ -76,10 +78,8 @@ window#waybar.empty #window {
     padding-right: 4px;
 }
 
-#custom-vpn {
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-style: solid;
+#custom-vpn full {
+    border-right: 0;
 }
 
 #pulseaudio {
@@ -87,9 +87,7 @@ window#waybar.empty #window {
 }
 
 #pulseaudio-slider {
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-style: solid;
+    border-right: 0;
 }
 
 #pulseaudio-slider slider {

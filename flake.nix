@@ -46,6 +46,11 @@
       url = "github:yazi-rs/plugins";
       flake = false;
     };
+
+    ironbar = {
+      url = "github:JakeStanger/ironbar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

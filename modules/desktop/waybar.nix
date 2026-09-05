@@ -42,7 +42,10 @@
 
           * {
             font-family: "JetBrainsMono Nerd Font";
+            font-size: 12px;
+            font-weight: bold;
             color: #${themePalette.text};
+            border-color: #${themePalette.background-alt};
           }
 
           tooltip {
@@ -52,7 +55,6 @@
 
           .module {
             background-color: #${themePalette.background};
-            border-color: #${themePalette.background-alt};
           }
 
           #custom-power {

@@ -99,13 +99,14 @@ in
             config.flake.modules.homeManager.yazi
             config.flake.modules.homeManager.theme
             config.flake.modules.homeManager.colorscheme
-            config.flake.modules.homeManager.waybar
+            # config.flake.modules.homeManager.waybar
             config.flake.modules.homeManager.eww
             config.flake.modules.homeManager.automount
             config.flake.modules.homeManager.keyring
             config.flake.modules.homeManager.proton
             config.flake.modules.homeManager.attic
             config.flake.modules.homeManager.proton-ssh
+            config.flake.modules.homeManager.ironbar
           ];
         };
 
