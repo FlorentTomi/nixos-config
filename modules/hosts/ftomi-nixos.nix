@@ -73,7 +73,7 @@ in
             config.flake.modules.homeManager.fastfetch
             config.flake.modules.homeManager.diskonaut
             config.flake.modules.homeManager.sops-env
-            config.flake.modules.homeManager.mako
+            # config.flake.modules.homeManager.mako
             config.flake.modules.homeManager.swayosd
             config.flake.modules.homeManager.playerctld
             config.flake.modules.homeManager.wl-clipboard
@@ -100,13 +100,14 @@ in
             config.flake.modules.homeManager.theme
             config.flake.modules.homeManager.colorscheme
             # config.flake.modules.homeManager.waybar
-            config.flake.modules.homeManager.eww
+            # config.flake.modules.homeManager.eww
             config.flake.modules.homeManager.automount
             config.flake.modules.homeManager.keyring
             config.flake.modules.homeManager.proton
             config.flake.modules.homeManager.attic
             config.flake.modules.homeManager.proton-ssh
             config.flake.modules.homeManager.ironbar
+            config.flake.modules.homeManager.swaync
           ];
         };
 

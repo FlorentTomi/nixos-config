@@ -10,8 +10,8 @@
     :focusable "false"
     :namespace "eww-dashboard"
     :geometry (geometry
-        :x 8
-        :y 8
+        :x 4
+        :y 4
         :width 350
         :anchor "top right")
    	(dashboard-widget))

@@ -1,6 +1,11 @@
 {
   flake.modules.homeManager.ironbar =
     { inputs, themePalette, ... }:
+    let
+      bar-name = "main";
+      font-size = 12;
+      icon-size = 16;
+    in
     {
       imports = [ inputs.ironbar.homeManagerModules.default ];
 
@@ -15,6 +20,7 @@
         enable = true;
         systemd = true;
         config = {
+          name = bar-name;
           anchor_to_edges = true;
           popup_autohide = true;
           height = 20;
@@ -22,6 +28,8 @@
           margin.top = 4;
           margin.left = 4;
           margin.right = 4;
+          icon_theme = "Papirus-Dark";
+          double_click_time = "gtk";
 
           start = [
             {
@@ -72,7 +80,7 @@
             {
               type = "focused";
               name = "current-window";
-              icon_size = 16;
+              icon_size = icon-size;
               transition_type = "none";
               truncate = {
                 mode = "end";
@@ -89,16 +97,25 @@
           end = [
             {
               type = "volume";
+              show_sinks = true;
               show_sources = false;
             }
             {
+              type = "volume";
+              show_sinks = false;
+              show_sources = true;
+            }
+            {
               type = "tray";
-              icon_size = 16;
+              icon_size = icon-size;
             }
             {
               type = "clock";
               format = " %Y/%m/%d  %H:%M";
               format_popup = "%H:%M";
+            }
+            {
+              type = "notifications";
             }
           ];
         };
@@ -110,8 +127,12 @@
 
           * {
             font-family: "JetBrainsMono Nerd Font";
+            font-size: ${toString font-size}px;
+            font-weight: bold;
             border-radius: 0;
             box-shadow: none;
+            min-height: 0;
+            min-width: 0;
           }
 
           .background {
@@ -133,7 +154,7 @@
           #power-btn {
             background-color: transparent;
             color: #${themePalette.image.red};
-            border-color: #${themePalette.image.red};
+            border: 1px solid #${themePalette.image.red};
           }
 
           #power-btn:hover {
@@ -148,22 +169,6 @@
           #sysinfo > * {
             margin-left: 0.5em;
             margin-right: 0.5em;
-          }
-
-          #cpu {
-            color: #${themePalette.image.orange};
-          }
-
-          #temperature {
-            color: #${themePalette.image.yellow};
-          }
-
-          #memory {
-            color: #${themePalette.image.green};
-          }
-
-          #disk {
-            color: #${themePalette.image.cyan};
           }
 
           .workspaces .item {
@@ -186,13 +191,13 @@
             border-bottom: .2em solid #${themePalette.image.orange};
           }
 
-          #power-btn, .workspaces, #current-window, .volume, .tray, .clock {
+          .workspaces, #current-window, .volume, .tray, .clock, .notifications {
             border: 1px solid #${themePalette.background-alt};
           }
 
           #current-window {
-            padding-left: 1em;
-            padding-right: 1em;
+            padding-left: 0.5em;
+            padding-right: 0.5em;
           }
 
           .tray .item {
@@ -202,7 +207,22 @@
           .tray .item:hover {
             background-color: color-mix(in srgb, #${themePalette.background} 60%, #${themePalette.background-alt} 40%);
           }
+
+          .notifications .button {
+            background-color: transparent;
+          }
+
+          .notifications .button:hover {
+            background-color: color-mix(in srgb, #${themePalette.background} 60%, #${themePalette.background-alt} 40%);
+          }
         '';
       };
+
+      wayland.windowManager.niri.settings.binds."Mod+Delete".spawn = [
+        "ironbar"
+        "bar"
+        bar-name
+        "toggle-visible"
+      ];
     };
 }
