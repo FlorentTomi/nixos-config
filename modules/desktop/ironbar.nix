@@ -100,11 +100,11 @@
               show_sinks = true;
               show_sources = false;
             }
-            {
-              type = "volume";
-              show_sinks = false;
-              show_sources = true;
-            }
+            # {
+            #   type = "volume";
+            #   show_sinks = false;
+            #   show_sources = true;
+            # }
             {
               type = "tray";
               icon_size = icon-size;

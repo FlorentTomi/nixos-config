@@ -34,6 +34,7 @@
 
       environment.systemPackages = [
         pkgs.nix-output-monitor # nh shells out to `nom` automatically when it's on PATH
+        pkgs.any-nix-shell
       ];
 
       nix.gc.automatic = false;

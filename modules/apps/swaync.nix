@@ -58,6 +58,14 @@
           };
         };
         style = ''
+          * {
+            border-radius: 0;
+          }
+          
+          .control-center {
+            border: 1px solid ${themePalette.background-alt};
+          }
+          
           .widgets > .widget,
           .widget-mpris > carouselindicatordots,
           .widget-mpris > box > button {

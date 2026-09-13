@@ -3,7 +3,7 @@
     { pkgs, ... }:
     {
       home.packages = [
-        pkgs.gcr
+        pkgs.gcr_4
       ];
     };
 }

@@ -108,6 +108,7 @@ in
             config.flake.modules.homeManager.proton-ssh
             config.flake.modules.homeManager.ironbar
             config.flake.modules.homeManager.swaync
+            config.flake.modules.homeManager.devbox
           ];
         };
 
