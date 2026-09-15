@@ -6,9 +6,13 @@
       ...
     }:
     {
-      wayland.windowManager.niri.settings.layout.border = {
-        active-color = "#${themePalette.accent}";
-        inactive-color = "#${themePalette.window-manager.window-border-unfocused}";
+      wayland.windowManager.niri.settings.layout = {
+        gaps = 8;
+        border = {
+          width = 2;
+          active-color = "#${themePalette.accent}";
+          inactive-color = "#${themePalette.window-manager.window-border-unfocused}";
+        };
       };
 
       gtk = {

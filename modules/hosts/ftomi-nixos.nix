@@ -82,7 +82,8 @@ in
             config.flake.modules.homeManager.direnv
             config.flake.modules.homeManager.nodejs
             config.flake.modules.homeManager.claude-code
-            config.flake.modules.homeManager.helix
+            # config.flake.modules.homeManager.helix
+            config.flake.modules.homeManager.nvim
             config.flake.modules.homeManager.gimp
             config.flake.modules.homeManager.inkscape
             config.flake.modules.homeManager.onlyoffice
@@ -100,13 +101,13 @@ in
             config.flake.modules.homeManager.theme
             config.flake.modules.homeManager.colorscheme
             # config.flake.modules.homeManager.waybar
-            # config.flake.modules.homeManager.eww
+            config.flake.modules.homeManager.eww
             config.flake.modules.homeManager.automount
             config.flake.modules.homeManager.keyring
             config.flake.modules.homeManager.proton
             config.flake.modules.homeManager.attic
             config.flake.modules.homeManager.proton-ssh
-            config.flake.modules.homeManager.ironbar
+            # config.flake.modules.homeManager.ironbar
             config.flake.modules.homeManager.swaync
             config.flake.modules.homeManager.devbox
           ];
