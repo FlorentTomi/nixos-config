@@ -27,6 +27,6 @@
         }
       ];
 
-      wayland.windowManager.niri.settings.binds."Mod+Return".spawn = [ "ghostty" ];
+      wayland.windowManager.niri.settings.binds."Mod+Ctrl+Return".spawn = [ "ghostty" ];
     };
 }

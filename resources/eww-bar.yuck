@@ -1,0 +1,104 @@
+(defpoll health :interval "2s" :initial `{"class":"ok","glyph":"󱐋","label":"CPU","unit":"%","val":0,"max":100,"temp":0,"cpu":0,"ram":0,"disk":0,"hue":"@fgMuted@","open":false}` "@health@")
+(deflisten workspaces :initial "[]" "@niriWorkspaces@")
+(deflisten win :initial "{}" "@niriWindow@")
+(defpoll clock_time :interval "10s" "date '+%H:%M'")
+(defpoll clock_date :interval "1h" "date '+%a %d %b'")
+(defvar cal_open false)
+(defpoll bell_count :interval "1s" "swaync-client --count")
+(defvar title_hover false)
+
+(defwidget bar [output]
+  (centerbox :class "bar" :orientation "h" :style "margin: 0 8px;"
+    (box :halign "start" (island-left :output output))
+    (box :halign "center" (island-title :output output))
+    (box :halign "end" (island-right))))
+
+(defwidget island-left [output]
+  (box :class "island" :space-evenly false :spacing 0
+    (button :class "power" :onclick "wleave" "⏻")
+    (box :class "sep")
+    (box :class "dots" :space-evenly false :spacing 0
+      (for ws in {jq(workspaces, '[.[] | select(.output == "' + output + '")]')}
+        (button :class {ws.active ? "dot active" : ws.urgent ? "dot urgent" : "dot"}
+                :onclick "niri msg action focus-workspace ${ws.idx}" "●")))))
+
+(defwidget island-title [output]
+  (revealer :transition "crossfade" :duration "150ms"
+            :reveal {jq(win, '.["' + output + '"].title // ""', "r") != ""}
+    (eventbox :onhover "${EWW_CMD} update title_hover=true"
+              :onhoverlost "${EWW_CMD} update title_hover=false"
+      (box :class "island" :space-evenly false
+        (label :class "title"
+               :text {jq(win, '.["' + output + '"].title // ""', "r")}
+               :limit-width {title_hover ? 120 : 48}
+               :truncate true)))))
+
+(defwidget island-right []
+  (box :class "island" :space-evenly false :spacing 0
+    (anomaly)
+    (box :class "sep")
+    (systray :class "tray" :icon-size 14 :spacing 8 :prepend-new false)
+    (box :class "sep")
+    (clock)
+    (box :class "sep")
+    (bell)))
+
+(defwidget anomaly []
+  (tooltip
+    (stats-card)
+    (button :class "anomaly-hit" :onclick "ghostty --title=btop --confirm-close-surface=false -e btop &"
+      (overlay
+        (graph :class {"spark ${health.class}"}
+               :value {health.val}
+               :time-range "3min"
+               :min 0 :max {health.max}
+               :dynamic false
+               :thickness 2
+               :line-style "round"
+               :width 46 :height 20)
+        (box :halign "center" :valign "center"
+          (label :class {"glyph ${health.class}"} :text {health.glyph}))))))
+
+(defwidget stats-card []
+  (box :class "card" :orientation "v" :space-evenly false :spacing 6
+    (stat-row :label "CPU"  :value {health.cpu}  :unit "%" :max 100 :hue "@accent1@")
+    (stat-row :label "TEMP" :value {health.temp} :unit "°" :max @tempCrit@ :hue "@accent2@")
+    (stat-row :label "RAM"  :value {health.ram}  :unit "%" :max 100 :hue "@accent3@")
+    (stat-row :label "DISK" :value {health.disk} :unit "G" :max 100 :hue "@accent4@")))
+
+(defwidget stat-row [label value unit max hue]
+  (box :class "stat-row" :space-evenly false :spacing 8
+    (label :class "stat-key" :text label :width 44 :xalign 0)
+    (graph :class "stat-spark" :style "color: ${hue};"
+           :value value :time-range "3min" :min 0 :max max
+           :dynamic false :thickness 2 :width 96 :height 18)
+    (label :class "stat-val" :text "${value}${unit}" :width 44 :xalign 1)))
+
+(defwidget clock []
+  (button :class "clock-hit" :onclick "${EWW_CMD} update cal_open=${!cal_open}"
+    (box :space-evenly false :spacing 8
+      (label :class "clock-date" :text clock_date)
+      (label :class "clock-time" :text clock_time))))
+
+(defwidget bell []
+  (button :class "bell-hit" :onclick "swaync-client -t -sw"
+    (box :space-evenly false :spacing 0
+      (label :class "bell" :text " ${bell_count}"))))
+
+(defwidget calendar-popup []
+  (revealer :transition "slidedown" :duration "180ms" :reveal cal_open
+    (box :class "card"
+      (calendar :class "cal" :show-week-numbers false :show-details false
+                :onclick "khal list {2}-{1}-{0} 1d"))))
+
+(defwindow bar [output]
+  :monitor output
+  :geometry (geometry :x "0px" :y "8px" :width "100%" :height "26px" :anchor "top center")
+  :stacking "fg" :exclusive true :focusable false
+  (bar :output output))
+
+(defwindow calendar
+  :monitor 0
+  :geometry (geometry :x "8px" :y "8px" :width "260px" :anchor "top right")
+  :stacking "fg" :exclusive false :focusable false
+  (calendar-popup))

@@ -1,0 +1,160 @@
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 11px;
+    font-weight: bold;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 0;
+    text-shadow: none;
+}
+
+window {
+    background-color: transparent;
+    color: $fg;
+}
+
+.island {
+    background-color: $bg;
+    border: 1px solid $border;
+    padding: 0 4px;
+}
+
+.sep {
+    background-color: $border;
+    min-width: 1px;
+    margin: 6px 6px;
+}
+
+button,
+.clock-hit,
+.bell-hit,
+.anomaly-hit {
+    background-color: transparent;
+    color: $fg;
+    padding: 0 8px;
+}
+
+.power {
+    color: $danger;
+    margin: 4px 0;
+}
+
+.power:hover {
+    background-color: $danger;
+    color: $onAccent;
+}
+
+.dot {
+    padding: 0 5px;
+    color: $border;
+    font-size: 9px;
+    margin: 4px 0;
+}
+
+.dot.active {
+    color: $accent;
+}
+
+.dot.urgent {
+    color: $warning;
+}
+
+.dot:hover {
+    background-color: $surface;
+}
+
+.title {
+    color: $fg;
+    font-weight: normal;
+    padding: 0 12px;
+}
+
+.spark.ok {
+    color: $fgMuted;
+}
+
+.spark.crit {
+    color: $danger;
+}
+
+.glyph.ok {
+    color: $fgMuted;
+    font-weight: normal;
+}
+
+.glyph.crit {
+    color: $danger;
+}
+
+.anomaly-hit {
+    margin: 4px 0;
+    padding: 0;
+    min-width: 0;
+}
+
+.anomaly-hit:hover {
+    background-color: $surface;
+}
+
+.clock-date {
+    color: $fgMuted;
+    font-weight: normal;
+    padding-right: 8px;
+}
+
+.clock-time {
+    color: $accent;
+}
+
+.bell-hit {
+    margin: 4px 0;
+}
+
+.bell-hit:hover {
+    background-color: $surface;
+}
+
+.bell {
+    color: $fgMuted;
+    padding: 0 4px;
+}
+
+.card {
+    background-color: $bg;
+    border: 1px solid $border;
+    padding: 8px 10px;
+}
+
+.stat-key {
+    color: $fgMuted;
+    font-weight: normal;
+}
+
+.stat-val {
+    color: $fg;
+}
+
+.tray {
+    padding: 0 8px;
+}
+
+.cal {
+    background-color: $bg;
+    color: $fg;
+}
+
+.cal:selected {
+    background-color: $pillBg;
+    color: $onAccent;
+}
+
+tooltip {
+    background-color: $bg;
+    border: 1px solid $border;
+}
+
+tooltip label {
+    color: $fg;
+    font-weight: normal;
+}

@@ -63,7 +63,7 @@ in
             config.flake.modules.homeManager.ghostty
             config.flake.modules.homeManager.floorp
             config.flake.modules.homeManager.zed
-            config.flake.modules.homeManager.walker
+            # config.flake.modules.homeManager.walker
             config.flake.modules.homeManager.wleave
             config.flake.modules.homeManager.bat
             config.flake.modules.homeManager.btop
@@ -102,6 +102,7 @@ in
             config.flake.modules.homeManager.colorscheme
             # config.flake.modules.homeManager.waybar
             config.flake.modules.homeManager.eww
+            config.flake.modules.homeManager.eww-bar
             config.flake.modules.homeManager.automount
             config.flake.modules.homeManager.keyring
             config.flake.modules.homeManager.proton
@@ -110,6 +111,8 @@ in
             # config.flake.modules.homeManager.ironbar
             config.flake.modules.homeManager.swaync
             config.flake.modules.homeManager.devbox
+            config.flake.modules.homeManager.fuzzel
+            config.flake.modules.homeManager.rio
           ];
         };
 
