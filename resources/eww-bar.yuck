@@ -4,6 +4,7 @@
 (defpoll clock_time :interval "10s" "date '+%H:%M'")
 (defpoll clock_date :interval "1h" "date '+%a %d %b'")
 (defvar cal_open false)
+(defvar cal_output "")
 (defpoll bell_count :interval "1s" "swaync-client --count")
 (defvar title_hover false)
 
@@ -11,7 +12,7 @@
   (centerbox :class "bar" :orientation "h" :style "margin: 0 8px;"
     (box :halign "start" (island-left :output output))
     (box :halign "center" (island-title :output output))
-    (box :halign "end" (island-right))))
+    (box :halign "end" (island-right :output output))))
 
 (defwidget island-left [output]
   (box :class "island" :space-evenly false :spacing 0
@@ -33,13 +34,13 @@
                :limit-width {title_hover ? 120 : 48}
                :truncate true)))))
 
-(defwidget island-right []
+(defwidget island-right [output]
   (box :class "island" :space-evenly false :spacing 0
     (anomaly)
     (box :class "sep")
     (systray :class "tray" :icon-size 14 :spacing 8 :prepend-new false)
     (box :class "sep")
-    (clock)
+    (clock :output output)
     (box :class "sep")
     (bell)))
 
@@ -74,8 +75,9 @@
            :dynamic false :thickness 2 :width 96 :height 18)
     (label :class "stat-val" :text "${value}${unit}" :width 44 :xalign 1)))
 
-(defwidget clock []
-  (button :class "clock-hit" :onclick "${EWW_CMD} update cal_open=${!cal_open}"
+(defwidget clock [output]
+  (button :class "clock-hit"
+          :onclick "${EWW_CMD} update cal_output=${output} cal_open=${cal_output == output ? !cal_open : true}"
     (box :space-evenly false :spacing 8
       (label :class "clock-date" :text clock_date)
       (label :class "clock-time" :text clock_time))))
@@ -85,8 +87,8 @@
     (box :space-evenly false :spacing 0
       (label :class "bell" :text " ${bell_count}"))))
 
-(defwidget calendar-popup []
-  (revealer :transition "slidedown" :duration "180ms" :reveal cal_open
+(defwidget calendar-popup [output]
+  (revealer :transition "slidedown" :duration "180ms" :reveal {cal_open && cal_output == output}
     (box :class "card"
       (calendar :class "cal" :show-week-numbers false :show-details false
                 :onclick "khal list {2}-{1}-{0} 1d"))))
@@ -97,8 +99,8 @@
   :stacking "fg" :exclusive true :focusable false
   (bar :output output))
 
-(defwindow calendar
-  :monitor 0
+(defwindow calendar [output]
+  :monitor output
   :geometry (geometry :x "8px" :y "8px" :width "260px" :anchor "top right")
   :stacking "fg" :exclusive false :focusable false
-  (calendar-popup))
+  (calendar-popup :output output))

@@ -26,6 +26,8 @@ in
       config.flake.modules.nixos.display-manager
       config.flake.modules.nixos.automount
       config.flake.modules.nixos.vm-curator
+      config.flake.modules.nixos.television
+      config.flake.modules.nixos.opencode
 
       ../../hosts/ftomi-nixos/hardware-configuration.nix
       ../../hosts/ftomi-nixos/disko-config.nix
@@ -113,6 +115,8 @@ in
             config.flake.modules.homeManager.devbox
             config.flake.modules.homeManager.fuzzel
             config.flake.modules.homeManager.rio
+            config.flake.modules.homeManager.television
+            config.flake.modules.homeManager.opencode
           ];
         };
 

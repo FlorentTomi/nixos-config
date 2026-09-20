@@ -49,6 +49,7 @@
         xwaylandSatellitePackage = null;
         settings = {
           input = {
+            # focus-follows-mouse = { };
             keyboard = {
               numlock = { };
               xkb.layout = osConfig.services.xserver.xkb.layout;
